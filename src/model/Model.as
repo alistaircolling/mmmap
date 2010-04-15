@@ -10,6 +10,8 @@ package model{
 	import mx.core.Application;
 	import mx.rpc.xml.SimpleXMLDecoder;
 	import mx.utils.ArrayUtil;
+	
+	
 	import mx.utils.ObjectProxy;
 	
 	import utils.CustomEvent;
@@ -34,6 +36,7 @@ package model{
 		private var prefsProxy:PreferencesProxy;
 		
 		private var app:MMMap_FB4;
+		private var username:String;
 
 		public function Model(a:MMMap_FB4) {	
 			super();
@@ -65,6 +68,7 @@ package model{
 		
 		public function logMeIn(u:String, p:String):void
 		{
+			username = u;
 			userProxy.login(u, p);
 		}
 		
@@ -72,6 +76,7 @@ package model{
 		{
 			trace("requesting customers list from model");
 			//request list of customers
+			
 			customersProxy.requestCustomers();
 		}
 		//todo set timeout on login time
@@ -97,9 +102,9 @@ package model{
 		{
 			app.showAlert("Login Failed", "please enter correct username and password",true);			
 		}
-		private function preferencesLoaded(e:Event):void
+		private function preferencesLoaded(e:CustomEvent):void
 		{
-			
+
 		}
 		private function mapLoaded():void {
 		
@@ -111,7 +116,11 @@ package model{
 			trace("products loaded");
 			var ac:ArrayCollection = convertXmlToArrayCollection(e.arg[0][0].toString());
 			app.productList = ac;
-			app.currentState = "portal";
+			requestPrefs();
+		}
+		private function requestPrefs():void
+		{
+			prefsProxy.requestPreferences(username);
 		}
 		
 		

@@ -5,7 +5,7 @@ import utils.CustomEvent;
 	
 	public class PreferencesProxy extends Proxy {
 		public var PREFERENCES_RECEIVED:String = "prefsReceived";
-		private const reqStr:String = "SELECT ...."; 
+		private var reqStr:String = "SELECT * FROM preferences WHERE user_id = "; 
 		 
 				
 		public function PreferencesProxy(s:String) {
@@ -13,8 +13,9 @@ import utils.CustomEvent;
 			super(s); 
 		}
 		
-		public function requestPreferences():void
+		public function requestPreferences(s:String):void
 		{
+			reqStr += "'"+s+"'";
 			trace("requesting customers....."+reqStr);
 			sqlComm.sqlReq(reqStr, sqlMethod);
 		} 
