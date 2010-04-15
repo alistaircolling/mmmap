@@ -3,18 +3,18 @@ import proxies.SqlComm;
 
 import utils.CustomEvent;
 	
-	public class CustomersProxy extends Proxy {
+	public class PreferencesProxy extends Proxy {
 		public var CUSTOMERS_RECEIVED:String = "customersReceived";
-		private const reqStr:String = "SELECT ...."; //todo write default customers query string
+		private const reqStr:String = "SELECT ...."; 
 		 
 				
-		public function CustomersProxy(s:String) {
+		public function PreferencesProxy(s:String) {
 			
 			super(s); 
-			requestCustomers();
+			requestPreferences();
 		}
 		
-		private function requestCustomers():void
+		private function requestPreferences():void
 		{
 			trace("requesting customers....."+reqStr);
 			sqlComm.sqlReq(reqStr, sqlMethod);

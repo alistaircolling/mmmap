@@ -12,13 +12,15 @@ package
 		private var _rentalStart:Date;
 		private var _rentalEnd:Date;
 		
-		public function Customer(s:String, l:LatLng, prod:uint,  sT:uint, sD:Date=null, )
+		public function Customer(s:String, l:LatLng, prod:uint,  sT:uint, sD:Date=null, rS:Date = null, rE:Date = null)
 		{
 			_name = s;
 			_location = l;
 			_productSold = prod;
-			_saleDate = d;
 			_saleType = sT;
+			_saleDate = d;
+			_rentalStart = rS;
+			_rentalEnd = rE;
 		}
 
 		public function get saleType():uint
