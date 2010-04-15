@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" xmlns:local="*"
+			   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:local="*"
 			   creationComplete="creationCompleteHandler(event)"
-			   currentState="login">
+			   currentState="login" minWidth.portal="955" minWidth.State1="955" minWidth.loggingIn="955" minHeight.portal="600" minHeight.State1="600" minHeight.loggingIn="600">
 	<s:states>
 		<s:State name="State1"/>
 		<s:State name="portal"/>

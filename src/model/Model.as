@@ -1,6 +1,7 @@
 package model{           
 	import flash.events.Event;
 	import flash.profiler.showRedrawRegions;
+	import flash.utils.setTimeout;
 	
 	import mx.collections.ArrayCollection;
 	import mx.core.Application;
@@ -55,14 +56,24 @@ package model{
 			resultsProxy = new ResultsProxy(phpURL);
 			resultsProxy.addEventListener(resultsProxy.RESULTS_RECEIVED, resultsLoaded);
 		}
+		
 		public function logMeIn(u:String, p:String):void
 		{
 			userProxy.login(u, p);
 		}
+		
 		private function loginSuccess(e:Event):void
 		{
-			app.currentState = "portal";
+			trace("requesting customers list from model");
+			//request list of customers
+			customersProxy.requestCustomers();
 		}
+		//todo set timeout on login time
+		private function customersLoaded(e:CustomEvent):void {
+			trace("customers loaded");
+			var ac:ArrayCollection = e.arg[0]; 
+		}
+		
 		private function loginFailed(e:Event):void
 		{
 			app.showAlert("Login Failed", "please enter correct username and password",true);			
@@ -82,10 +93,7 @@ package model{
 			var ac:ArrayCollection = e.arg[0];
 		}
 		
-		private function customersLoaded(e:CustomEvent):void {
-			trace("questoins loadeed");
-			var ac:ArrayCollection = e.arg[0];
-		}
+		
 		
 		private function resultsLoaded(e:CustomEvent):void
 		{
