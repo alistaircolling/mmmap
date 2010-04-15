@@ -1,4 +1,6 @@
 package model{
+import adobe.utils.CustomActions;
+
 import proxies.SqlComm;
 
 import utils.CustomEvent;
@@ -18,6 +20,8 @@ import utils.CustomEvent;
 			reqStr = "SELECT......";// add query string for username and password to see if they match
 			trace("requesting customers....."+reqStr);
 			sqlComm.sqlReq(reqStr, sqlMethod);
+			//testing
+			dispatchEvent(new CustomEvent(LOGIN_FAILED, false, true));
 		} 
 		
 		override public function dataReturned(e:CustomEvent):void

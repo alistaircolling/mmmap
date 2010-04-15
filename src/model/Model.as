@@ -1,5 +1,6 @@
 package model{           
 	import flash.events.Event;
+	import flash.profiler.showRedrawRegions;
 	
 	import mx.collections.ArrayCollection;
 	import mx.core.Application;
@@ -7,7 +8,7 @@ package model{
 	import utils.CustomEvent;
 	
 
-	public class Model {
+	public class Model extends Object{
 
 		private var proxies_ar:Array;
 	
@@ -28,6 +29,7 @@ package model{
 		private var app:MMMap_FB4;
 
 		public function Model(a:MMMap_FB4) {	
+			super();
 			app = a;
 			init();
 		}
@@ -63,7 +65,7 @@ package model{
 		}
 		private function loginFailed(e:Event):void
 		{
-						
+			app.showAlert("Login Failed", "please enter correct username and password",true);			
 		}
 		private function preferencesLoaded(e:Event):void
 		{

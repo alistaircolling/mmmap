@@ -2,8 +2,8 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" xmlns:local="*"
-			   
-			    currentState="login">
+			   creationComplete="creationCompleteHandler(event)"
+			   currentState="login">
 	<s:states>
 		<s:State name="State1"/>
 		<s:State name="portal"/>
@@ -50,21 +50,15 @@
 		
 		import mx.collections.ArrayCollection;
 		import mx.controls.Alert;
+		import mx.events.FlexEvent;
 		
 		[Bindable]
 		protected var startingDate:Date;
 		[Bindable]
 		protected var endingDate:Date;
 
-		private var model:Model;
+		public var myModel:Model;
 		
-		private function creationCompleted(e:Event):void
-		{
-			trace("creation complete");	
-			mapDisplay.init();			
-			//TODO request customer lists from php and default filter settings
-			model = new Model(this);
-		}
 		
 		private function showCustomers(d:*):void
 		{
@@ -99,10 +93,20 @@
 				var  queryS:String = createQuery();
 			}
 		}
-		private function showAlert(title:String, msg:String, okButton:Boolean = false):void
+		public function showAlert(title:String, msg:String, okButton:Boolean = false, logO:Boolean = true):void
 		{
+			
+			var alertFn:Function = logOut;
+			if (!logO){
+				alertFn = null;
+			}
 			//TODO add code to dictate if the OK button displays (progress msgs)
-			Alert.show(title, msg);
+			Alert.show(title, msg, Alert.OK, this, alertFn, null, Alert.OK);
+			
+		}
+		private function logOut():void
+		{
+			trace("log out");
 		}
 		
 		
@@ -145,8 +149,17 @@
 			// TODO Auto-generated method stub
 			currentState = "loggingIn";
 			//model.login(username.text, password.text);
-			
-			
+			myModel.logMeIn(username.text, password.text);
+		}
+
+
+		protected function creationCompleteHandler(event:FlexEvent):void
+		{
+			// TODO Auto-generated method stub
+			trace("creation complete");	
+	//		mapDisplay.init();			
+			//TODO request customer lists from php and default filter settings
+			myModel = new Model(this);
 		}
 
 	]]>
