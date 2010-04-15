@@ -104,7 +104,7 @@ package model{
 		
 
 		private function productsLoaded(e:CustomEvent):void {
-			trace("questoins loadeed");
+			trace("questoins loaded");
 			var ac:ArrayCollection = e.arg[0];
 		}
 		
