@@ -25,6 +25,7 @@
 				</fx:Array>
 			</s:source>  -->
 		</s:ArrayCollection>
+		
 		<s:ArrayCollection id="salesType">
 			<s:source>
 				<fx:Array>
@@ -221,7 +222,7 @@
 		<local:MapDisplay id="mapDisplay"/>
 	</s:VGroup>
 	<s:List id="productsLister" x="200" width="300" y="700"
-			itemRenderer="HListRenderer" dataProvider="{productList}" labelField="name" includeIn="State1,portal">
+			itemRenderer="HListRenderer" dataProvider="{productList}" includeIn="State1,portal">
 		<s:layout>
 			<s:HorizontalLayout/>
 		</s:layout>

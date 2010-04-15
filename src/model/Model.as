@@ -10,6 +10,7 @@ package model{
 	import mx.core.Application;
 	import mx.rpc.xml.SimpleXMLDecoder;
 	import mx.utils.ArrayUtil;
+	import mx.utils.ObjectProxy;
 	
 	import utils.CustomEvent;
 	
@@ -86,6 +87,9 @@ package model{
 			var decoder:SimpleXMLDecoder = new SimpleXMLDecoder();
 			var data:Object = decoder.decodeXML( xml );
 			var array:Array = mx.utils.ArrayUtil.toArray( data.data.row );
+			for (var i:uint = 0; i<array.length; i++){
+				array[i] = new ObjectProxy(array[i]);
+			}
 			return new ArrayCollection( array );
 		}
 		
