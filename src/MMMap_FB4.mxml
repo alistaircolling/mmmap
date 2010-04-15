@@ -65,6 +65,8 @@
 
 		public var myModel:Model;
 		
+		private var newPreferences:Object;
+		
 		public function setPreferences(o:Object):void
 		{
 			currentState = "portal";
@@ -224,6 +226,20 @@
 			// TODO Auto-generated method stub
 		}
 
+
+		protected function accountSettings_clickHandler(event:MouseEvent):void
+		{
+			// TODO Auto-generated method stub
+			currentState = "account_settings";
+		}
+
+
+		protected function button1_clickHandler(event:MouseEvent):void
+		{
+			// TODO Auto-generated method stub
+			currentState = "portal";
+		}
+
 	]]>
 </fx:Script>
 	<s:VGroup x="10" y="10" width="700" height="100%" includeIn="State1,portal">
@@ -257,7 +273,7 @@
 				<s:Label text="Customer:"/>
 				<s:ComboBox id="customers" dataProvider="{customerList}" labelField="name"/>
 				<mx:Spacer width="20"/>
-				<s:Button id="update" label="Update" right="0" click="update_clickHandler(event)"/>
+				<s:Button id="update" label="Update" right="0" click="update_clickHandler(event)" label.portal="Update Map"/>
 			</s:Group>
 			<mx:Spacer height="10"/>
 			<s:Group x="300">
@@ -269,6 +285,7 @@
 				<s:Button label="Logout" id="logout" click.portal="logout_clickHandler(event)"/>
 			</s:Group>
 			<mx:Spacer height="30"/>
+			<s:Button includeIn="portal" label="Account Settings" id="accountSettings" click="accountSettings_clickHandler(event)"/>
 		<local:MapDisplay id="mapDisplay"/>
 	</s:VGroup>
 	<s:List id="productsLister" x="200" width="300" y="700"
@@ -286,7 +303,7 @@
 		<s:Button x="88" y="126" label="Login" id="login" click="login_clickHandler(event)" includeIn="login" />
 		<s:Label includeIn="loggingIn" text="Logging in....." horizontalCenter="0" verticalCenter="0"/>
 	</s:Panel>
-	<s:Panel includeIn="account_settings" x="10" y="10" width="872" height="245" title="Account Settings">
+	<s:Panel includeIn="account_settings" x="10" y="10" width="872" height="291" title="Account Settings">
 		<s:layout>
 			<s:VerticalLayout/>
 		</s:layout>
@@ -315,13 +332,16 @@
 			<s:layout>
 				<s:HorizontalLayout/>
 			</s:layout>
+			
 			<s:Label text="Sale type:"/>
-			<s:ComboBox id="saleTypesSet" dataProvider="{salesType}"/>
+			<s:ComboBox id="saleTypesSet" dataProvider="{salesType}" x="99" y="-1"/>
 			<mx:Spacer width="20"/>
-			<s:Label text="Customer:"/>
-			<s:ComboBox id="customersSet" dataProvider="{customerList}" labelField="name"/>
+			<s:Label text="Customer:" x="282" y="2"/>
+			<s:ComboBox id="customersSet" dataProvider="{customerList}" labelField="name" x="341" y="0"/>
 			<mx:Spacer width="20"/>
 		</s:Group>
+		
+		<s:Button id="updateSet" label="Update Settings" click="updateSet_clickHandler(event)"/>
 		<mx:Spacer height="10"/>
 		<s:Group>
 			<s:layout>
@@ -336,7 +356,8 @@
 			<s:Label text="Re-type new password:"/>
 			<s:TextInput id="confirmPassword"/>
 		</s:Group>
-		<s:Button id="updateSet" label="Update Settings" click="updateSet_clickHandler(event)" right="0"/>
+		<s:Button label="Update Password" id="updatePassword"/>
+		<s:Button label="Close" click="button1_clickHandler(event)"/>
 	</s:Panel>
 	
 </s:Application>
