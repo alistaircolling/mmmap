@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="700" height="100%"
+		 creationComplete="init()">
+<fx:Script>
+	<![CDATA[
+		import com.afcomponents.umap.core.UMap;
+		import com.afcomponents.umap.events.MapEvent;
+		import com.afcomponents.umap.providers.cloudmade.CloudMadeProvider;
+		import com.afcomponents.umap.types.LatLng;
+		import com.afcomponents.umap.types.LatLngBounds;
+		
+		import model.Model;
+		
+		import mx.core.UIComponent;
+		import mx.events.FlexEvent;
+		
+		import spark.skins.spark.VSliderTrackSkin;
+		
+		private var provider:CloudMadeProvider;
+		public var map:UMap;
+		private var apiKey:String = "eeb21660abf954a4ab61b8e5be7dd542";
+		
+		
+		public function init():void
+		{
+			var ref:UIComponent = new UIComponent();
+			//pass the refernce to your cloudmade map as the second var
+			provider = new CloudMadeProvider(apiKey, "10632", CloudMadeProvider.SIZE_256);
+			map = new UMap();
+			map.setSize(600, 500);
+			map.setProvider(provider);
+			ref.addChild(map);
+			//attach to the canvas
+			mapCanvas.addChild(ref);
+			ref.focusManager.deactivate();
+			//listen for when the map is ready
+			map.addEventListener(MapEvent.READY, mapReady);
+			map.addEventListener(MapEvent.CLICK, mapClicked);
+			
+			
+		}
+		private function mapClicked(m:MapEvent):void
+		{
+			trace("lat:"+m.latlng.lat+"   lng:"+m.latlng.lng);
+			
+			//map.setBounds(new LatLngBounds(new LatLng(60.5, -17), new LatLng(48, 9)));
+		}
+		public function showProducts(d:*):void
+		{
+			
+		}
+		
+		public function showResults(d:*):void
+		{
+			
+		}
+		
+		private function mapReady(e:MapEvent):void
+		{
+			trace("map ready");
+			map.setCenter(new LatLng(56, -3));
+			map.setZoom(5);
+			//map.setBounds(new LatLngBounds(new LatLng(60.5, -17), new LatLng(48, 9)));
+			//start working with the map, adding markers etc.
+		}
+		
+		
+		
+
+		protected function vSliderChanged(event:FlexEvent):void
+		{
+			var val:uint = (event.currentTarget as VSlider).value;
+			// TODO Auto-generated method stub
+			trace("slider changed:"+val);
+			map.setZoom(val, true);//(immediately)
+			
+		}
+
+	]]>
+</fx:Script>
+	<fx:Declarations>	
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		
+	</fx:Declarations>
+		<s:Group>
+			
+			<s:VSlider id="zoomSlider" value="5" minimum="2" maximum="15" verticalCenter="0" height="350" changeEnd="vSliderChanged(event)"/>
+			<s:Group>
+				<mx:Canvas id="mapCanvas" width="600" height="500" x="50" y="0"/>
+				<s:Group right="20" y="20">
+					<s:layout>
+						<s:VerticalLayout/>
+					</s:layout>
+					<s:Group>
+						<s:layout>
+							<s:HorizontalLayout/>
+						</s:layout>
+						<mx:Label text="Sales:" />
+						<mx:Label id="sales" text="--" />
+					</s:Group>
+					<s:Group>
+						<s:layout>
+							<s:HorizontalLayout/>
+						</s:layout>
+						<s:Label text="Rentals:"/>
+						<s:Label id="rentals" text="--" />	
+					</s:Group>	
+				</s:Group>
+				
+			</s:Group>
+		</s:Group>
+		
+		
+	
+</s:Group>

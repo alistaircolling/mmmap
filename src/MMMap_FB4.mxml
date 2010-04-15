@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" xmlns:local="*"
+			   
+			   >
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:ArrayCollection id="productList">
+			<s:source>
+				<fx:Array>
+					<fx:Object label="Stop sign" icon="@Embed('images/stopSign.jpg')" data="85" />
+					<fx:Object label="Go Sign" icon="@Embed('images/goSign.jpg')" data="48" />
+					<fx:Object label="Rocks falling" icon="@Embed('images/goSign.jpg')" data="48" />
+					<fx:Object label="Roadworks" icon="@Embed('images/goSign.jpg')" data="48" />
+					<fx:Object label="speed bumps" icon="@Embed('images/goSign.jpg')" data="48" />
+					<fx:Object label="Danger!" icon="@Embed('images/goSign.jpg')" data="48" />
+					<fx:Object label="Slow Down" icon="@Embed('images/goSign.jpg')" data="48" />
+				</fx:Array>
+			</s:source>
+		</s:ArrayCollection>
+		<s:ArrayCollection id="salesType">
+			<s:source>
+				<fx:Array>
+					<fx:Object label="Sales" data="0" />
+					<fx:Object label="Rental" data="1" />
+				</fx:Array>
+			</s:source>
+		</s:ArrayCollection>
+		<s:ArrayCollection id="customerList">
+			<s:source>
+				<fx:Array>
+					<fx:Object label="John Ridley" data="85" />
+					<fx:Object label="Gateshead Council" data="85" />
+					<fx:Object label="Newcastle General Hospital" data="85" />
+				</fx:Array>
+			</s:source>
+		</s:ArrayCollection>
+		
+	</fx:Declarations>
+<fx:Script>
+	<![CDATA[
+		import model.Model;
+		
+		import mx.collections.ArrayCollection;
+		import mx.controls.Alert;
+		
+		[Bindable]
+		protected var startingDate:Date;
+		[Bindable]
+		protected var endingDate:Date;
+//		[Bindable]
+//		public var products:ArrayCollection;// = new ArrayCollection(
+////			[{label:"Stop Sign", img:"stopSign.png", data:0},
+////				{label:"Go Sign", img:"goSign.png", data:1},
+////				{label:"No Entry!", img:"noEntry.png", data:2},
+////				{label:"Falling Rocks", img:"rocks.png", data:3}		
+////			]);
+//		[Bindable]
+//		protected var saleTypes:ArrayCollection =  new ArrayCollection(
+//			[{label:"Sales", data:0}, {label:"Rental", data:1}]
+//		);
+//		[Bindable]
+//		protected var customers:ArrayCollection =  new ArrayCollection(
+//			[
+//				{label:"Jones Ltd.", data:123},
+//				{label:"Gateshead Council", data:5326},
+//				{label:"Lollipop Lady", data:42},
+//				{label:"Go Kart Racing!", data:10}		
+//			]
+//		)
+//		
+		private var model:Model;
+		
+		private function creationCompleted(e:Event):void
+		{
+			trace("creation complete");	
+			mapDisplay.init();
+			//TODO request date from php and use this to populate date choosers
+			//TODO request customer lists from php and default filter settings
+			model = new Model(this);
+		}
+		
+		private function showCustomers(d:*):void
+		{
+			//logic to parse data and sat arrayC  for combobox
+		}
+		
+		private function showProducts(d:*):void
+		{
+			//logic to parse data and sat arrayC
+			mapDisplay.showProducts(d);
+			//TODO update combo box
+		}
+		
+		private function showResults(d:*):void
+		{
+			mapDisplay.showResults(d);
+		}
+		
+		
+		private function validateDates():void
+		{
+			var sD:Date = startDateField.selectedDate;
+			var eD:Date = endDateField.selectedDate;
+			if (eD.valueOf()<sD.valueOf()){
+				showAlert("Please alter dates", "The end date must be after the start date"); 				
+			}else{
+				//make query string
+				var  queryS:String = createQuery();
+			}
+		}
+		private function showAlert(title:String, msg:String, okButton:Boolean = false):void
+		{
+			//TODO add code to dictate if the OK button displays (progress msgs)
+			Alert.show(title, msg);
+		}
+		
+		
+		private function requestData(event:Event):void
+		{
+			validateDates();	
+		}
+		private function createQuery():String		
+		{		
+			var sDate:Date = startDateField.selectedDate;
+			var eDate:Date = endDateField.selectedDate;
+			
+			trace("---");
+			var retS:String = eDate.toDateString();
+			return eDate.toDateString();
+		}
+
+		protected function exportExcel_clickHandler(event:MouseEvent):void
+		{
+			// TODO Auto-generated method stub
+			
+		}
+
+
+		protected function print_clickHandler(event:MouseEvent):void
+		{
+			// TODO Auto-generated method stub
+		}
+
+	]]>
+</fx:Script>
+	<s:VGroup x="10" y="10" width="700" height="100%">
+		
+			<s:Group width="700">
+				<s:layout>
+					<s:HorizontalLayout/>
+				</s:layout>
+				<s:Label text="Start date:"/>
+				<mx:DateField id="startDateField"/>
+				<mx:Spacer width="20"/>
+				<s:Label text="End date:"/>
+				<mx:DateField id="endDateField" />
+				<mx:Spacer width="100"/>
+				<s:Group width="700">
+					<s:layout>
+						<s:HorizontalLayout/>
+					</s:layout>
+					<s:Label text="Product:" />
+					<s:ComboBox id="products" dataProvider="{productList}"/>
+				</s:Group>
+			</s:Group>
+			<mx:Spacer height="30"/>
+			<s:Group width="700">
+				<s:layout>
+					<s:HorizontalLayout/>
+				</s:layout>
+				<s:Label text="Sale type:"/>
+				<s:ComboBox id="saleTypes" dataProvider="{salesType}"/>
+				<mx:Spacer width="20"/>
+				<s:Label text="Customer:"/>
+				<s:ComboBox id="customers" dataProvider="{customerList}"/>
+				<mx:Spacer width="20"/>
+				<s:Button id="update" label="Update" right="0"/>
+			</s:Group>
+			<mx:Spacer height="10"/>
+			<s:Group x="300">
+				<s:layout>
+					<s:HorizontalLayout/>
+				</s:layout>
+				<s:Button id="exportExcel" label="Export Excel CSV" click="exportExcel_clickHandler(event)"/>
+				<s:Button id="print" label="Print" click="print_clickHandler(event)"/>
+			</s:Group>
+			<mx:Spacer height="30"/>
+		<local:MapDisplay id="mapDisplay"/>
+	</s:VGroup>
+	<s:List id="productsLister" x="200" width="300" y="700"
+			itemRenderer="HListRenderer" dataProvider="{productList}">
+		<s:layout>
+			<s:HorizontalLayout/>
+		</s:layout>
+		
+	</s:List>
+	
+</s:Application>
