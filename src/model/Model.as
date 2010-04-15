@@ -61,7 +61,7 @@ package model{
 		}
 		private function loginSuccess(e:Event):void
 		{
-			
+			app.currentState = "portal";
 		}
 		private function loginFailed(e:Event):void
 		{

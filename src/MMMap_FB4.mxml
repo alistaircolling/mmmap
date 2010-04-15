@@ -30,6 +30,7 @@
 				<fx:Array>
 					<fx:Object label="Sales" data="0" />
 					<fx:Object label="Rental" data="1" />
+					<fx:Object label="All" data="2" />
 				</fx:Array>
 			</s:source>
 		</s:ArrayCollection>
@@ -104,9 +105,10 @@
 			Alert.show(msg, title, Alert.OK, this, alertFn);
 			
 		}
-		private function logOut():void
+		private function logOut(a:*):void
 		{
 			trace("log out");
+			currentState = "login";
 		}
 		
 		
@@ -162,6 +164,15 @@
 			myModel = new Model(this);
 		}
 
+
+		protected function logout_clickHandler(event:MouseEvent):void
+		{
+			username.text = "";
+			password.text = "";
+			// TODO Auto-generated method stub
+			currentState = "login";
+		}
+
 	]]>
 </fx:Script>
 	<s:VGroup x="10" y="10" width="700" height="100%" includeIn="State1,portal">
@@ -204,7 +215,7 @@
 				</s:layout>
 				<s:Button id="exportExcel" label="Export Excel CSV" click="exportExcel_clickHandler(event)"/>
 				<s:Button id="print" label="Print" click="print_clickHandler(event)"/>
-				<s:Button label="Logout" id="logout"/>
+				<s:Button label="Logout" id="logout" click.portal="logout_clickHandler(event)"/>
 			</s:Group>
 			<mx:Spacer height="30"/>
 		<local:MapDisplay id="mapDisplay"/>
@@ -220,8 +231,8 @@
 		<s:TextInput y="35" width="200" horizontalCenter="-1" id="username" includeIn="login"/>
 		<s:Label x="24" y="19" text="Username" includeIn="login"/>
 		<s:Label x="24" y="69" text="Password" includeIn="login"/>
-		<s:TextInput y="88" width="200" horizontalCenter="-1" id="password" includeIn="login"/>
-		<s:Button x="88" y="126" label="Login" id="login" click="login_clickHandler(event)" includeIn="login"/>
+		<s:TextInput y="88" width="200" horizontalCenter="-1" id="password" includeIn="login" displayAsPassword="true"/>
+		<s:Button x="88" y="126" label="Login" id="login" click="login_clickHandler(event)" includeIn="login" />
 		<s:Label includeIn="loggingIn" text="Logging in....." horizontalCenter="0" verticalCenter="0"/>
 	</s:Panel>
 	
