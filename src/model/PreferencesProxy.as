@@ -15,6 +15,7 @@ import utils.CustomEvent;
 		
 		public function requestPreferences(s:String):void
 		{
+			s = "1";//todo write correct sql to get userid from username
 			reqStr += "'"+s+"'";
 			trace("requesting customers....."+reqStr);
 			sqlComm.sqlReq(reqStr, sqlMethod);
