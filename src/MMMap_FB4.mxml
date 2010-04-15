@@ -55,8 +55,7 @@
 		private function creationCompleted(e:Event):void
 		{
 			trace("creation complete");	
-			mapDisplay.init();
-			//TODO request date from php and use this to populate date choosers
+			mapDisplay.init();			
 			//TODO request customer lists from php and default filter settings
 			model = new Model(this);
 		}
@@ -83,7 +82,10 @@
 		{
 			var sD:Date = startDateField.selectedDate;
 			var eD:Date = endDateField.selectedDate;
-			
+			if (sD==null || eD==null ){
+				showAlert("Please pick date range", "");
+				return
+			}
 			if (eD.valueOf()<sD.valueOf()){
 				showAlert("Please alter dates", "The end date must be after the start date"); 				
 			}else{
