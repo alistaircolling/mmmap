@@ -97,18 +97,16 @@
 		}
 		public function showAlert(title:String, msg:String, okButton:Boolean = false, logO:Boolean = true):void
 		{
-			
 			var alertFn:Function = logOut;
 			if (!logO){
 				alertFn = null;
 			}
 			//TODO add code to dictate if the OK button displays (progress msgs)
 			Alert.show(msg, title, Alert.OK, this, alertFn);
-			
 		}
 		private function logOut(a:*):void
 		{
-			trace("log out");
+			trace("logOut");
 			currentState = "login";
 		}
 		
