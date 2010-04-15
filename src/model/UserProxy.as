@@ -9,6 +9,7 @@ import utils.CustomEvent;
 		public var LOGIN_SUCCESS:String = "loginSuccess";
 		public var LOGIN_FAILED:String = "loginFailed";
 		private var reqStr:String = "SELECT ...."; 
+		private var password:String;
 		 
 				
 		public function UserProxy(s:String) {
@@ -17,11 +18,12 @@ import utils.CustomEvent;
 		
 		public function login(u:String, p:String):void
 		{
-			reqStr = "SELECT......";// add query string for username and password to see if they match
+			password = p;
+			reqStr = "SELECT * FROM users WHERE username = '"+u+"'"
 			trace("requesting customers....."+reqStr);
 			sqlComm.sqlReq(reqStr, sqlMethod);
 			//testing
-			dispatchEvent(new CustomEvent(LOGIN_FAILED, false, true));
+			//dispatchEvent(new CustomEvent(LOGIN_FAILED, false, true));
 		} 
 		private function checkPassword():Boolean
 		{

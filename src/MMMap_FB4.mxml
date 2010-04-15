@@ -3,7 +3,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" xmlns:local="*"
 			   creationComplete="creationCompleteHandler(event)"
-			   currentState="portal">
+			   currentState="login">
 	<s:states>
 		<s:State name="State1"/>
 		<s:State name="portal"/>
