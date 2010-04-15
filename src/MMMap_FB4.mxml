@@ -31,7 +31,7 @@
 			<s:source>
 				<fx:Array>
 					<fx:Object label="Sales" data="0" />
-					<fx:Object label="Rental" data="1" />
+					<fx:Object label="Rentals" data="1" />
 					<fx:Object label="All" data="2" />
 				</fx:Array>
 			</s:source>
@@ -60,7 +60,7 @@
 		[Bindable]
 		protected var endingDate:Date;
 		
-		private var saleTypeStrings:Array = ["sale", "rental",  "all"];
+		private var saleTypeStrings:Array = ["sales", "rentals",  "all"];
 
 		public var myModel:Model;
 		
@@ -68,10 +68,10 @@
 		{
 			currentState = "portal";
 			if (o.customer>-1) {
-				customers.selectedIndex = Number(o.customer);	
+				customers.selectedIndex = Number(o.customer)-1;	
 			}
 			if (o.product>-1){
-				products.selectedIndex = Number(o.product);
+				products.selectedIndex = Number(o.product)-1;
 			}
 			if (o.fromDate.length>0){
 				startDateField.selectedDate = getDateFromString(o.fromDate);				

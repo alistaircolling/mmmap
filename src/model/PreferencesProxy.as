@@ -16,9 +16,9 @@ import utils.CustomEvent;
 		public function requestPreferences(s:int):void
 		{
 			//s = "1";//todo write correct sql to get userid from username
-			reqStr += "'"+s.toString()+"'";
-			trace("requesting preferences....."+reqStr);
-			sqlComm.sqlReq(reqStr, sqlMethod);
+			
+			trace("requesting preferences....."+reqStr+s.toString());
+			sqlComm.sqlReq(reqStr+s.toString(), sqlMethod);
 		} 
 		
 		override public function dataReturned(e:CustomEvent):void
