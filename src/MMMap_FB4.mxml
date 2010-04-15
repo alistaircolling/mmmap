@@ -159,9 +159,8 @@
 				return false;
 			}
 			
-			
-			if (eD.valueOf()<sD.valueOf() || eD==null && sD.valueOf()>0 || sD ==null && eD.valueOf()>0){
-				showAlert("Please alter dates","The from and to dates must be in the correct order and you must define both or neither", true, showAccountSettings);
+			if (eD.valueOf()<sD.valueOf()){
+				showAlert("Please alter dates","The from and to dates must be in the correct order", true, showAccountSettings);
 				return false;
 				
 			}else{
@@ -264,9 +263,11 @@
 			newPreferences = new Object();
 			if (customersSet.selectedIndex) {
 				newPreferences.customer = customersSet.selectedIndex+1;	
+				trace("customer set:"+newPreferences.customer);
 			}
 			if (productsSet.selectedIndex){
 				newPreferences.product = productsSet.selectedIndex+1;
+				trace("product set:"+newPreferences.product);
 			}
 			if (startDateFieldSet.selectedDate){
 				newPreferences.fromDate = getStringFromDate(startDateFieldSet.selectedDate);
@@ -281,15 +282,15 @@
 				newPreferences.toDate = "";
 			}
 			if (saleTypesSet){
-				newPreferences.saleType = getSaleString(saleTypesSet.selectedIndex);
+				newPreferences.saleType = getSaleString(saleTypesSet.selectedIndex);				
 				trace("sales type set:"+newPreferences.saleType);
 			}
-			
-			
+			myModel.setPreferences(newPreferences);
 		}
 		private function getSaleString(i:int):String
 		{
 			var retS:String = saleTypeStrings[i];
+			if (retS ==null) retS = "";
 			return retS;
 		}
 		private function getStringFromDate(d:Date):String{

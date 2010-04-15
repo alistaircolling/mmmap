@@ -59,6 +59,7 @@ package model{
 			
 			prefsProxy = new PreferencesProxy(phpURL);
 			prefsProxy.addEventListener(prefsProxy.PREFERENCES_RECEIVED, preferencesLoaded);
+			prefsProxy.addEventListener(prefsProxy.PREFERENCES_SET, preferencesSet);
 			
 			productsProxy = new ProductsProxy(phpURL);
 			productsProxy.addEventListener(productsProxy.PRODUCTS_RECEIVED, productsLoaded);
@@ -75,7 +76,10 @@ package model{
 			username = u;
 			userProxy.login(u, p);
 		}
-		
+		private function preferencesSet(e:CustomEvent):void
+		{
+			app.showAlert("Preferences Successfully Updated","",true,app.showAccountSettings);   
+		}
 		private function loginSuccess(e:CustomEvent):void
 		{
 			trace("requesting customers list from model");
@@ -113,7 +117,11 @@ package model{
 			preferences = JSON.decode(jsonString);
 			app.setPreferences(preferences);
 		}
-		
+		public function setPreferences(o:Object):void
+		{
+			var jsonString:String = JSON.encode(o);
+			prefsProxy.setPreferences(jsonString);
+		}
 		private function mapLoaded():void {
 			
 		
