@@ -284,7 +284,7 @@
 				<s:Button id="print" label="Print" click="print_clickHandler(event)"/>
 				<s:Button label="Logout" id="logout" click.portal="logout_clickHandler(event)"/>
 			</s:Group>
-			<mx:Spacer height="30"/>
+			<mx:Spacer height="10"/>
 			<s:Button includeIn="portal" label="Account Settings" id="accountSettings" click="accountSettings_clickHandler(event)"/>
 		<local:MapDisplay id="mapDisplay"/>
 	</s:VGroup>
