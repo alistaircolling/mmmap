@@ -1,32 +1,45 @@
 package model{
+import proxies.SqlComm;
+
 import utils.CustomEvent;
 	
 	public class ProductsProxy extends Proxy {
 		public var PRODUCTS_RECEIVED:String = "productsReceived";
-		private var reqStr:String;
-					
+		private const reqStr:String = "SELECT ...."; 
+		 
+				
 		public function ProductsProxy(s:String) {
-			
 			super(s); 
 		}
-
-		override public function requestData(n:int):void
+		
+		public function requestProducts():void
 		{
-			reqStr = getQueryString();
+			trace("requesting customers....."+reqStr);
 			sqlComm.sqlReq(reqStr, sqlMethod);
 		} 
-		private function getQueryString():String
-		{
-			var retS:String = ""
-			//make the string
-			return retS;
-		}
 		
 		override public function dataReturned(e:CustomEvent):void
 		{
 			var myX:XML = e.arg[0].data[0] as XML;
-		//TODO add data to event	dispatchEvent(new CustomEvent(PRODUCTS_RECEIVED, false, true, [myX,currAnswerReq])); 
+		//TODO add new event	dispatchEvent(new CustomEvent(CUSTOMERS_RECEIVED, false, true, [myX,currAnswerReq])); 
 		}
+		//populate fields array with field names for use when requesting question-- 
+		//not used as currently hard coded, could be used to pull questions from db later
+//		private function fieldsReturned(e:CustomEvent):void
+//		{
+//			trace("Fields returned, requesting answers")
+////			var myX:XML = e.arg[0].data[0] as XML;
+////			var myX2:XML = myX..row[0] as XML;	
+////			//update fields array
+////			var myL:XMLList = myX2.children();			
+////			for (var j:uint = 0; j<myX2.children().length(); j++){
+////				var nodeName:String = myX2.children()[j].name().localName; 
+////				//trace("nodeName:"+nodeName);
+////				fields_ar.push(nodeName);
+////			}
+//			//trigger the original request
+//			requestData(currAnswerReq);
+//		}
 
 	} 
 } 

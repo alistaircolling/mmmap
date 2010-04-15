@@ -2,19 +2,19 @@ package
 {
 	import com.afcomponents.umap.types.LatLng;
 
-	public class Customer extends Object
+	public class Sale extends Object
 	{
-		private var _name:String;
+		private var _customer:String;
 		private var _location:LatLng;
 		private var _productSold:uint;
 		private var _saleDate:Date;
-		private var _saleType:uint;
+		private var _saleType:uint; //0 sale  //1  rental 
 		private var _rentalStart:Date;
 		private var _rentalEnd:Date;
 		
-		public function Customer(s:String, l:LatLng, prod:uint,  sT:uint, sD:Date=null, rS:Date = null, rE:Date = null)
+		public function Sale(s:String, l:LatLng, prod:uint,  sT:uint, sD:Date=null, rS:Date = null, rE:Date = null)
 		{
-			_name = s;
+			_customer = s;
 			_location = l;
 			_productSold = prod;
 			_saleType = sT;
@@ -65,12 +65,12 @@ package
 
 		public function get name():String
 		{
-			return _name;
+			return _customer;
 		}
 
 		public function set name(value:String):void
 		{
-			_name = value;
+			_customer = value;
 		}
 
 		public function get rentalEnd():Date

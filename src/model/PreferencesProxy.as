@@ -4,7 +4,7 @@ import proxies.SqlComm;
 import utils.CustomEvent;
 	
 	public class PreferencesProxy extends Proxy {
-		public var PREFERENCES_RECEIVED:String = "customersReceived";
+		public var PREFERENCES_RECEIVED:String = "prefsReceived";
 		private const reqStr:String = "SELECT ...."; 
 		 
 				

@@ -23,7 +23,10 @@ import utils.CustomEvent;
 			//testing
 			dispatchEvent(new CustomEvent(LOGIN_FAILED, false, true));
 		} 
-		
+		private function checkPassword():Boolean
+		{
+			return true;
+		}
 		override public function dataReturned(e:CustomEvent):void
 		{
 			var myX:XML = e.arg[0].data[0] as XML;

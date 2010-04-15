@@ -3,7 +3,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" xmlns:local="*"
 			   creationComplete="creationCompleteHandler(event)"
-			   currentState="login">
+			   currentState="portal">
 	<s:states>
 		<s:State name="State1"/>
 		<s:State name="portal"/>
@@ -101,7 +101,7 @@
 				alertFn = null;
 			}
 			//TODO add code to dictate if the OK button displays (progress msgs)
-			Alert.show(title, msg, Alert.OK, this, alertFn, null, Alert.OK);
+			Alert.show(msg, title, Alert.OK, this, alertFn);
 			
 		}
 		private function logOut():void
