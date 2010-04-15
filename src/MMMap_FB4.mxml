@@ -75,10 +75,15 @@
 			}
 			if (o.fromDate.length>0){
 				startDateField.selectedDate = getDateFromString(o.fromDate);				
+			}else{
+				startDateField.selectedDate = null;
 			}
 			if (o.toDate.length>0){
 				endDateField.selectedDate = getDateFromString(o.toDate);
+			}else{
+				endDateField.selectedDate = null;
 			}
+				
 			if (o.saleType.length>0){
 				saleTypes.selectedIndex = getSaleType(o.saleType);
 			}
@@ -86,7 +91,7 @@
 		private function getSaleType(s:String):Number
 		{
 			var retN:Number = saleTypeStrings.indexOf(s);
-			trace("returning sale type:"+retN+"  string:"+saleTypeStrings[retN+1]);
+			trace("returning sale type:"+retN+"  string:"+saleTypeStrings[retN]);
 			return retN;
 			
 		}
