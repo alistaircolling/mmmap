@@ -1,10 +1,15 @@
 package model{           
+	import com.adobe.utils.ArrayUtil;
+	
 	import flash.events.Event;
 	import flash.profiler.showRedrawRegions;
 	import flash.utils.setTimeout;
+	import flash.xml.XMLDocument;
 	
 	import mx.collections.ArrayCollection;
 	import mx.core.Application;
+	import mx.rpc.xml.SimpleXMLDecoder;
+	import mx.utils.ArrayUtil;
 	
 	import utils.CustomEvent;
 	
@@ -71,7 +76,16 @@ package model{
 		//todo set timeout on login time
 		private function customersLoaded(e:CustomEvent):void {
 			trace("customers loaded");
-			var ac:ArrayCollection = e.arg[0]; 
+			var ac:ArrayCollection = convertXmlToArrayCollection(e.arg[0][0].toString());
+		}
+		private function convertXmlToArrayCollection( s:String):ArrayCollection
+		{
+			var xml:XMLDocument = new XMLDocument( s )	
+			var decoder:SimpleXMLDecoder = new SimpleXMLDecoder();
+			var data:Object = decoder.decodeXML( xml );
+			var array:Array = mx.utils.ArrayUtil.toArray( data.data.row );
+			
+			return new ArrayCollection( array );
 		}
 		
 		private function loginFailed(e:Event):void
