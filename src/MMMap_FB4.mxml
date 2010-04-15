@@ -35,13 +35,13 @@
 			</s:source>
 		</s:ArrayCollection>
 		<s:ArrayCollection id="customerList">
-			<s:source>
+			<!--<s:source>
 				<fx:Array>
 					<fx:Object label="John Ridley" data="85" />
 					<fx:Object label="Gateshead Council" data="85" />
 					<fx:Object label="Newcastle General Hospital" data="85" />
 				</fx:Array>
-			</s:source>
+			</s:source> -->
 		</s:ArrayCollection>
 		
 	</fx:Declarations>
@@ -204,7 +204,7 @@
 				<s:ComboBox id="saleTypes" dataProvider="{salesType}"/>
 				<mx:Spacer width="20"/>
 				<s:Label text="Customer:"/>
-				<s:ComboBox id="customers" dataProvider="{customerList}"/>
+				<s:ComboBox id="customers" dataProvider="{customerList}" labelField="name"/>
 				<mx:Spacer width="20"/>
 				<s:Button id="update" label="Update" right="0" click="update_clickHandler(event)"/>
 			</s:Group>

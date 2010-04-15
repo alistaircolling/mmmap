@@ -77,6 +77,8 @@ package model{
 		private function customersLoaded(e:CustomEvent):void {
 			trace("customers loaded");
 			var ac:ArrayCollection = convertXmlToArrayCollection(e.arg[0][0].toString());
+			app.customerList = ac;
+			productsProxy.requestProducts();
 		}
 		private function convertXmlToArrayCollection( s:String):ArrayCollection
 		{
@@ -84,7 +86,6 @@ package model{
 			var decoder:SimpleXMLDecoder = new SimpleXMLDecoder();
 			var data:Object = decoder.decodeXML( xml );
 			var array:Array = mx.utils.ArrayUtil.toArray( data.data.row );
-			
 			return new ArrayCollection( array );
 		}
 		
