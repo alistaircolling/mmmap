@@ -49,27 +49,7 @@
 		protected var startingDate:Date;
 		[Bindable]
 		protected var endingDate:Date;
-//		[Bindable]
-//		public var products:ArrayCollection;// = new ArrayCollection(
-////			[{label:"Stop Sign", img:"stopSign.png", data:0},
-////				{label:"Go Sign", img:"goSign.png", data:1},
-////				{label:"No Entry!", img:"noEntry.png", data:2},
-////				{label:"Falling Rocks", img:"rocks.png", data:3}		
-////			]);
-//		[Bindable]
-//		protected var saleTypes:ArrayCollection =  new ArrayCollection(
-//			[{label:"Sales", data:0}, {label:"Rental", data:1}]
-//		);
-//		[Bindable]
-//		protected var customers:ArrayCollection =  new ArrayCollection(
-//			[
-//				{label:"Jones Ltd.", data:123},
-//				{label:"Gateshead Council", data:5326},
-//				{label:"Lollipop Lady", data:42},
-//				{label:"Go Kart Racing!", data:10}		
-//			]
-//		)
-//		
+
 		private var model:Model;
 		
 		private function creationCompleted(e:Event):void
@@ -103,6 +83,7 @@
 		{
 			var sD:Date = startDateField.selectedDate;
 			var eD:Date = endDateField.selectedDate;
+			
 			if (eD.valueOf()<sD.valueOf()){
 				showAlert("Please alter dates", "The end date must be after the start date"); 				
 			}else{
@@ -143,6 +124,13 @@
 			// TODO Auto-generated method stub
 		}
 
+
+		protected function update_clickHandler(event:MouseEvent):void
+		{
+			// TODO Auto-generated method stub
+			validateDates();
+		}
+
 	]]>
 </fx:Script>
 	<s:VGroup x="10" y="10" width="700" height="100%">
@@ -176,7 +164,7 @@
 				<s:Label text="Customer:"/>
 				<s:ComboBox id="customers" dataProvider="{customerList}"/>
 				<mx:Spacer width="20"/>
-				<s:Button id="update" label="Update" right="0"/>
+				<s:Button id="update" label="Update" right="0" click="update_clickHandler(event)"/>
 			</s:Group>
 			<mx:Spacer height="10"/>
 			<s:Group x="300">

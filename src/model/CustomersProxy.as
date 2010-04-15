@@ -5,27 +5,21 @@ import utils.CustomEvent;
 	
 	public class CustomersProxy extends Proxy {
 		public var CUSTOMERS_RECEIVED:String = "customersReceived";
-		private var reqStr:String;
+		private const reqStr:String = "SELECT ...."; 
 		 
 				
 		public function CustomersProxy(s:String) {
 			
 			super(s); 
+			requestData(0);
 		}
-
-		override public function requestData(n:int):void
+		
+		private function requestCustomers():void
 		{
-			var reqStr:String = getRequestString(n);
-			trace("requesting answers....."+reqStr);
+			trace("requesting customers....."+reqStr);
 			sqlComm.sqlReq(reqStr, sqlMethod);
 		} 
-		override public function getRequestString(n:int):String
-		{
-			trace("--------->  GET REQUEST STRING:"+n);
-			
-			return "";// "SELECT "+locStr+", name, id, "+locName+", createdAt, "+qStr+" FROM ns_answers where approved=1";
-			//return "SELECT "+locStr+", name, "+locName+", createdAt, "+qStr+" FROM ns_answers where approved=1";
-		}
+		
 		override public function dataReturned(e:CustomEvent):void
 		{
 			var myX:XML = e.arg[0].data[0] as XML;
