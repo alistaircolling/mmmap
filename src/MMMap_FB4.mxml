@@ -4,7 +4,7 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:local="*"
 			   creationComplete="creationCompleteHandler(event)"
 			   
-			   currentState="login" minWidth.portal="955" minWidth.State1="955" minWidth.loggingIn="955" minHeight.portal="600" minHeight.State1="600" minHeight.loggingIn="600" minHeight.updating_settings="600" minWidth.updating_settings="955">
+			   currentState="login" minWidth.portal="955" minWidth.State1="955" minWidth.loggingIn="955" minHeight.portal="600" minHeight.State1="600" minHeight.loggingIn="600" minHeight.updating_settings="600" minWidth.updating_settings="955" minHeight.updating_password="600" minWidth.updating_password="955">
 	<s:states>
 		<s:State name="State1"/>
 		<s:State name="portal"/>
@@ -12,6 +12,7 @@
 		<s:State name="loggingIn"/>
 		<s:State name="account_settings"/>
 		<s:State name="updating_settings"/>
+		<s:State name="updating_password"/>
 	</s:states>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -51,6 +52,8 @@
 	</fx:Declarations>
 <fx:Script>
 	<![CDATA[
+		import com.adobe.crypto.MD5;
+		
 		import model.Model;
 		
 		import mx.collections.ArrayCollection;
@@ -313,6 +316,42 @@
 			currentState = "portal";
 		}
 
+
+		protected function clearDates_clickHandler(event:MouseEvent):void
+		{
+			// TODO Auto-generated method stub
+			endDateFieldSet.selectedDate = null;
+			startDateFieldSet.selectedDate = null;
+		}
+
+
+		protected function updatePassword_clickHandler(event:MouseEvent):void
+		{
+			currentState = "updating_password";
+			
+			// TODO Auto-generated method stub
+			validateNewPassword();
+		}
+		private function validateNewPassword():void
+		{
+			if (MD5.hash(currentPassword.text)==myModel.md5Pword){
+				if (confirmPassword.text.length<1){
+					showAlert("No password entered", "Please enter a new password", true, showAccountSettings);
+					return;
+				}
+				if (confirmPassword.text == newPassword.text){
+					trace("password entered is correct, updating new password...");
+					myModel.setNewPassword(MD5.hash(confirmPassword.text));
+				}else{
+					showAlert("Passwords do not match", "The new password does not match the confirmation", true, showAccountSettings);
+				}
+				
+			}else{
+				
+				showAlert("Incorrect Password", "Please enter your existing passwor", true, showAccountSettings);
+			}
+		}
+
 	]]>
 </fx:Script>
 	<s:VGroup x="10" y="10" width="700" height="100%" includeIn="State1,portal">
@@ -368,13 +407,13 @@
 		</s:layout>
 		
 	</s:List>
-	<s:Panel includeIn="loggingIn,login,updating_settings" width="250" height="200" horizontalCenter="-0" verticalCenter="0" title="Login" title.updating_settings="Updating Settings">
+	<s:Panel includeIn="loggingIn,login,updating_password,updating_settings" width="250" height="200" horizontalCenter="-0" verticalCenter="0" title="Login" title.updating_settings="Updating Settings" title.updating_password="Updating Password">
 		<s:TextInput y="35" width="200" horizontalCenter="-1" id="username" includeIn="login" text="alidrongo"/>
 		<s:Label x="24" y="19" text="Username" includeIn="login"/>
 		<s:Label x="24" y="69" text="Password" includeIn="login"/>
 		<s:TextInput y="88" width="200" horizontalCenter="-1" id="password" includeIn="login" displayAsPassword="true" text="password"/>
 		<s:Button x="88" y="126" label="Login" id="login" click="login_clickHandler(event)" includeIn="login" />
-		<s:Label includeIn="loggingIn,updating_settings" text="Logging in....." horizontalCenter="0" verticalCenter="0" text.updating_settings="Updating settings...."/>
+		<s:Label includeIn="loggingIn,updating_password,updating_settings" text="Logging in....." horizontalCenter="0" verticalCenter="0" text.updating_settings="Updating settings...." text.updating_password="Updating password...."/>
 	</s:Panel>
 	<s:Panel includeIn="account_settings" x="10" y="10" width="872" height="291" title="Account Settings">
 		<s:layout>
@@ -391,7 +430,9 @@
 			<mx:Spacer width="20"/>
 			<s:Label text="End date:"/>
 			<mx:DateField id="endDateFieldSet" />
-			<mx:Spacer width="100"/>
+			
+			<s:Button label="Clear Date" id="clearDates" click="clearDates_clickHandler(event)"/>
+			<mx:Spacer width="20"/>
 			<s:Group width="700">
 				<s:layout>
 					<s:HorizontalLayout/>
@@ -429,7 +470,7 @@
 			<s:Label text="Re-type new password:"/>
 			<s:TextInput id="confirmPassword"/>
 		</s:Group>
-		<s:Button label="Update Password" id="updatePassword"/>
+		<s:Button label="Update Password" id="updatePassword" click="updatePassword_clickHandler(event)"/>
 		<s:Button label="Close" click="button1_clickHandler(event)"/>
 	</s:Panel>
 	

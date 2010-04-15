@@ -22,13 +22,13 @@ import utils.CustomEvent;
 			sqlComm.sqlReq(reqStr+s.toString(), sqlMethod);
 		} 
 		//sets the user's preferences
-		public function setPreferences(s:String):void
-		{
-			//todo write query that writes to the database and returns if succesful --Mike
-			trace("prefs proxy setting preferences:"+s);
-			//testing--- used as this data is not being sent to the server
-			dispatchEvent(new CustomEvent(PREFERENCES_SET));
-		}
+//		public function setPreferences(s:String):void
+//		{
+//			//todo write query that writes to the database and returns if succesful --Mike
+//			trace("prefs proxy setting preferences:"+s);
+//			//testing--- used as this data is not being sent to the server
+//			dispatchEvent(new CustomEvent(PREFERENCES_SET));
+//		}
 		override public function dataReturned(e:CustomEvent):void
 		{
 			var myX:XML = e.arg[0].data[0] as XML;

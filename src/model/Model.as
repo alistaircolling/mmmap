@@ -19,7 +19,7 @@ package model{
 	public class Model extends Object{
 
 		private var proxies_ar:Array;
-	
+		
 		//private const qProxyURL:String = "http://northe.northernstages.co.uk/Ingredient.php";
 		private const phpURL:String = "Ingredient.php";
 		
@@ -33,6 +33,8 @@ package model{
 		private var userProxy:UserProxy;
 		
 		private var prefsProxy:PreferencesProxy;
+		private var writePrefsProxy:WritingPreferencesProxy;//writes the users new prefs to the database
+		private var updatePaswordProxy:UpdatePasswordProxy;//writes new password to the database
 		
 		//object created from JSON string to hold preferences
 		private var preferences:Object;
@@ -40,6 +42,7 @@ package model{
 		private var app:MMMap_FB4;
 		private var username:String;
 		private var userID:int;
+		public var md5Pword:String;//used to store the users md5 password for checking, should they wish to update this later
 		
 
 		public function Model(a:MMMap_FB4) {	
@@ -59,7 +62,12 @@ package model{
 			
 			prefsProxy = new PreferencesProxy(phpURL);
 			prefsProxy.addEventListener(prefsProxy.PREFERENCES_RECEIVED, preferencesLoaded);
-			prefsProxy.addEventListener(prefsProxy.PREFERENCES_SET, preferencesSet);
+			
+			writePrefsProxy = new WritingPreferencesProxy(phpURL);
+			writePrefsProxy.addEventListener(prefsProxy.PREFERENCES_SET, preferencesSet);
+			
+			updatePaswordProxy = new UpdatePasswordProxy(phpURL);
+			updatePaswordProxy.addEventListener(updatePaswordProxy.PASSWORD_UPDATED, passwordUpdated);
 			
 			productsProxy = new ProductsProxy(phpURL);
 			productsProxy.addEventListener(productsProxy.PRODUCTS_RECEIVED, productsLoaded);
@@ -80,11 +88,17 @@ package model{
 		{
 			app.showAlert("Preferences Successfully Updated","",true,app.showAccountSettings);   
 		}
+		private function passwordUpdated(e:CustomEvent):void
+		{
+			app.showAlert("Password successfully updated", "", true, app.showAccountSettings);
+		}
 		private function loginSuccess(e:CustomEvent):void
 		{
 			trace("requesting customers list from model");
 			var xml:XML = e.arg[0][0][0];
 			userID = Number(xml.valueOf());
+			
+			md5Pword = e.arg[0][1];
 			//request list of customers
 			customersProxy.requestCustomers();
 		}
@@ -120,7 +134,12 @@ package model{
 		public function setPreferences(o:Object):void
 		{
 			var jsonString:String = JSON.encode(o);
-			prefsProxy.setPreferences(jsonString);
+			writePrefsProxy.setPreferences(jsonString);
+		}
+		//received md5 encoded pword and submits it
+		public function setNewPassword(s:String):void
+		{
+			updatePaswordProxy.updatePassword(s);	
 		}
 		private function mapLoaded():void {
 			
