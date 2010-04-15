@@ -96,11 +96,12 @@
 			var retD:Date;
 			var a:Array = s.split("-");
 			var year:String = a[0].toString();
-			var month:String = a[1].toString();
+			var month:Number = Number(a[1])-1;
+			//todo-check with mike that the dates in teh dbase dont have 0 for jan
 			var date:String = a[2].toString();
 			retD = new Date(year, month, date);
-			retD.setDate(date);
-			retD.setMonth(month);
+//			retD.setDate(date);
+//			retD.setMonth(month);
 			
 			return retD;
 		}
