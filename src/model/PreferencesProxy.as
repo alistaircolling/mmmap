@@ -13,10 +13,10 @@ import utils.CustomEvent;
 			super(s); 
 		}
 		
-		public function requestPreferences(s:String):void
+		public function requestPreferences(s:int):void
 		{
-			s = "1";//todo write correct sql to get userid from username
-			reqStr += "'"+s+"'";
+			//s = "1";//todo write correct sql to get userid from username
+			reqStr += "'"+s.toString()+"'";
 			trace("requesting preferences....."+reqStr);
 			sqlComm.sqlReq(reqStr, sqlMethod);
 		} 

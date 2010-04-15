@@ -60,7 +60,7 @@
 		[Bindable]
 		protected var endingDate:Date;
 		
-		private var saleTypeStrings:Array = ["rental", "sale", "all"];
+		private var saleTypeStrings:Array = ["sale", "rental",  "all"];
 
 		public var myModel:Model;
 		
@@ -83,9 +83,9 @@
 				saleTypes.selectedIndex = getSaleType(o.saleType);
 			}
 		}
-		private function getSaleType(s:String):uint
+		private function getSaleType(s:String):Number
 		{
-			var retN:uint = saleTypeStrings.indexOf(s)-1;
+			var retN:Number = saleTypeStrings.indexOf(s);
 			trace("returning sale type:"+retN+"  string:"+saleTypeStrings[retN+1]);
 			return retN;
 			
@@ -95,7 +95,13 @@
 		{
 			var retD:Date;
 			var a:Array = s.split("-");
-			retD = new Date(a[0], a[1], a[2]);
+			var year:String = a[0].toString();
+			var month:String = a[1].toString();
+			var date:String = a[2].toString();
+			retD = new Date(year, month, date);
+			retD.setDate(date);
+			retD.setMonth(month);
+			
 			return retD;
 		}
 		private function showCustomers(d:*):void

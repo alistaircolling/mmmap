@@ -126,7 +126,7 @@ package model{
 		}
 		private function requestPrefs():void
 		{
-			prefsProxy.requestPreferences(username);
+			prefsProxy.requestPreferences(userID);
 		}
 		private function resultsLoaded(e:CustomEvent):void
 		{
