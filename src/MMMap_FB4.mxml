@@ -93,7 +93,6 @@
 			var retN:Number = saleTypeStrings.indexOf(s);
 			trace("returning sale type:"+retN+"  string:"+saleTypeStrings[retN]);
 			return retN;
-			
 		}
 			
 		private function getDateFromString(s:String):Date
@@ -105,9 +104,6 @@
 			//todo-check with mike that the dates in teh dbase dont have 0 for jan
 			var date:String = a[2].toString();
 			retD = new Date(year, month, date);
-//			retD.setDate(date);
-//			retD.setMonth(month);
-			
 			return retD;
 		}
 		private function showCustomers(d:*):void
