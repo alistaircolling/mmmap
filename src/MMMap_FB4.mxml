@@ -3,7 +3,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" xmlns:local="*"
 			   creationComplete="creationCompleteHandler(event)"
-			   currentState="portal">
+			   currentState="portal" xmlns:usersservice="services.usersservice.*" xmlns:customersservice="services.customersservice.*" xmlns:productsservice="services.productsservice.*">
 	<s:states>
 		<s:State name="State1"/>
 		<s:State name="portal"/>
@@ -42,6 +42,12 @@
 				</fx:Array>
 			</s:source>
 		</s:ArrayCollection>
+		<s:CallResponder id="getUsers_pagedResult"/>
+		<usersservice:UsersService id="usersService" fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)" showBusyCursor="true"/>
+		<s:CallResponder id="getAllCustomersResult"/>
+		<customersservice:CustomersService id="customersService" fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)" showBusyCursor="true"/>
+		<s:CallResponder id="getAllProductsResult"/>
+		<productsservice:ProductsService id="productsService" fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)" showBusyCursor="true"/>
 		
 	</fx:Declarations>
 <fx:Script>
@@ -162,6 +168,24 @@
 			myModel = new Model(this);
 		}
 
+		
+		protected function getUsers_paged():void
+		{
+			getUsers_pagedResult.token = usersService.getUsers_paged();
+		}
+		
+		
+		protected function customers_creationCompleteHandler(event:FlexEvent):void
+		{
+			getAllCustomersResult.token = customersService.getAllCustomers();
+		}
+		
+		
+		protected function products_creationCompleteHandler(event:FlexEvent):void
+		{
+			getAllProductsResult.token = productsService.getAllProducts();
+		}
+		
 	]]>
 </fx:Script>
 	<s:VGroup x="10" y="10" width="700" height="100%" includeIn="State1,portal">
@@ -181,7 +205,11 @@
 						<s:HorizontalLayout/>
 					</s:layout>
 					<s:Label text="Product:" />
-					<s:ComboBox id="products" dataProvider="{productList}"/>
+					<s:ComboBox id="products" creationComplete="products_creationCompleteHandler(event)" labelField="name">
+						<s:dataProvider.portal>
+							<s:AsyncListView list="{getAllProductsResult.lastResult}"/>
+						</s:dataProvider.portal>
+					</s:ComboBox>
 				</s:Group>
 			</s:Group>
 			<mx:Spacer height="30"/>
@@ -193,7 +221,11 @@
 				<s:ComboBox id="saleTypes" dataProvider="{salesType}"/>
 				<mx:Spacer width="20"/>
 				<s:Label text="Customer:"/>
-				<s:ComboBox id="customers" dataProvider="{customerList}"/>
+				<s:ComboBox id="customers" dataProvider="{customerList}" creationComplete="customers_creationCompleteHandler(event)" labelField="name">
+					<s:dataProvider.portal>
+						<s:AsyncListView list="{getAllCustomersResult.lastResult}"/>
+					</s:dataProvider.portal>
+				</s:ComboBox>
 				<mx:Spacer width="20"/>
 				<s:Button id="update" label="Update" right="0" click="update_clickHandler(event)"/>
 			</s:Group>
