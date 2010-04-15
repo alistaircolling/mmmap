@@ -1,4 +1,5 @@
 package model{           
+	import com.adobe.serialization.json.JSON;
 	import com.adobe.utils.ArrayUtil;
 	
 	import flash.events.Event;
@@ -10,8 +11,6 @@ package model{
 	import mx.core.Application;
 	import mx.rpc.xml.SimpleXMLDecoder;
 	import mx.utils.ArrayUtil;
-	
-	
 	import mx.utils.ObjectProxy;
 	
 	import utils.CustomEvent;
@@ -35,8 +34,13 @@ package model{
 		
 		private var prefsProxy:PreferencesProxy;
 		
+		//object created from JSON string to hold preferences
+		private var preferences:Object;
+		
 		private var app:MMMap_FB4;
 		private var username:String;
+		private var userID:int;
+		
 
 		public function Model(a:MMMap_FB4) {	
 			super();
@@ -72,11 +76,12 @@ package model{
 			userProxy.login(u, p);
 		}
 		
-		private function loginSuccess(e:Event):void
+		private function loginSuccess(e:CustomEvent):void
 		{
 			trace("requesting customers list from model");
+			var xml:XML = e.arg[0][0][0];
+			userID = Number(xml.valueOf());
 			//request list of customers
-			
 			customersProxy.requestCustomers();
 		}
 		//todo set timeout on login time
@@ -104,14 +109,15 @@ package model{
 		}
 		private function preferencesLoaded(e:CustomEvent):void
 		{
-
+			var jsonString:String = e.arg[0];
+			preferences = JSON.decode(jsonString);
+			app.setPreferences(preferences);
 		}
+		
 		private function mapLoaded():void {
+			
 		
 		}
-
-		
-
 		private function productsLoaded(e:CustomEvent):void {
 			trace("products loaded");
 			var ac:ArrayCollection = convertXmlToArrayCollection(e.arg[0][0].toString());
@@ -122,9 +128,6 @@ package model{
 		{
 			prefsProxy.requestPreferences(username);
 		}
-		
-		
-		
 		private function resultsLoaded(e:CustomEvent):void
 		{
 			

@@ -37,7 +37,7 @@ import utils.CustomEvent;
 			var submittedPword:String = MD5.hash(password);
 			if (md5Password == submittedPword){
 				trace("login success");
-				dispatchEvent(new CustomEvent(LOGIN_SUCCESS, false, true));
+				dispatchEvent(new CustomEvent(LOGIN_SUCCESS, false, true, [myX..id]));
 				
 			}else{
 				trace("login failed");

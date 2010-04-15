@@ -17,14 +17,16 @@ import utils.CustomEvent;
 		{
 			s = "1";//todo write correct sql to get userid from username
 			reqStr += "'"+s+"'";
-			trace("requesting customers....."+reqStr);
+			trace("requesting preferences....."+reqStr);
 			sqlComm.sqlReq(reqStr, sqlMethod);
 		} 
 		
 		override public function dataReturned(e:CustomEvent):void
 		{
 			var myX:XML = e.arg[0].data[0] as XML;
-		//TODO add new event	dispatchEvent(new CustomEvent(CUSTOMERS_RECEIVED, false, true, [myX,currAnswerReq])); 
+			//preferences are stored in JSON string
+			var jsonPrefs:String = myX..value;
+			dispatchEvent(new CustomEvent(PREFERENCES_RECEIVED, false, true, [jsonPrefs]));
 		}
 
 	} 
