@@ -104,8 +104,10 @@ package model{
 		
 
 		private function productsLoaded(e:CustomEvent):void {
-			trace("questoins loaded");
-			var ac:ArrayCollection = e.arg[0];
+			trace("products loaded");
+			var ac:ArrayCollection = convertXmlToArrayCollection(e.arg[0][0].toString());
+			app.productList = ac;
+			app.currentState = "portal";
 		}
 		
 		

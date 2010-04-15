@@ -13,9 +13,9 @@
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 		<s:ArrayCollection id="productList">
-			<s:source>
+			<!--		<s:source>
 				<fx:Array>
-					<fx:Object label="Stop sign" icon="@Embed('images/stopSign.jpg')" data="85" />
+				<fx:Object label="Stop sign" icon="@Embed('images/stopSign.jpg')" data="85" />
 					<fx:Object label="Go Sign" icon="@Embed('images/goSign.jpg')" data="48" />
 					<fx:Object label="Rocks falling" icon="@Embed('images/goSign.jpg')" data="48" />
 					<fx:Object label="Roadworks" icon="@Embed('images/goSign.jpg')" data="48" />
@@ -23,7 +23,7 @@
 					<fx:Object label="Danger!" icon="@Embed('images/goSign.jpg')" data="48" />
 					<fx:Object label="Slow Down" icon="@Embed('images/goSign.jpg')" data="48" />
 				</fx:Array>
-			</s:source>
+			</s:source>  -->
 		</s:ArrayCollection>
 		<s:ArrayCollection id="salesType">
 			<s:source>
@@ -192,7 +192,7 @@
 						<s:HorizontalLayout/>
 					</s:layout>
 					<s:Label text="Product:" />
-					<s:ComboBox id="products" dataProvider="{productList}"/>
+					<s:ComboBox id="products" dataProvider="{productList}" labelField="name"/>
 				</s:Group>
 			</s:Group>
 			<mx:Spacer height="30"/>
@@ -221,7 +221,7 @@
 		<local:MapDisplay id="mapDisplay"/>
 	</s:VGroup>
 	<s:List id="productsLister" x="200" width="300" y="700"
-			itemRenderer="HListRenderer" dataProvider="{productList}" includeIn="State1,portal">
+			itemRenderer="HListRenderer" dataProvider="{productList}" labelField="name" includeIn="State1,portal">
 		<s:layout>
 			<s:HorizontalLayout/>
 		</s:layout>
