@@ -1,4 +1,6 @@
 package model{           
+	import flash.events.Event;
+	
 	import mx.collections.ArrayCollection;
 	import mx.core.Application;
 	
@@ -19,8 +21,14 @@ package model{
 		//retrieves results for specifies filter settings
 		private var resultsProxy:ResultsProxy;
 		
+		private var userProxy:UserProxy;
+		
+		private var prefsProxy:PreferencesProxy;
+		
+		private var app:MMMap_FB4;
 
-		public function Model(a:*) {			
+		public function Model(a:MMMap_FB4) {	
+			app = a;
 			init();
 		}
 
@@ -29,16 +37,38 @@ package model{
 		}
 
 		private function initProxies():void {
+			userProxy = new UserProxy(phpURL);
+			userProxy.addEventListener(userProxy.LOGIN_SUCCESS, loginSuccess);
+			userProxy.addEventListener(userProxy.LOGIN_FAILED, loginFailed);
+			
+			prefsProxy = new PreferencesProxy(phpURL);
+			prefsProxy.addEventListener(prefsProxy.PREFERENCES_RECEIVED, preferencesLoaded);
+			
 			productsProxy = new ProductsProxy(phpURL);
 			productsProxy.addEventListener(productsProxy.PRODUCTS_RECEIVED, productsLoaded);
+			
 			customersProxy = new CustomersProxy(phpURL);
 			customersProxy.addEventListener(customersProxy.CUSTOMERS_RECEIVED, customersLoaded);
+			
 			resultsProxy = new ResultsProxy(phpURL);
 			resultsProxy.addEventListener(resultsProxy.RESULTS_RECEIVED, resultsLoaded);
 		}
-		
-
-		
+		public function logMeIn(u:String, p:String):void
+		{
+			userProxy.login(u, p);
+		}
+		private function loginSuccess(e:Event):void
+		{
+			
+		}
+		private function loginFailed(e:Event):void
+		{
+						
+		}
+		private function preferencesLoaded(e:Event):void
+		{
+			
+		}
 		private function mapLoaded():void {
 		
 		}
@@ -60,10 +90,12 @@ package model{
 			
 		}
 
-		public function requestResults(n:int):void {
+		public function requestResults(n:int):void 
+		{
 			trace("requesting data for:"+n);
 			resultsProxy.requestData(n);
 		}
+		
 
 		
 		

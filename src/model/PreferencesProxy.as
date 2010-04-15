@@ -4,17 +4,16 @@ import proxies.SqlComm;
 import utils.CustomEvent;
 	
 	public class PreferencesProxy extends Proxy {
-		public var CUSTOMERS_RECEIVED:String = "customersReceived";
+		public var PREFERENCES_RECEIVED:String = "customersReceived";
 		private const reqStr:String = "SELECT ...."; 
 		 
 				
 		public function PreferencesProxy(s:String) {
 			
 			super(s); 
-			requestPreferences();
 		}
 		
-		private function requestPreferences():void
+		public function requestPreferences():void
 		{
 			trace("requesting customers....."+reqStr);
 			sqlComm.sqlReq(reqStr, sqlMethod);
