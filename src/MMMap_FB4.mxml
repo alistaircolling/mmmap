@@ -4,13 +4,14 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:local="*"
 			   creationComplete="creationCompleteHandler(event)"
 			   
-			   currentState="login" minWidth.portal="955" minWidth.State1="955" minWidth.loggingIn="955" minHeight.portal="600" minHeight.State1="600" minHeight.loggingIn="600">
+			   currentState="login" minWidth.portal="955" minWidth.State1="955" minWidth.loggingIn="955" minHeight.portal="600" minHeight.State1="600" minHeight.loggingIn="600" minHeight.updating_settings="600" minWidth.updating_settings="955">
 	<s:states>
 		<s:State name="State1"/>
 		<s:State name="portal"/>
 		<s:State name="login"/>
 		<s:State name="loggingIn"/>
 		<s:State name="account_settings"/>
+		<s:State name="updating_settings"/>
 	</s:states>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -136,22 +137,51 @@
 				return
 			}
 			if (eD.valueOf()<sD.valueOf()){
-				showAlert("Please alter dates", "The end date must be after the start date"); 				
+				showAlert("Please alter dates", "The end date must be after the start date"); 	
+				
 			}else{
 				//make query string
 				var  queryS:String = createQuery();
+				
 			}
 		}
-		public function showAlert(title:String, msg:String, okButton:Boolean = false, logO:Boolean = true):void
+		private function checkSetDates():Boolean
 		{
-			var alertFn:Function = logOut;
-			if (!logO){
-				alertFn = null;
+			var sD:Date = startDateFieldSet.selectedDate;
+			var eD:Date = endDateFieldSet.selectedDate;
+			
+			if (eD==null && sD==null){
+				return true;
 			}
-			//TODO add code to dictate if the OK button displays (progress msgs)
-			Alert.show(msg, title, Alert.OK, this, alertFn);
+			if (eD==null || sD==null){
+				//only start date is set
+				showAlert("Please alter dates","The from and to dates must be in the correct order and you must define both or neither", true, showAccountSettings);
+				return false;
+			}
+			
+			
+			if (eD.valueOf()<sD.valueOf() || eD==null && sD.valueOf()>0 || sD ==null && eD.valueOf()>0){
+				showAlert("Please alter dates","The from and to dates must be in the correct order and you must define both or neither", true, showAccountSettings);
+				return false;
+				
+			}else{
+				//make query string
+				return true;
+			}
 		}
-		private function logOut(a:*):void
+		public function showAccountSettings(a:*):void
+		{
+			currentState = "account_settings";
+		}
+		public function showAlert(title:String, msg:String, okButton:Boolean = false, fn:Function = null):void
+		{
+//			var alertFn:Function = logOut;
+//			if (!logO){
+//				alertFn = null;
+//			}
+			Alert.show(msg, title, Alert.OK, this, fn);
+		}
+		public function logOut(a:*):void
 		{
 			trace("logOut");
 			currentState = "login";
@@ -223,9 +253,51 @@
 		protected function updateSet_clickHandler(event:MouseEvent):void
 		{
 			trace("updating settings pressed");
-			// TODO Auto-generated method stub
+			currentState = "updating_settings";
+			if (checkSetDates()){
+				updatePreferences();	
+			}
+			
 		}
-
+		private function updatePreferences():void
+		{
+			newPreferences = new Object();
+			if (customersSet.selectedIndex) {
+				newPreferences.customer = customersSet.selectedIndex+1;	
+			}
+			if (productsSet.selectedIndex){
+				newPreferences.product = productsSet.selectedIndex+1;
+			}
+			if (startDateFieldSet.selectedDate){
+				newPreferences.fromDate = getStringFromDate(startDateFieldSet.selectedDate);
+				trace("from date set:"+newPreferences.fromDate);
+			}else{
+				newPreferences.fromDate = "";
+			}
+			if (endDateFieldSet.selectedDate){
+				newPreferences.toDate = getStringFromDate(endDateFieldSet.selectedDate);
+				trace("to date set:"+newPreferences.toDate);
+			}else{
+				newPreferences.toDate = "";
+			}
+			if (saleTypesSet){
+				newPreferences.saleType = getSaleString(saleTypesSet.selectedIndex);
+				trace("sales type set:"+newPreferences.saleType);
+			}
+			
+			
+		}
+		private function getSaleString(i:int):String
+		{
+			var retS:String = saleTypeStrings[i];
+			return retS;
+		}
+		private function getStringFromDate(d:Date):String{
+			var retS:String;
+			retS = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+			trace("returning date string:"+retS);
+			return retS;
+		}
 
 		protected function accountSettings_clickHandler(event:MouseEvent):void
 		{
@@ -295,13 +367,13 @@
 		</s:layout>
 		
 	</s:List>
-	<s:Panel includeIn="loggingIn,login" width="250" height="200" horizontalCenter="-0" verticalCenter="0" title="Login">
+	<s:Panel includeIn="loggingIn,login,updating_settings" width="250" height="200" horizontalCenter="-0" verticalCenter="0" title="Login" title.updating_settings="Updating Settings">
 		<s:TextInput y="35" width="200" horizontalCenter="-1" id="username" includeIn="login" text="alidrongo"/>
 		<s:Label x="24" y="19" text="Username" includeIn="login"/>
 		<s:Label x="24" y="69" text="Password" includeIn="login"/>
 		<s:TextInput y="88" width="200" horizontalCenter="-1" id="password" includeIn="login" displayAsPassword="true" text="password"/>
 		<s:Button x="88" y="126" label="Login" id="login" click="login_clickHandler(event)" includeIn="login" />
-		<s:Label includeIn="loggingIn" text="Logging in....." horizontalCenter="0" verticalCenter="0"/>
+		<s:Label includeIn="loggingIn,updating_settings" text="Logging in....." horizontalCenter="0" verticalCenter="0" text.updating_settings="Updating settings...."/>
 	</s:Panel>
 	<s:Panel includeIn="account_settings" x="10" y="10" width="872" height="291" title="Account Settings">
 		<s:layout>

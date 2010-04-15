@@ -105,7 +105,7 @@ package model{
 		
 		private function loginFailed(e:Event):void
 		{
-			app.showAlert("Login Failed", "please enter correct username and password",true);			
+			app.showAlert("Login Failed", "please enter correct username and password",true, app.logOut);			
 		}
 		private function preferencesLoaded(e:CustomEvent):void
 		{
