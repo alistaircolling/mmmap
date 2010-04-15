@@ -10,6 +10,7 @@
 		<s:State name="portal"/>
 		<s:State name="login"/>
 		<s:State name="loggingIn"/>
+		<s:State name="account_settings"/>
 	</s:states>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -216,6 +217,13 @@
 			currentState = "login";
 		}
 
+
+		protected function updateSet_clickHandler(event:MouseEvent):void
+		{
+			trace("updating settings pressed");
+			// TODO Auto-generated method stub
+		}
+
 	]]>
 </fx:Script>
 	<s:VGroup x="10" y="10" width="700" height="100%" includeIn="State1,portal">
@@ -277,6 +285,58 @@
 		<s:TextInput y="88" width="200" horizontalCenter="-1" id="password" includeIn="login" displayAsPassword="true" text="password"/>
 		<s:Button x="88" y="126" label="Login" id="login" click="login_clickHandler(event)" includeIn="login" />
 		<s:Label includeIn="loggingIn" text="Logging in....." horizontalCenter="0" verticalCenter="0"/>
+	</s:Panel>
+	<s:Panel includeIn="account_settings" x="10" y="10" width="872" height="245" title="Account Settings">
+		<s:layout>
+			<s:VerticalLayout/>
+		</s:layout>
+		<mx:Spacer height="20"/>
+		<s:Group width="700">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			
+			<s:Label text="Start date:"/>
+			<mx:DateField id="startDateFieldSet"/>
+			<mx:Spacer width="20"/>
+			<s:Label text="End date:"/>
+			<mx:DateField id="endDateFieldSet" />
+			<mx:Spacer width="100"/>
+			<s:Group width="700">
+				<s:layout>
+					<s:HorizontalLayout/>
+				</s:layout>
+				<s:Label text="Product:" />
+				<s:ComboBox id="productsSet" dataProvider="{productList}" labelField="name"/>
+			</s:Group>
+		</s:Group>
+		<mx:Spacer height="10"/>
+		<s:Group width="700">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Sale type:"/>
+			<s:ComboBox id="saleTypesSet" dataProvider="{salesType}"/>
+			<mx:Spacer width="20"/>
+			<s:Label text="Customer:"/>
+			<s:ComboBox id="customersSet" dataProvider="{customerList}" labelField="name"/>
+			<mx:Spacer width="20"/>
+		</s:Group>
+		<mx:Spacer height="10"/>
+		<s:Group>
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Current Password:"/>
+			<s:TextInput id="currentPassword"/>
+			<mx:Spacer width="20"/>
+			<s:Label text="New Password:"/>
+			<s:TextInput id="newPassword"/>
+			<mx:Spacer width="20"/>
+			<s:Label text="Re-type new password:"/>
+			<s:TextInput id="confirmPassword"/>
+		</s:Group>
+		<s:Button id="updateSet" label="Update Settings" click="updateSet_clickHandler(event)" right="0"/>
 	</s:Panel>
 	
 </s:Application>
