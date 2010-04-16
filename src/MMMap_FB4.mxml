@@ -348,7 +348,7 @@
 				
 			}else{
 				
-				showAlert("Incorrect Password", "Please enter your existing passwor", true, showAccountSettings);
+				showAlert("Incorrect Password", "Please enter your existing password", true, showAccountSettings);
 			}
 		}
 
