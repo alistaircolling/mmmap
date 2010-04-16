@@ -50,11 +50,11 @@ SELECT value FROM preferences WHERE user_id = USERIDHERE AND name = 'defaultsear
 SELECT * FROM customers\
 \
 \
-UPDATE preferences SET value = 'JSONSTRINGHERE' WHERE user_id = USERID AND name = 'defaultsearchparameters'\
+	\
 \
 UPDATE users SET password = 'MD5STRINGHERE' WHERE user_id = USERID\
 \
-\
+UPDATE users SET password = 'MD5STRINGHERE' WHERE user_id = USERID\
 -request list of sales that fit search criteria (updated search settings)\
 \
 to find transactions involving a known customer:\
