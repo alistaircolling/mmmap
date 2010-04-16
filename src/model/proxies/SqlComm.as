@@ -1,4 +1,4 @@
-package proxies
+package model.proxies
 {
 	/*will send an sql query to the defined php script and method and will trigger the SQL_RETURNED event when the data has been received*/
 	//TODO: add timeout in case data is not returned

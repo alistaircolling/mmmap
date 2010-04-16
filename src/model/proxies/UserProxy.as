@@ -1,9 +1,8 @@
-package model{
+package model.proxies{
 import adobe.utils.CustomActions;
 
 import com.adobe.crypto.MD5;
 
-import proxies.SqlComm;
 
 import utils.CustomEvent;
 	

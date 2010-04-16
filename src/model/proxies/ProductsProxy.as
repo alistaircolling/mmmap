@@ -1,5 +1,4 @@
-package model{
-import proxies.SqlComm;
+package model.proxies{
 
 import utils.CustomEvent;
 	

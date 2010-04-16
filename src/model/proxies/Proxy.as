@@ -1,7 +1,6 @@
-package model{   
+package model.proxies{   
 import flash.errors.IllegalOperationError;
 
-import proxies.SqlComm;
 
 import flash.events.EventDispatcher;
 import utils.CustomEvent;

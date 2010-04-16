@@ -1,4 +1,4 @@
-package model{
+package model.proxies{
 import utils.CustomEvent;
 	
 	public class ResultsProxy extends Proxy {

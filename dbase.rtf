@@ -6,12 +6,10 @@
 
 \f0\b\fs28 \cf0 Sale:
 \b0 \
-\pard\pardeftab720
-\cf0 \
 \pard\pardeftab720\ql\qnatural
-\cf0  _location:varchar\
-\pard\pardeftab720
-\cf0  _customer:String;\
+\cf0 \
+ _location:varchar\
+ _customer:String;\
  _productSold:"stopsign" "dangersign"\
  _saleDate:Date; \
  _saleType:string;"sale" "rental"\
@@ -22,8 +20,9 @@
 \
 \
 \
+\pard\pardeftab720\ql\qnatural
 
-\b User:
+\b \cf0 User:
 \b0 \
 \
 username varchar20\
@@ -49,6 +48,11 @@ SELECT value FROM preferences WHERE user_id = USERIDHERE AND name = 'defaultsear
 -set new password\
 -return a list of all customers  \
 SELECT * FROM customers\
+\
+\
+UPDATE preferences SET value = 'JSONSTRINGHERE' WHERE user_id = USERID AND name = 'defaultsearchparameters'\
+\
+UPDATE users SET password = 'MD5STRINGHERE' WHERE user_id = USERID\
 \
 \
 -request list of sales that fit search criteria (updated search settings)\
