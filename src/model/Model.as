@@ -14,6 +14,13 @@ package model{
 	import mx.utils.ObjectProxy;
 	
 	import utils.CustomEvent;
+	import model.proxies.CustomersProxy;
+	import model.proxies.PreferencesProxy;
+	import model.proxies.ProductsProxy;
+	import model.proxies.ResultsProxy;
+	import model.proxies.UpdatePasswordProxy;
+	import model.proxies.UserProxy;
+	import model.proxies.WritingPreferencesProxy;
 	
 
 	public class Model extends Object{
@@ -86,7 +93,9 @@ package model{
 		}
 		private function preferencesSet(e:CustomEvent):void
 		{
-			app.showAlert("Preferences Successfully Updated","",true,app.showAccountSettings);   
+			app.showAlert("Preferences Successfully Updated","",true,app.showAccountSettings); 
+			
+			
 		}
 		private function passwordUpdated(e:CustomEvent):void
 		{
@@ -134,7 +143,7 @@ package model{
 		public function setPreferences(o:Object):void
 		{
 			var jsonString:String = JSON.encode(o);
-			writePrefsProxy.setPreferences(jsonString);
+			writePrefsProxy.setPreferences(jsonString, userID);
 		}
 		//received md5 encoded pword and submits it
 		public function setNewPassword(s:String):void

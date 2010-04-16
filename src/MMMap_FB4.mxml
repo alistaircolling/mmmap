@@ -3,7 +3,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:local="*"
 			   creationComplete="creationCompleteHandler(event)"
-			   
+			   addedToStage="application1_addedToStageHandler(event)"
 			   currentState="login" minWidth.State1="955" minHeight.State1="600">
 	<s:states>
 		<s:State name="State1"/>
@@ -29,7 +29,6 @@
 				</fx:Array>
 			</s:source>  -->
 		</s:ArrayCollection>
-		
 		<s:ArrayCollection id="salesType">
 			<s:source>
 				<fx:Array>
@@ -48,14 +47,11 @@
 				</fx:Array>
 			</s:source> -->
 		</s:ArrayCollection>
-		
 	</fx:Declarations>
 <fx:Script>
 	<![CDATA[
 		import com.adobe.crypto.MD5;
-		
 		import model.Model;
-		
 		import mx.collections.ArrayCollection;
 		import mx.controls.Alert;
 		import mx.events.FlexEvent;
@@ -198,7 +194,6 @@
 		{		
 			var sDate:Date = startDateField.selectedDate;
 			var eDate:Date = endDateField.selectedDate;
-			
 			trace("---");
 			var retS:String = eDate.toDateString();
 			return eDate.toDateString();
@@ -209,7 +204,6 @@
 			// TODO Auto-generated method stub
 			
 		}
-
 
 		protected function print_clickHandler(event:MouseEvent):void
 		{
@@ -231,12 +225,13 @@
 			//model.login(username.text, password.text);
 			myModel.logMeIn(username.text, password.text);
 		}
-
-
 		protected function creationCompleteHandler(event:FlexEvent):void
 		{
 			// TODO Auto-generated method stub
 			trace("creation complete");	
+			
+	
+			
 	//		mapDisplay.init();			
 			//TODO request customer lists from php and default filter settings
 			myModel = new Model(this);
@@ -352,10 +347,15 @@
 			}
 		}
 
+
+		protected function application1_addedToStageHandler(event:Event):void
+		{
+
+		}
+
 	]]>
 </fx:Script>
 	<s:VGroup x="10" y="10" width="700" height="100%" includeIn="State1,portal">
-		
 			<s:Group width="700">
 				<s:layout>
 					<s:HorizontalLayout/>
