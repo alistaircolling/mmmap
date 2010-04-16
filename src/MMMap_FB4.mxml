@@ -4,7 +4,7 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:local="*"
 			   creationComplete="creationCompleteHandler(event)"
 			   
-			   currentState="login" minWidth.portal="955" minWidth.State1="955" minWidth.loggingIn="955" minHeight.portal="600" minHeight.State1="600" minHeight.loggingIn="600" minHeight.updating_settings="600" minWidth.updating_settings="955" minHeight.updating_password="600" minWidth.updating_password="955">
+			   currentState="login" minWidth.State1="955" minHeight.State1="600">
 	<s:states>
 		<s:State name="State1"/>
 		<s:State name="portal"/>
