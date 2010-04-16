@@ -6,7 +6,7 @@ import utils.CustomEvent;
 	
 	public class WritingPreferencesProxy extends Proxy {
 		public const PREFERENCES_SET:String = "prefsSet";
-		private var reqStr:String = "SELECT..............";
+		private var reqStr:String = "";
 		 
 				
 		public function WritingPreferencesProxy(s:String) {
@@ -16,19 +16,16 @@ import utils.CustomEvent;
 		
 	
 		//sets the user's preferences json string
-		//sets the user's preferences json string
-		public function setPreferences(s:String):void
+		public function setPreferences(s:String, iD:int):void
 		{
-			//sqlComm.sqlReq(reqStr+s.toString(), sqlMethod);
-			//todo write query that writes to the database and returns if succesful --Mike
-			trace("prefs proxy setting preferences:"+s);
-			trace("THE PREFS HAVE NOT BEEN PROPERLY UPDATED, TODO IN WRITINGPREFERENCES PROXY");
-			//testing--- used as this data is not being sent to the server
-			dispatchEvent(new CustomEvent(PREFERENCES_SET));
-			
+			reqStr = "UPDATE preferences SET value = '"+s+"' WHERE user_id = "+iD.toString()+" AND name = 'defaultsearchparameters'";
+			trace(">>>> reqStr:"+reqStr);
+			sqlComm.sqlReq(reqStr, sqlMethod);
 		}
 		override public function dataReturned(e:CustomEvent):void
 		{
+			trace("data returned form updating preferences");
+			
 			dispatchEvent(new CustomEvent(PREFERENCES_SET));
 		}
 

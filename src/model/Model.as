@@ -141,7 +141,7 @@ package model{
 		public function setPreferences(o:Object):void
 		{
 			var jsonString:String = JSON.encode(o);
-			writePrefsProxy.setPreferences(jsonString);
+			writePrefsProxy.setPreferences(jsonString, userID);
 		}
 		//received md5 encoded pword and submits it
 		public function setNewPassword(s:String):void

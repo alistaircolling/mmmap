@@ -194,7 +194,6 @@
 		{		
 			var sDate:Date = startDateField.selectedDate;
 			var eDate:Date = endDateField.selectedDate;
-			
 			trace("---");
 			var retS:String = eDate.toDateString();
 			return eDate.toDateString();
@@ -205,7 +204,6 @@
 			// TODO Auto-generated method stub
 			
 		}
-
 
 		protected function print_clickHandler(event:MouseEvent):void
 		{
@@ -232,15 +230,7 @@
 			// TODO Auto-generated method stub
 			trace("creation complete");	
 			
-			
-			log('normal');
-			log('d debug');
-			log('i info');
-			log('n notice');
-			log('w warning');
-			log('e error');
-			log('c critical');
-			log('f fatal');
+	
 			
 	//		mapDisplay.init();			
 			//TODO request customer lists from php and default filter settings
@@ -360,7 +350,7 @@
 
 		protected function application1_addedToStageHandler(event:Event):void
 		{
-			zz_init(stage, 'mmmap');
+
 		}
 
 	]]>
