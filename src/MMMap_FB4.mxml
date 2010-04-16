@@ -259,13 +259,17 @@
 		private function updatePreferences():void
 		{
 			newPreferences = new Object();
-			if (customersSet.selectedIndex) {
+			if (customersSet.selectedIndex>-1) {
 				newPreferences.customer = customersSet.selectedIndex+1;	
 				trace("customer set:"+newPreferences.customer);
+			}else{
+				newPreferences.customer = "-1";
 			}
-			if (productsSet.selectedIndex){
+			if (productsSet.selectedIndex>-1){
 				newPreferences.product = productsSet.selectedIndex+1;
 				trace("product set:"+newPreferences.product);
+			}else{
+				newPreferences.product = "-1";
 			}
 			if (startDateFieldSet.selectedDate){
 				newPreferences.fromDate = getStringFromDate(startDateFieldSet.selectedDate);
@@ -279,9 +283,11 @@
 			}else{
 				newPreferences.toDate = "";
 			}
-			if (saleTypesSet){
+			if (saleTypesSet.selectedIndex>-1){
 				newPreferences.saleType = getSaleString(saleTypesSet.selectedIndex);				
 				trace("sales type set:"+newPreferences.saleType);
+			}else{
+				newPreferences.saleType = "-1";
 			}
 			myModel.setPreferences(newPreferences);
 		}
@@ -408,7 +414,7 @@
 		</s:layout>
 		
 	</s:List>
-	<s:Panel includeIn="loggingIn,login,updating_password,updating_settings" width="250" height="200" horizontalCenter="-0" verticalCenter="0" title="Login" title.updating_settings="Updating Settings" title.updating_password="Updating Password">
+	<s:Panel tabEnabled="false" includeIn="loggingIn,login,updating_password,updating_settings" width="250" height="200" horizontalCenter="-0" verticalCenter="0" title="Login" title.updating_settings="Updating Settings" title.updating_password="Updating Password">
 		<s:TextInput y="35" width="200" horizontalCenter="-1" id="username" includeIn="login" text="alidrongo"/>
 		<s:Label x="24" y="19" text="Username" includeIn="login"/>
 		<s:Label x="24" y="69" text="Password" includeIn="login"/>
