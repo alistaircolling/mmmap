@@ -14,6 +14,13 @@ package model{
 	import mx.utils.ObjectProxy;
 	
 	import utils.CustomEvent;
+	import model.proxies.CustomersProxy;
+	import model.proxies.PreferencesProxy;
+	import model.proxies.ProductsProxy;
+	import model.proxies.ResultsProxy;
+	import model.proxies.UpdatePasswordProxy;
+	import model.proxies.UserProxy;
+	import model.proxies.WritingPreferencesProxy;
 	
 
 	public class Model extends Object{
