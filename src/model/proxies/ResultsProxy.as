@@ -14,6 +14,8 @@ import utils.CustomEvent;
 		{
 			//pass vfilter vars to method to make the string
 			reqStr = req.getQueryString();
+			trace("---REQUESTING RESULTS WITH STRING.....");
+			trace(reqStr);
 			sqlComm.sqlReq(reqStr, sqlMethod);
 		} 
 	

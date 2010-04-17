@@ -63,7 +63,7 @@
 		[Bindable]
 		protected var endingDate:Date;
 		
-		private var saleTypeStrings:Array = ["sales", "rentals",  "all"];
+		private var saleTypeStrings:Array = ["sale", "rental",  "all"];
 
 		public var myModel:Model;
 		
@@ -124,13 +124,17 @@
 		{
 			var sD:Date = startDateField.selectedDate;
 			var eD:Date = endDateField.selectedDate;
-
-			if (eD.valueOf()<sD.valueOf()){
-				showAlert("Please alter dates", "The end date must be after the start date"); 	
+			if (eD != null && sD!=null){
+				if (eD.valueOf()<sD.valueOf()){
+					showAlert("Please alter dates", "The end date must be after the start date"); 	
+				}else{
+					//if the dates are valid request the data
+					myModel.requestResults(customers.selectedIndex,products.selectedIndex, startDateField.selectedDate, endDateField.selectedDate, saleTypeStrings[saleTypes.selectedIndex]);
+				}
 			}else{
-				//if the dates are valid request the data
 				myModel.requestResults(customers.selectedIndex,products.selectedIndex, startDateField.selectedDate, endDateField.selectedDate, saleTypeStrings[saleTypes.selectedIndex]);
 			}
+			
 		}
 		//validates dates for account settings
 		private function checkSetDates():Boolean

@@ -27,31 +27,36 @@ package
 		public function getQueryString():String
 		{
 			reqStr = "SELECT * FROM transactions ";//customer_id = CUSTOMERID AND product_id = PRODUCTID AND.."
-			if (_customer>-1){
+			if (_customer>0){
 				if (conditions == 0) reqStr += "WHERE ";
 				reqStr += "customer_id = "+_customer+" ";
+				conditions++;
 			}
-			if (_product>-1){
+			if (_product>0){
 				if (conditions == 0) reqStr += "WHERE ";
 				if (conditions >0) reqStr += "AND ";
 				reqStr += "product_id = "+_product+" ";
+				conditions++;
 			}
-			if (_saleType.length>0){
+			if (_saleType != "all"){
 				if (conditions == 0) reqStr += "WHERE ";
 				if (conditions >0) reqStr += "AND "
-				reqStr += "type = "+_saleType+" ";
+				reqStr += "type = '"+_saleType+"' ";
+				conditions++;
 			}
 			//if  start date is defined
 			if (_startDate){
 				if (conditions == 0) reqStr += "WHERE ";
 				if (conditions >0) reqStr += "AND "
-				reqStr += "(sale_date >= '"+getStringFromDate(_startDate)+"' OR rental_end >= '"+getStringFromDate(_startDate)+") "; 
+				reqStr += "(sale_date >= '"+getStringFromDate(_startDate)+"' OR rental_end >= '"+getStringFromDate(_startDate)+"') ";
+				conditions++;
 			}
 			//if  end date is defined
 			if (_endDate){
 				if (conditions == 0) reqStr += "WHERE ";
 				if (conditions >0) reqStr += "AND "
-				reqStr += "(sale_date <= '"+getStringFromDate(_endDate)+"' OR rental_start <= '"+getStringFromDate(_endDate)+") ";
+				reqStr += "(sale_date <= '"+getStringFromDate(_endDate)+"' OR rental_start <= '"+getStringFromDate(_endDate)+"') ";
+				conditions++;
 			}
 			return reqStr;
 		}
