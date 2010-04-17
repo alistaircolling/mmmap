@@ -51,7 +51,9 @@
 <fx:Script>
 	<![CDATA[
 		import com.adobe.crypto.MD5;
+		
 		import model.Model;
+		
 		import mx.collections.ArrayCollection;
 		import mx.controls.Alert;
 		import mx.events.FlexEvent;
@@ -109,16 +111,12 @@
 			retD = new Date(year, month, date);
 			return retD;
 		}
-		private function showCustomers(d:*):void
-		{
-			//logic to parse data and sat arrayC  for combobox
-		}
+		
 		
 		private function showProducts(d:*):void
 		{
 			//logic to parse data and sat arrayC
 			mapDisplay.showProducts(d);
-			//TODO update combo box
 		}
 		
 		private function showResults(d:*):void
@@ -131,16 +129,11 @@
 		{
 			var sD:Date = startDateField.selectedDate;
 			var eD:Date = endDateField.selectedDate;
-			if (sD==null || eD==null ){
-				showAlert("Please pick date range", "");
-				return
-			}
+
 			if (eD.valueOf()<sD.valueOf()){
 				showAlert("Please alter dates", "The end date must be after the start date"); 	
-				
 			}else{
-				//make query string
-				var  queryS:String = createQuery();
+				//if the dates are valid request the data
 				
 			}
 		}
@@ -190,14 +183,7 @@
 		{
 			validateDates();	
 		}
-		private function createQuery():String		
-		{		
-			var sDate:Date = startDateField.selectedDate;
-			var eDate:Date = endDateField.selectedDate;
-			trace("---");
-			var retS:String = eDate.toDateString();
-			return eDate.toDateString();
-		}
+	
 
 		protected function exportExcel_clickHandler(event:MouseEvent):void
 		{
@@ -213,27 +199,19 @@
 
 		protected function update_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
 			validateDates();
 		}
 
 
 		protected function login_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
 			currentState = "loggingIn";
 			//model.login(username.text, password.text);
 			myModel.logMeIn(username.text, password.text);
 		}
 		protected function creationCompleteHandler(event:FlexEvent):void
 		{
-			// TODO Auto-generated method stub
 			trace("creation complete");	
-			
-	
-			
-	//		mapDisplay.init();			
-			//TODO request customer lists from php and default filter settings
 			myModel = new Model(this);
 		}
 
@@ -242,7 +220,6 @@
 		{
 			username.text = "";
 			password.text = "";
-			// TODO Auto-generated method stub
 			currentState = "login";
 		}
 
@@ -313,18 +290,21 @@
 
 		protected function button1_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
 			currentState = "portal";
 		}
 
 
 		protected function clearDates_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
 			endDateFieldSet.selectedDate = null;
 			startDateFieldSet.selectedDate = null;
 		}
-
+		protected function clearSelectedDatesHandler(event:MouseEvent):void
+		{
+			endDateField.selectedDate = null;
+			startDateField.selectedDate = null;
+		}
+	
 
 		protected function updatePassword_clickHandler(event:MouseEvent):void
 		{
@@ -372,6 +352,7 @@
 </fx:Script>
 	<s:VGroup x="10" y="10" width="700" height="100%" includeIn="State1,portal">
 			<s:Group width="700">
+				
 				<s:layout>
 					<s:HorizontalLayout/>
 				</s:layout>
@@ -380,7 +361,8 @@
 				<mx:Spacer width="20"/>
 				<s:Label text="End date:"/>
 				<mx:DateField id="endDateField" />
-				<mx:Spacer width="100"/>
+				
+				<s:Button includeIn="portal" label="Clear Dates" click="clearSelectedDatesHandler(event)" id="clearSelectedDates"/>
 				<s:Group width="700">
 					<s:layout>
 						<s:HorizontalLayout/>
@@ -445,8 +427,7 @@
 			<mx:Spacer width="20"/>
 			<s:Label text="End date:"/>
 			<mx:DateField id="endDateFieldSet" />
-			
-			<s:Button label="Clear Date" id="clearDates" click="clearDates_clickHandler(event)"/>
+			<s:Button label="Clear Dates" id="clearSelectedDatesBtn" click="clearSelectedDatesHandler(event)"/>
 			<mx:Spacer width="20"/>
 			<s:Group width="700">
 				<s:layout>
