@@ -146,9 +146,13 @@
 //				showAlert("Please alter dates","The from and to dates must be in the correct order and you must define both or neither", true, showAccountSettings);
 //				return false;
 //			}
-			if (eD.valueOf()<sD.valueOf()){
-				showAlert("Please alter dates","The from and to dates must be in the correct order", true, showAccountSettings);
-				return false;
+			if (eD!=null || sD!=null){
+				if (eD.valueOf()<sD.valueOf()){
+					showAlert("Please alter dates","The from and to dates must be in the correct order", true, showAccountSettings);
+					return false;
+				}else{
+					return true;
+				}
 			}else{
 				return true;
 			}
@@ -230,13 +234,13 @@
 		{
 			newPreferences = new Object();
 			if (customersSet.selectedIndex>-1) {
-				newPreferences.customer = customersSet.selectedIndex+1;	
+				newPreferences.customer = customersSet.selectedIndex;	
 				trace("customer set:"+newPreferences.customer);
 			}else{
 				newPreferences.customer = "-1";
 			}
 			if (productsSet.selectedIndex>-1){
-				newPreferences.product = productsSet.selectedIndex+1;
+				newPreferences.product = productsSet.selectedIndex;
 				trace("product set:"+newPreferences.product);
 			}else{
 				newPreferences.product = "-1";
@@ -326,7 +330,7 @@
 			}
 		}
 
-		public function showPortal():void
+		public function showPortal(e:Event):void
 		{
 			currentState = "portal";
 		}

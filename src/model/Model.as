@@ -145,9 +145,14 @@ package model{
 			var decoder:SimpleXMLDecoder = new SimpleXMLDecoder();
 			var data:Object = decoder.decodeXML( xml );
 			var array:Array = mx.utils.ArrayUtil.toArray( data.data.row );
+			var allObj:Object = new Object();
+			allObj.id = 0;
+			allObj.name = "All";
+			array.splice(0,0,allObj);
 			for (var i:uint = 0; i<array.length; i++){
 				array[i] = new ObjectProxy(array[i]);
 			}
+			
 			return new ArrayCollection( array );
 		}
 		
