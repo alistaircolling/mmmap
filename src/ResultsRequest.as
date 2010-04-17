@@ -11,47 +11,47 @@ package
 		private var _startDate:Date;
 		private var _endDate:Date;
 		private var _saleType:String; //"sales" "rentals" "all"
-		private var _reqStr:String;
-		private var _conditions:uint;
+		private var reqStr:String;
+		private var conditions:uint;
 		
 		
-		public function ResultsRequest(c:int = null, p:int = null,  sD:Date = null, eD:Date = null, sT:String = "all",)
+		public function ResultsRequest(c:int = -1, p:int = -1,  sD:Date = null, eD:Date = null, sT:String = "all")
 		{
 			_customer = c;
 			_product = p;
 			_startDate = sD;
 			_endDate = eD;
 			_saleType = sT;
-			_conditions = 0;
+			conditions = 0;
 		}
-		public function getRequest():String
+		public function getQueryString():String
 		{
 			reqStr = "SELECT * FROM transactions ";//customer_id = CUSTOMERID AND product_id = PRODUCTID AND.."
-			if (_customer){
+			if (_customer>-1){
 				if (conditions == 0) reqStr += "WHERE ";
 				reqStr += "customer_id = "+_customer+" ";
 			}
-			if (_product){
+			if (_product>-1){
 				if (conditions == 0) reqStr += "WHERE ";
 				if (conditions >0) reqStr += "AND ";
 				reqStr += "product_id = "+_product+" ";
 			}
-			if (_saleType){
+			if (_saleType.length>0){
 				if (conditions == 0) reqStr += "WHERE ";
 				if (conditions >0) reqStr += "AND "
 				reqStr += "type = "+_saleType+" ";
 			}
 			//if  start date is defined
-			if (_sD){
+			if (_startDate){
 				if (conditions == 0) reqStr += "WHERE ";
 				if (conditions >0) reqStr += "AND "
-				reqStr += "(sale_date > '"+getStringFromDate(_sD)+"' OR rental_end > '"getStringFromDate(_sD)+") "; 
+				reqStr += "(sale_date > '"+getStringFromDate(_startDate)+"' OR rental_end > '"+getStringFromDate(_startDate)+") "; 
 			}
 			//if  end date is defined
-			if (_eD){
+			if (_endDate){
 				if (conditions == 0) reqStr += "WHERE ";
 				if (conditions >0) reqStr += "AND "
-				reqStr += "(sale_date< '"+getStringFromDate(_eD)+"' OR rental_start < '"_+getStringFromDate(_eD)+") ";
+				reqStr += "(sale_date< '"+getStringFromDate(_endDate)+"' OR rental_start < '"+getStringFromDate(_endDate)+") ";
 			}
 			return reqStr;
 		}

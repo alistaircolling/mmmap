@@ -190,11 +190,10 @@ package model{
 			
 		}
 
-		public function requestResults():void 
+		public function requestResults(customer:int = -1, product:int = -1,  sD:Date = null, eD:Date = null, sT:String = "all"):void 
 		{
-			currentRequest = new ResultsRequest(
-			trace("requesting data for:"+n);
-			resultsProxy.requestData(n);
+			currentRequest = new ResultsRequest(customer, product, sD, eD, sT);
+			resultsProxy.requestResults(currentRequest);
 		}
 		
 

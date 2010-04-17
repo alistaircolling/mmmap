@@ -129,7 +129,7 @@
 				showAlert("Please alter dates", "The end date must be after the start date"); 	
 			}else{
 				//if the dates are valid request the data
-				myModel.requestResults(
+				myModel.requestResults(customers.selectedIndex,products.selectedIndex, startDateField.selectedDate, endDateField.selectedDate, saleTypeStrings[saleTypes.selectedIndex]);
 				
 			}
 		}
