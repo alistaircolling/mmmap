@@ -99,7 +99,6 @@
 			trace("returning sale type:"+retN+"  string:"+saleTypeStrings[retN]);
 			return retN;
 		}
-			
 		private function getDateFromString(s:String):Date
 		{
 			var retD:Date;
@@ -111,8 +110,6 @@
 			retD = new Date(year, month, date);
 			return retD;
 		}
-		
-		
 		private function showProducts(d:*):void
 		{
 			//logic to parse data and sat arrayC
@@ -123,8 +120,6 @@
 		{
 			mapDisplay.showResults(d);
 		}
-		
-		
 		private function validateDates():void
 		{
 			var sD:Date = startDateField.selectedDate;
@@ -134,29 +129,28 @@
 				showAlert("Please alter dates", "The end date must be after the start date"); 	
 			}else{
 				//if the dates are valid request the data
+				myModel.requestResults(
 				
 			}
 		}
+		//validates dates for account settings
 		private function checkSetDates():Boolean
 		{
 			var sD:Date = startDateFieldSet.selectedDate;
 			var eD:Date = endDateFieldSet.selectedDate;
-			
-			if (eD==null && sD==null){
-				return true;
-			}
-			if (eD==null || sD==null){
-				//only start date is set
-				showAlert("Please alter dates","The from and to dates must be in the correct order and you must define both or neither", true, showAccountSettings);
-				return false;
-			}
-			
+			//only need to check dates are in correct order
+//			if (eD==null && sD==null){
+//				return true;
+//			}
+//			if (eD==null || sD==null){
+//				//only start date is set
+//				showAlert("Please alter dates","The from and to dates must be in the correct order and you must define both or neither", true, showAccountSettings);
+//				return false;
+//			}
 			if (eD.valueOf()<sD.valueOf()){
 				showAlert("Please alter dates","The from and to dates must be in the correct order", true, showAccountSettings);
 				return false;
-				
 			}else{
-				//make query string
 				return true;
 			}
 		}

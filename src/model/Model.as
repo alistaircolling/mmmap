@@ -28,6 +28,7 @@ package model{
 
 		private var proxies_ar:Array;
 		
+		private var currentRequest:ResultsRequest;
 		//private const qProxyURL:String = "http://northe.northernstages.co.uk/Ingredient.php";
 		private const phpURL:String = "Ingredient.php";
 		
@@ -189,8 +190,9 @@ package model{
 			
 		}
 
-		public function requestResults(n:int):void 
+		public function requestResults():void 
 		{
+			currentRequest = new ResultsRequest(
 			trace("requesting data for:"+n);
 			resultsProxy.requestData(n);
 		}

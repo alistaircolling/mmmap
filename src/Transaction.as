@@ -2,79 +2,97 @@ package
 {
 	import com.afcomponents.umap.types.LatLng;
 	
-	import mx.events.Request;
-
-	public class ResultsRequest extends Object
+	public class Transaction extends Object
 	{
-		private var _customer:int;
-		private var _product:int;
-		private var _startDate:Date;
-		private var _endDate:Date;
-		private var _saleType:String; //"sales" "rentals" "all"
-		private var _reqStr:String;
-		private var _conditions:uint;
+		private var _customer:String;
+		private var _location:LatLng;
+		private var _productSold:uint;
+		private var _saleDate:Date;
+		private var _saleType:uint; //0 sale  //1  rental 
+		private var _rentalStart:Date;
+		private var _rentalEnd:Date;
 		
-		
-		public function ResultsRequest(c:int = null, p:int = null,  sD:Date = null, eD:Date = null, sT:String = "all",)
+		public function Transaction(s:String, l:LatLng, prod:uint,  sT:uint, sD:Date=null, rS:Date = null, rE:Date = null)
 		{
-			_customer = c;
-			_product = p;
-			_startDate = sD;
-			_endDate = eD;
+			_customer = s;
+			_location = l;
+			_productSold = prod;
 			_saleType = sT;
-			_conditions = 0;
-		}
-		public function getRequest():String
-		{
-			reqStr = "SELECT * FROM transactions ";//customer_id = CUSTOMERID AND product_id = PRODUCTID AND.."
-			if (_customer){
-				if (conditions == 0) reqStr += "WHERE ";
-				reqStr += "customer_id = "+_customer+" ";
-			}
-			if (_product){
-				if (conditions == 0) reqStr += "WHERE ";
-				if (conditions >0) reqStr += "AND ";
-				reqStr += "product_id = "+_product+" ";
-			}
-			if (_saleType){
-				if (conditions == 0) reqStr += "WHERE ";
-				if (conditions >0) reqStr += "AND "
-				reqStr += "type = "+_saleType+" ";
-			}
-			//if  start date is defined
-			if (_sD){
-				if (conditions == 0) reqStr += "WHERE ";
-				if (conditions >0) reqStr += "AND "
-				reqStr += "(sale_date > '"+getStringFromDate(_sD)+"' OR rental_end > '"getStringFromDate(_sD)+") "; 
-			}
-			//if  end date is defined
-			if (_eD){
-				if (conditions == 0) reqStr += "WHERE ";
-				if (conditions >0) reqStr += "AND "
-				reqStr += "(sale_date< '"+getStringFromDate(_eD)+"' OR rental_start < '"_+getStringFromDate(_eD)+") ";
-			}
-			return reqStr;
-		}
-		private function getDateFromString(s:String):Date
-		{
-			var retD:Date;
-			var a:Array = s.split("-");
-			var year:String = a[0].toString();
-			var month:Number = Number(a[1])-1;
-			//todo-check with mike that the dates in teh dbase dont have 0 for jan
-			var date:String = a[2].toString();
-			retD = new Date(year, month, date);
-			return retD;
+			_saleDate = d;
+			_rentalStart = rS;
+			_rentalEnd = rE;
 		}
 		
-		private function getStringFromDate(d:Date):String
+		public function get saleType():uint
 		{
-			var retS:String;
-			retS = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-			trace("returning date string:"+retS);
-			return retS;
+			return _saleType;
 		}
-	
-
+		
+		public function set saleType(value:uint):void
+		{
+			_saleType = value;
+		}
+		
+		public function get saleDate():Date
+		{
+			return _saleDate;
+		}
+		
+		public function set saleDate(value:Date):void
+		{
+			_saleDate = value;
+		}
+		
+		public function get productSold():uint
+		{
+			return _productSold;
+		}
+		
+		public function set productSold(value:uint):void
+		{
+			_productSold = value;
+		}
+		
+		public function get location():LatLng
+		{
+			return _location;
+		}
+		
+		public function set location(value:LatLng):void
+		{
+			_location = value;
+		}
+		
+		public function get name():String
+		{
+			return _customer;
+		}
+		
+		public function set name(value:String):void
+		{
+			_customer = value;
+		}
+		
+		public function get rentalEnd():Date
+		{
+			return _rentalEnd;
+		}
+		
+		public function set rentalEnd(value:Date):void
+		{
+			_rentalEnd = value;
+		}
+		
+		public function get rentalStart():Date
+		{
+			return _rentalStart;
+		}
+		
+		public function set rentalStart(value:Date):void
+		{
+			_rentalStart = value;
+		}
+		
+		
 	}
 }
