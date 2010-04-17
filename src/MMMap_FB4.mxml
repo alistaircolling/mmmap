@@ -179,6 +179,7 @@
 		public function logOut(a:*):void
 		{
 			trace("logOut");
+			mapDisplay.clearMarkers();
 			currentState = "login";
 		}
 		

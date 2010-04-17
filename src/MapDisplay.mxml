@@ -12,6 +12,8 @@
 		import com.afcomponents.umap.types.LatLng;
 		import com.afcomponents.umap.types.LatLngBounds;
 		
+		import markers.BasicMarker;
+		
 		import model.Model;
 		
 		import mx.core.UIComponent;
@@ -62,7 +64,7 @@
 				var posStr:String = l..position;
 				var a:Array = posStr.split(",");
 				var pos:LatLng = new LatLng(a[0], a[1]);
-				var marker:Marker = new Marker({position:pos});
+				var marker:BasicMarker = new BasicMarker({position:pos});
 				map.addOverlay(marker);	
 			}
 			
