@@ -7,13 +7,6 @@ package model{
 	import flash.utils.setTimeout;
 	import flash.xml.XMLDocument;
 	
-	import mx.collections.ArrayCollection;
-	import mx.core.Application;
-	import mx.rpc.xml.SimpleXMLDecoder;
-	import mx.utils.ArrayUtil;
-	import mx.utils.ObjectProxy;
-	
-	import utils.CustomEvent;
 	import model.proxies.CustomersProxy;
 	import model.proxies.PreferencesProxy;
 	import model.proxies.ProductsProxy;
@@ -21,6 +14,14 @@ package model{
 	import model.proxies.UpdatePasswordProxy;
 	import model.proxies.UserProxy;
 	import model.proxies.WritingPreferencesProxy;
+	
+	import mx.collections.ArrayCollection;
+	import mx.core.Application;
+	import mx.rpc.xml.SimpleXMLDecoder;
+	import mx.utils.ArrayUtil;
+	import mx.utils.ObjectProxy;
+	
+	import utils.CustomEvent;
 	
 
 	public class Model extends Object{
@@ -73,8 +74,12 @@ package model{
 			writePrefsProxy = new WritingPreferencesProxy(phpURL);
 			writePrefsProxy.addEventListener(prefsProxy.PREFERENCES_SET, preferencesSet);
 			
+			writePrefsProxy.addEventListener(writePrefsProxy.COMMS_ERROR, writeFailed);
+			
 			updatePaswordProxy = new UpdatePasswordProxy(phpURL);
 			updatePaswordProxy.addEventListener(updatePaswordProxy.PASSWORD_UPDATED, passwordUpdated);
+			
+			updatePaswordProxy.addEventListener(updatePaswordProxy.COMMS_ERROR, passwordUpdateFailed);
 			
 			productsProxy = new ProductsProxy(phpURL);
 			productsProxy.addEventListener(productsProxy.PRODUCTS_RECEIVED, productsLoaded);
@@ -84,8 +89,22 @@ package model{
 			
 			resultsProxy = new ResultsProxy(phpURL);
 			resultsProxy.addEventListener(resultsProxy.RESULTS_RECEIVED, resultsLoaded);
+			
 		}
-		
+		//database write error handlers
+		private function passwordUpdateFailed(e:CustomEvent):void
+		{
+			app.showAlert("Password not updated", "Your new password has not been saved, please try again", true, app.showAccountSettings);
+		}
+		private function writeFailed(e:CustomEvent):void
+		{
+			app.showAlert("Database Error", "your preferences have not been saved, pleased try again", true, app.showAccountSettings);
+		}
+		//currently unused
+		private function proxyError(e:CustomEvent):void
+		{
+			app.showAlert("Database error", "There was a problem communicating with the database, please try again", true, app.showAccountSettings);	
+		}
 		public function logMeIn(u:String, p:String):void
 		{
 			username = u;
@@ -148,7 +167,7 @@ package model{
 		//received md5 encoded pword and submits it
 		public function setNewPassword(s:String):void
 		{
-			updatePaswordProxy.updatePassword(s);	
+			updatePaswordProxy.updatePassword(s, userID);	
 		}
 		private function mapLoaded():void {
 			

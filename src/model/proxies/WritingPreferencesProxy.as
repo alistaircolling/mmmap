@@ -25,8 +25,11 @@ import utils.CustomEvent;
 		override public function dataReturned(e:CustomEvent):void
 		{
 			trace("data returned form updating preferences");
-			
-			dispatchEvent(new CustomEvent(PREFERENCES_SET));
+			if (e.arg[0].isError){
+				dispatchEvent(new CustomEvent(COMMS_ERROR));
+			}else{
+				dispatchEvent(new CustomEvent(PREFERENCES_SET));
+			}
 		}
 
 	} 

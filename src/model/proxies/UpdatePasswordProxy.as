@@ -24,7 +24,11 @@ import utils.CustomEvent;
 		
 		override public function dataReturned(e:CustomEvent):void
 		{
-			dispatchEvent(new CustomEvent(PASSWORD_UPDATED));
+			if (e.arg[0].isError){
+				dispatchEvent(new CustomEvent(COMMS_ERROR));
+			}else{
+				dispatchEvent(new CustomEvent(PASSWORD_UPDATED));
+			}
 		}
 
 	} 

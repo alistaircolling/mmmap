@@ -12,6 +12,7 @@ import utils.CustomEvent;
 		protected var sqlComm:SqlComm;
 		protected var phpScript:String;
 		protected var sqlMethod:String = "AsQuery";
+		public var  COMMS_ERROR:String = "commsError";
 
 
 		public function Proxy(s:String) {
