@@ -52,7 +52,7 @@
 			
 		}
 		
-		public function showResults(d:*):void
+		public function showResults(d:XML):void
 		{
 			
 		}

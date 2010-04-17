@@ -192,8 +192,16 @@ package model{
 		}
 		private function resultsLoaded(e:CustomEvent):void
 		{
-			
-			
+			var theX:XML = e.arg[0][0];
+			trace("results returned:"+theX.children().length());
+			if (theX.children().length() == 0){
+				//no results!
+				app.showAlert("No results", "", true, app.showPortal);
+			}else{
+				app.currentState = "portal";
+				app.mapDisplay.showResults(e.arg[0][0]);
+			}
+						
 		}
 
 		public function requestResults(customer:int = -1, product:int = -1,  sD:Date = null, eD:Date = null, sT:String = "all"):void 
