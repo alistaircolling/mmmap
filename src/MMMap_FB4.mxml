@@ -203,6 +203,7 @@
 
 		protected function update_clickHandler(event:MouseEvent):void
 		{
+			mapDisplay.clearMarkers();
 			validateDates();
 		}
 

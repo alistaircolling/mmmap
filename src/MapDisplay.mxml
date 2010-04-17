@@ -7,6 +7,7 @@
 	<![CDATA[
 		import com.afcomponents.umap.core.UMap;
 		import com.afcomponents.umap.events.MapEvent;
+		import com.afcomponents.umap.overlays.Marker;
 		import com.afcomponents.umap.providers.cloudmade.CloudMadeProvider;
 		import com.afcomponents.umap.types.LatLng;
 		import com.afcomponents.umap.types.LatLngBounds;
@@ -54,7 +55,19 @@
 		
 		public function showResults(d:XML):void
 		{
+			for (var i:uint = 0; i<d.children().length(); i++){
+				
+				var l:XML = d..row[i] as XML;
+				trace("pos:"+l..position);
+				var posStr:String = l..position;
+				var a:Array = posStr.split(",");
+				var pos:LatLng = new LatLng(a[0], a[1]);
+				var marker:Marker = new Marker({position:pos});
+				map.addOverlay(marker);	
+			}
 			
+			//TODO updated the rentals vs sales text field
+					
 		}
 		
 		private function mapReady(e:MapEvent):void
@@ -76,6 +89,14 @@
 			trace("slider changed:"+val);
 			map.setZoom(val, true);//(immediately)
 			
+		}
+		public function clearMarkers():void
+		{
+			var ov_ar:Array = map.getOverlays();
+			for (var i:uint = 0; i<ov_ar.length; i++){
+				var oL:* = ov_ar[i];
+				map.removeOverlay(oL);
+			}
 		}
 
 	]]>

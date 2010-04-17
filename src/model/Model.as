@@ -27,7 +27,8 @@ package model{
 	public class Model extends Object{
 
 		private var proxies_ar:Array;
-		
+		//stores the results of the search
+		private var results:XML;
 		private var currentRequest:ResultsRequest;
 		//private const qProxyURL:String = "http://northe.northernstages.co.uk/Ingredient.php";
 		private const phpURL:String = "Ingredient.php";
@@ -192,16 +193,15 @@ package model{
 		}
 		private function resultsLoaded(e:CustomEvent):void
 		{
-			var theX:XML = e.arg[0][0];
-			trace("results returned:"+theX.children().length());
-			if (theX.children().length() == 0){
+			results = e.arg[0][0];
+			trace("results returned:"+results.children().length());
+			if (results.children().length() == 0){
 				//no results!
 				app.showAlert("No results", "", true, app.showPortal);
 			}else{
 				app.currentState = "portal";
-				app.mapDisplay.showResults(e.arg[0][0]);
+				app.mapDisplay.showResults(results);
 			}
-						
 		}
 
 		public function requestResults(customer:int = -1, product:int = -1,  sD:Date = null, eD:Date = null, sT:String = "all"):void 
