@@ -13,7 +13,7 @@ package
 		private var _saleType:String; //"sales" "rentals" "all"
 		private var _reqStr:String;
 		private var _conditions:uint;
-		private var 
+		
 		
 		public function ResultsRequest(c:int = null, p:int = null,  sD:Date = null, eD:Date = null, sT:String = "all",)
 		{
@@ -22,28 +22,38 @@ package
 			_startDate = sD;
 			_endDate = eD;
 			_saleType = sT;
+			_conditions = 0;
 		}
-		public function getRequest():void
+		public function getRequest():String
 		{
-			reqStr = "SELECT * FROM transactions WHERE ";//customer_id = CUSTOMERID AND product_id = PRODUCTID AND.."
+			reqStr = "SELECT * FROM transactions ";//customer_id = CUSTOMERID AND product_id = PRODUCTID AND.."
 			if (_customer){
+				if (conditions == 0) reqStr += "WHERE ";
 				reqStr += "customer_id = "+_customer+" ";
 			}
 			if (_product){
-				reqStr += "AND product_id = "+_product+" ";
+				if (conditions == 0) reqStr += "WHERE ";
+				if (conditions >0) reqStr += "AND ";
+				reqStr += "product_id = "+_product+" ";
 			}
 			if (_saleType){
-				reqStr += "AND type = "+_saleType+" ";
+				if (conditions == 0) reqStr += "WHERE ";
+				if (conditions >0) reqStr += "AND "
+				reqStr += "type = "+_saleType+" ";
 			}
 			//if  start date is defined
 			if (_sD){
-				reqStr += "AND (sale_date > '"+getStringFromDate(_sD)+"' OR rental_end > '"getStringFromDate(_sD)+") "; 
+				if (conditions == 0) reqStr += "WHERE ";
+				if (conditions >0) reqStr += "AND "
+				reqStr += "(sale_date > '"+getStringFromDate(_sD)+"' OR rental_end > '"getStringFromDate(_sD)+") "; 
 			}
 			//if  end date is defined
 			if (_eD){
-				reqStr += "AND (sale_date< '"+getStringFromDate(_eD)+"' OR rental_start < '"_+getStringFromDate(_eD)+") ";
+				if (conditions == 0) reqStr += "WHERE ";
+				if (conditions >0) reqStr += "AND "
+				reqStr += "(sale_date< '"+getStringFromDate(_eD)+"' OR rental_start < '"_+getStringFromDate(_eD)+") ";
 			}
-			
+			return reqStr;
 		}
 		private function getDateFromString(s:String):Date
 		{
