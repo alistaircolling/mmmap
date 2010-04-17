@@ -73,10 +73,10 @@
 		{
 			currentState = "portal";
 			if (o.customer>-1) {
-				customers.selectedIndex = Number(o.customer)-1;	
+				customers.selectedIndex = Number(o.customer);	
 			}
 			if (o.product>-1){
-				products.selectedIndex = Number(o.product)-1;
+				products.selectedIndex = Number(o.product);
 			}
 			if (o.fromDate.length>0){
 				startDateField.selectedDate = getDateFromString(o.fromDate);				
@@ -130,7 +130,6 @@
 			}else{
 				//if the dates are valid request the data
 				myModel.requestResults(customers.selectedIndex,products.selectedIndex, startDateField.selectedDate, endDateField.selectedDate, saleTypeStrings[saleTypes.selectedIndex]);
-				
 			}
 		}
 		//validates dates for account settings

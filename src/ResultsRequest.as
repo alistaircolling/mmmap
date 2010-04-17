@@ -45,13 +45,13 @@ package
 			if (_startDate){
 				if (conditions == 0) reqStr += "WHERE ";
 				if (conditions >0) reqStr += "AND "
-				reqStr += "(sale_date > '"+getStringFromDate(_startDate)+"' OR rental_end > '"+getStringFromDate(_startDate)+") "; 
+				reqStr += "(sale_date >= '"+getStringFromDate(_startDate)+"' OR rental_end >= '"+getStringFromDate(_startDate)+") "; 
 			}
 			//if  end date is defined
 			if (_endDate){
 				if (conditions == 0) reqStr += "WHERE ";
 				if (conditions >0) reqStr += "AND "
-				reqStr += "(sale_date< '"+getStringFromDate(_endDate)+"' OR rental_start < '"+getStringFromDate(_endDate)+") ";
+				reqStr += "(sale_date <= '"+getStringFromDate(_endDate)+"' OR rental_start <= '"+getStringFromDate(_endDate)+") ";
 			}
 			return reqStr;
 		}
