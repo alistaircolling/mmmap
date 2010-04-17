@@ -14,10 +14,10 @@ import utils.CustomEvent;
 			super(s); 
 		}
 		
-		public function updatePassword(s:String, i:int):void
+		public function updatePassword(s:String, userID:int):void
 		{
 			var md5PWord:String = MD5.hash(s);
-			reqStr = "UPDATE users SET password = '"+md5PWord+"' WHERE user_id = "+i.toString();
+			reqStr = "UPDATE users SET password = '"+md5PWord+"' WHERE user_id = "+userID.toString();
 			sqlComm.sqlReq(reqStr+s.toString(), sqlMethod);
 			trace("updating password:"+s);
 		}
