@@ -26,7 +26,11 @@ package
 		}
 		public function getQueryString():String
 		{
-			reqStr = "SELECT * FROM transactions ";//customer_id = CUSTOMERID AND product_id = PRODUCTID AND.."
+			//reqStr = "SELECT * FROM transactions customer.name ";//customer_id = CUSTOMERID AND product_id = PRODUCTID AND.."
+			
+			reqStr = "SELECT transactions.*, customers.name AS customer_name FROM transactions JOIN customers ON customers.id = transactions.customer_id "
+			
+			
 			if (_customer>0){
 				if (conditions == 0) reqStr += "WHERE ";
 				reqStr += "customer_id = "+_customer+" ";
@@ -38,9 +42,9 @@ package
 				reqStr += "product_id = "+_product+" ";
 				conditions++;
 			}
-			if (_saleType != "all"){
+			if (_saleType != "all" && _saleType != null){
 				if (conditions == 0) reqStr += "WHERE ";
-				if (conditions >0) reqStr += "AND "
+				if (conditions >0) reqStr += "AND ";
 				reqStr += "type = '"+_saleType+"' ";
 				conditions++;
 			}

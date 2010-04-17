@@ -193,6 +193,7 @@ package model{
 		private function resultsLoaded(e:CustomEvent):void
 		{
 			
+			
 		}
 
 		public function requestResults(customer:int = -1, product:int = -1,  sD:Date = null, eD:Date = null, sT:String = "all"):void 
