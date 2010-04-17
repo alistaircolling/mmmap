@@ -16,9 +16,11 @@ import utils.CustomEvent;
 		
 		public function updatePassword(s:String, userID:int):void
 		{
+			
 			var md5PWord:String = MD5.hash(s);
-			reqStr = "UPDATE users SET password = '"+md5PWord+"' WHERE user_id = "+userID.toString();
-			sqlComm.sqlReq(reqStr+s.toString(), sqlMethod);
+			trace("new pword:"+s+":  hashed:"+md5PWord);
+			reqStr = "UPDATE users SET password = '"+md5PWord+"' WHERE id = "+userID.toString();
+			sqlComm.sqlReq(reqStr, sqlMethod);
 			trace("updating password:"+s);
 		}
 		

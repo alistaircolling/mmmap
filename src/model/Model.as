@@ -112,12 +112,13 @@ package model{
 		}
 		private function preferencesSet(e:CustomEvent):void
 		{
-			app.showAlert("Preferences Successfully Updated","",true,app.showAccountSettings); 
+			app.showAlert("Preferences Successfully Updated","",true,app.showPortal); 
 			
 			
 		}
 		private function passwordUpdated(e:CustomEvent):void
 		{
+			app.clearPasswords();
 			app.showAlert("Password successfully updated", "", true, app.showAccountSettings);
 		}
 		private function loginSuccess(e:CustomEvent):void

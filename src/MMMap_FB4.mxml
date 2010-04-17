@@ -342,7 +342,7 @@
 				}
 				if (confirmPassword.text == newPassword.text){
 					trace("password entered is correct, updating new password...");
-					myModel.setNewPassword(MD5.hash(confirmPassword.text));
+					myModel.setNewPassword(confirmPassword.text);
 				}else{
 					showAlert("Passwords do not match", "The new password does not match the confirmation", true, showAccountSettings);
 				}
@@ -353,10 +353,19 @@
 			}
 		}
 
-
+		public function showPortal():void
+		{
+			currentState = "portal";
+		}
 		protected function application1_addedToStageHandler(event:Event):void
 		{
 
+		}
+		public function clearPasswords():void
+		{
+			currentPassword.text = "";
+			newPassword.text = "";
+			confirmPassword.text = "";
 		}
 
 	]]>
@@ -421,7 +430,7 @@
 		<s:Button x="88" y="126" label="Login" id="login" click="login_clickHandler(event)" includeIn="login" />
 		<s:Label includeIn="loggingIn,updating_password,updating_settings" text="Logging in....." horizontalCenter="0" verticalCenter="0" text.updating_settings="Updating settings...." text.updating_password="Updating password...."/>
 	</s:Panel>
-	<s:Panel includeIn="account_settings" x="10" y="10" width="872" height="291" title="Account Settings">
+	<s:Panel tabEnabled="false" includeIn="account_settings" x="10" y="10" width="872" height="291" title="Account Settings">
 		<s:layout>
 			<s:VerticalLayout/>
 		</s:layout>
