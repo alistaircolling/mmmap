@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>mmmap</name>
-	<comment/>
+	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
@@ -21,21 +21,5 @@
 			<type>2</type>
 			<location>/Applications/MAMP/htdocs/MMMap_FB4</location>
 		</link>
-		<link>
-			<name>services/CustomersService.php</name>
-			<type>1</type>
-			<location>/Applications/MAMP/htdocs/MMMap_FB4/services/CustomersService.php</location>
-		</link>
-		<link>
-			<name>services/ProductsService.php</name>
-			<type>1</type>
-			<location>/Applications/MAMP/htdocs/MMMap_FB4/services/ProductsService.php</location>
-		</link>
-		<link>
-			<name>services/UsersService.php</name>
-			<type>1</type>
-			<location>/Applications/MAMP/htdocs/MMMap_FB4/services/UsersService.php</location>
-		</link>
 	</linkedResources>
 </projectDescription>
-
