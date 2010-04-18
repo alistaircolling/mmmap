@@ -31,6 +31,7 @@ package model{
 		private var proxies_ar:Array;
 		//stores the results of the search
 		private var results:XML;
+		private var csv:String;//
 		private var currentRequest:ResultsRequest;
 		//private const qProxyURL:String = "http://northe.northernstages.co.uk/Ingredient.php";
 		private const phpURL:String = "Ingredient.php";
@@ -69,15 +70,31 @@ package model{
 		}
 		public function getCSV():String
 		{
-			var myS:String = "name, age, sex, \rrali, 31, male,\r mike, 24, male, \rdave, 31, male, \rlew, 3o, male, \rpaul, 32, male, \rsam, 40, female";
-			//set field headings
-			
-			
-			for (var i:uint = 0; i<results.children().length(); i++){
+			csv = "";
+			if (!results){
+				app.showAlert("Update first!", "Please update the map before requesting the CSV", true, app.showPortal);
+				return "";
+			}else{
+				var firstRow:XML = results.row[1];
+				//add column titles 
+				for (var k:uint = 0; k<firstRow.children().length(); k++){
+					var valueName:String = firstRow.children()[k].name();
+					trace("adding name:"+valueName);
+					csv += valueName+",";
+				}
+				csv += "\r";
+				
+				var myS:String = "name, age, sex, \rrali, 31, male,\r mike, 24, male, \rdave, 31, male, \rlew, 3o, male, \rpaul, 32, male, \rsam, 40, female";
+				//set field headings
 				
 				
+				for (var i:uint = 0; i<results.children().length(); i++){
+					var transaction:XML = results.row[i];
+					
+				}
+				return myS;
 			}
-			return myS;
+		
 		}
 			
 			
