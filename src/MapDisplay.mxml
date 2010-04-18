@@ -80,6 +80,7 @@
 			salesCount = 0;
 			rentalsCount = 0;
 			
+			//create and style markermanager that displays when multiple markers are in the same location
 			markerManager = new MarkerManager();
 			markerManager.expandedGroupRadius = 30;
 			markerManager.groupRadius = 10;
@@ -98,27 +99,12 @@
 			baloonStyle.strokeRGB = 0x0; 
 			baloonStyle.strokeAlpha = 1;
 			baloonStyle.strokeThickness = 1;
-//			
-//			baloonStyle.fill = GeometryStyle.RGB; 
-//			baloonStyle.fillAlpha = 0.35; 
-//			baloonStyle.fillRGB = 0xFF000000; 
-//			baloonStyle.strokeRGB = 0xffffff; 
-//			baloonStyle.strokeAlpha = 0; 
-//			
-//			baloonStyle.labelStyle.embedFonts = true; 
-//			baloonStyle.labelStyle.textFormat.bold = true; 
-//			baloonStyle.labelStyle.textFormat.color = 0x000000; 
-//			baloonStyle.labelStyle.textFormat.color = 0xffffff; 
-//			baloonStyle.labelStyle.textFormat.font = "MINITypeHeadline"; 
-			
 			markerManagerStyle.baloonStyle = baloonStyle; 
-			
-			// Show the baloon with the number 
 			markerManagerStyle.baloon = true; 
-			
 			markerManager.setStyle(markerManagerStyle); 
 			map.addManager(markerManager);
 			
+			//add the markers
 			for (var i:uint = 0; i<d.children().length(); i++){
 				
 				var l:XML = d..row[i] as XML;
@@ -139,7 +125,7 @@
 				var marker:SignMarker = new SignMarker({position:pos}, null, l..product_id);
 				map.addOverlay(marker);	
 			}
-			
+			//update rental/sales counts
 			sales.text = salesCount.toString();
 			rentals.text = rentalsCount.toString();
 		}
