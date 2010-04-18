@@ -23,6 +23,8 @@ package model{
 	import mx.utils.ArrayUtil;
 	import mx.utils.ObjectProxy;
 	
+	import org.casalib.util.StringUtil;
+	
 	import utils.CustomEvent;
 	
 
@@ -71,6 +73,7 @@ package model{
 		public function getCSV():String
 		{
 			csv = "";
+			//if there are no results show alert
 			if (!results){
 				app.showAlert("Update first!", "Please update the map before requesting the CSV", true, app.showPortal);
 				return "";
@@ -83,19 +86,18 @@ package model{
 					csv += valueName+",";
 				}
 				csv += "\r";
-				
-				var myS:String = "name, age, sex, \rrali, 31, male,\r mike, 24, male, \rdave, 31, male, \rlew, 3o, male, \rpaul, 32, male, \rsam, 40, female";
-				//set field headings
-				
-				
+				//loop thru rows
 				for (var i:uint = 0; i<results.children().length(); i++){
 					var transaction:XML = results.row[i];
+					//loop thru properties for each row
 					for (var j:uint = 0; j<transaction.children().length(); j++){
 						var val:String = transaction.children()[j].valueOf();
-						csv+= val+","	
+						var nam:String = transaction.children()[j].name();
+						//remove commas so it doesnt break csv formatting
+						// 	StringUtil.remove(val, ",");
+							csv+= val+","	
 					}
 					csv+="\r";
-					
 				}
 				return csv;
 			}

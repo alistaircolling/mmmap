@@ -202,7 +202,7 @@
 		protected function exportExcel_clickHandler(event:MouseEvent):void
 		{
 			csv = myModel.getCSV();
-			//fileReference.save(csv, "sales_map.csv"); 
+			fileReference.save(csv, "sales_map.csv"); 
 		}
 
 		protected function print_clickHandler(event:MouseEvent):void
