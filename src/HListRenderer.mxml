@@ -2,7 +2,18 @@
 	xmlns:fx="http://ns.adobe.com/mxml/2009"
 	xmlns:s="library://ns.adobe.com/flex/spark"
 	xmlns:mx="library://ns.adobe.com/flex/mx"
+	creationComplete="init()"
 	>
+	<fx:Script>
+		<![CDATA[
+			import mx.utils.ObjectProxy;        
+			[Bindable]
+			public var dataProxy:ObjectProxy;
+			private function init():void {
+				dataProxy = new ObjectProxy(data);
+			}
+		]]>
+	</fx:Script>
 	
 	<s:states>
 		<s:State name="normal"/>
@@ -14,8 +25,8 @@
 	</s:layout>
 	
 	<s:VGroup horizontalAlign="center" paddingTop="0" color.hovered="0xffffff" paddingBottom="0" horizontalCenter="0">
-		<mx:Image source="{data.photo}" width="50" height="50" alpha.hovered="1" horizontalCenter="0"/>
-		<s:Label text="{data.name}" color.hovered="0x000000" horizontalCenter="0"/>
+		<mx:Image source="{dataProxy.photo}" width="50" height="50" alpha.hovered="1" horizontalCenter="0"/>
+		<s:Label text="{dataProxy.name}" color.hovered="0x000000" horizontalCenter="0"/>
 	</s:VGroup>
 	
 </s:ItemRenderer>

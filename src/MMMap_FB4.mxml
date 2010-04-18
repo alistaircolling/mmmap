@@ -62,30 +62,7 @@
 		public var myModel:Model;
 		private var newPreferences:Object;
 		
-		public function setPreferences(o:Object):void
-		{
-			currentState = "portal";
-			if (o.customer>-1) {
-				customers.selectedIndex = Number(o.customer);	
-			}
-			if (o.product>-1){
-				products.selectedIndex = Number(o.product);
-			}
-			if (o.fromDate.length>0){
-				startDateField.selectedDate = getDateFromString(o.fromDate);				
-			}else{
-				startDateField.selectedDate = null;
-			}
-			if (o.toDate.length>0){
-				endDateField.selectedDate = getDateFromString(o.toDate);
-			}else{
-				endDateField.selectedDate = null;
-			}
-			if (o.saleType.length>0){
-				saleTypes.selectedIndex = getSaleType(o.saleType);
-			}
-			
-		}
+		
 		private function getSaleType(s:String):Number
 		{
 			var retN:Number = saleTypeStrings.indexOf(s);
@@ -147,87 +124,62 @@
 				return true;
 			}
 		}
-		
 		public function showAlert(title:String, msg:String, okButton:Boolean = false, fn:Function = null):void
 		{
 			Alert.show(msg, title, Alert.OK, this, fn);
 		}
-		public function logOut(a:*):void
-		{
-			trace("logOut");
-			try{
-				mapDisplay.clearMarkers();
-			}catch(e:*){
-				
-			}
-			currentState = "login";
-		}
-		
-		
 		private function requestData(event:Event):void
 		{
 			validateDates();	
 		}
-	
-
-		protected function exportExcel_clickHandler(event:MouseEvent):void
+		private function getSaleString(i:int):String
 		{
-			csv = myModel.getCSV();
-			fileReference.save(csv, "sales_map.csv"); 
+			var retS:String = saleTypeStrings[i];
+			if (retS ==null) retS = "";
+			return retS;
 		}
-
-		protected function print_clickHandler(event:MouseEvent):void
+		private function getStringFromDate(d:Date):String{
+			var retS:String;
+			retS = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+			trace("returning date string:"+retS);
+			return retS;
+		}
+		public function clearPasswords():void
 		{
-			var printJob:FlexPrintJob = new FlexPrintJob();
-			if (printJob.start())
-			{
-				printJob.addObject(this, FlexPrintJobScaleType.SHOW_ALL);
-				printJob.send();
+			currentPassword.text = "";
+			newPassword.text = "";
+			confirmPassword.text = "";
+		}
+		
+		private function updateEmailAddress(e:MouseEvent):void
+		{
+			currentState = "updating_email";
+			if (newEmail.text == confirmEmail.text){
+				myModel.setNewEmail(newEmail.text);			
+			}else{
+				showAlert("The email address does not match", "", true, showAccountSettings);
 			}
 		}
-
-
-		protected function update_clickHandler(event:MouseEvent = null):void
+		private function validateNewPassword():void
 		{
-			try{
-				mapDisplay.clearMarkers();
-			}catch(e:*){
-				//markers dont exisy on login
-			}
-			validateDates();
-		}
-
-
-		protected function login_clickHandler(event:MouseEvent):void
-		{
-			currentState = "loggingIn";
-			//model.login(username.text, password.text);
-			myModel.logMeIn(username.text, password.text);
-		}
-		protected function creationCompleteHandler(event:FlexEvent):void
-		{
-			trace("creation complete");	
-			myModel = new Model(this);
-		}
-
-
-		protected function logout_clickHandler(event:MouseEvent):void
-		{
-			mapDisplay.cleanUp();
-			username.text = "";
-			password.text = "";
-			currentState = "login";
-		}
-
-
-		protected function updateSet_clickHandler(event:MouseEvent):void
-		{
-			trace("updating settings pressed");
-			currentState = "updating_settings";
-			if (checkSetDates()){
-				updatePreferences();	
+			if (MD5.hash(currentPassword.text)==myModel.md5Pword){
+				if (confirmPassword.text.length<1){
+					showAlert("No password entered", "Please enter a new password", true, showAccountSettings);
+					return;
+				}
+				if (confirmPassword.text == newPassword.text){
+					trace("password entered is correct, updating new password...");
+					myModel.setNewPassword(confirmPassword.text);
+				}else{
+					showAlert("Passwords do not match", "The new password does not match the confirmation", true, showAccountSettings);
+				}
+				
+			}else{
+				
+				showAlert("Incorrect Password", "Please enter your existing password", true, showAccountSettings);
 			}
 		}
+										/////////////////////	PREFERENCES
 		private function updatePreferences():void
 		{
 			newPreferences = new Object();
@@ -263,53 +215,69 @@
 			}
 			myModel.setPreferences(newPreferences);
 		}
-		private function getSaleString(i:int):String
+		public function setPreferences(o:Object):void
 		{
-			var retS:String = saleTypeStrings[i];
-			if (retS ==null) retS = "";
-			return retS;
-		}
-		private function getStringFromDate(d:Date):String{
-			var retS:String;
-			retS = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-			trace("returning date string:"+retS);
-			return retS;
-		}
-
-		
-		private function validateNewPassword():void
-		{
-			if (MD5.hash(currentPassword.text)==myModel.md5Pword){
-				if (confirmPassword.text.length<1){
-					showAlert("No password entered", "Please enter a new password", true, showAccountSettings);
-					return;
-				}
-				if (confirmPassword.text == newPassword.text){
-					trace("password entered is correct, updating new password...");
-					myModel.setNewPassword(confirmPassword.text);
-				}else{
-					showAlert("Passwords do not match", "The new password does not match the confirmation", true, showAccountSettings);
-				}
-				
+			currentState = "portal";
+			if (o.customer>-1) {
+				customers.selectedIndex = Number(o.customer);	
+			}
+			if (o.product>-1){
+				products.selectedIndex = Number(o.product);
+			}
+			if (o.fromDate.length>0){
+				startDateField.selectedDate = getDateFromString(o.fromDate);				
 			}else{
-				
-				showAlert("Incorrect Password", "Please enter your existing password", true, showAccountSettings);
+				startDateField.selectedDate = null;
+			}
+			if (o.toDate.length>0){
+				endDateField.selectedDate = getDateFromString(o.toDate);
+			}else{
+				endDateField.selectedDate = null;
+			}
+			if (o.saleType.length>0){
+				saleTypes.selectedIndex = getSaleType(o.saleType);
+			}
+			
+		}
+		//updates the main filters after successful prefs setting
+		public function updateMainFilters():void
+		{
+			setPreferences(newPreferences);
+		}
+		//////////////////// EVENT HANDLERS
+																	///////////////					BUTTONS
+		protected function exportExcel_clickHandler(event:MouseEvent):void
+		{
+			csv = myModel.getCSV();
+			fileReference.save(csv, "sales_map.csv"); 
+		}
+		
+		protected function print_clickHandler(event:MouseEvent):void
+		{
+			var printJob:FlexPrintJob = new FlexPrintJob();
+			if (printJob.start())
+			{
+				printJob.addObject(this, FlexPrintJobScaleType.SHOW_ALL);
+				printJob.send();
 			}
 		}
-		//////// EVENT HANDLERS
+		protected function update_clickHandler(event:MouseEvent = null):void
+		{
+			try{
+				mapDisplay.clearMarkers();
+			}catch(e:*){
+				//markers dont exisy on login
+			}
+			validateDates();
+		}
 		protected function accountSettings_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
 			currentState = "account_settings";
 		}
-		
-		
 		protected function button1_clickHandler(event:MouseEvent):void
 		{
 			currentState = "portal";
 		}
-		
-		
 		protected function clearDates_clickHandler(event:MouseEvent):void
 		{
 			endDateFieldSet.selectedDate = null;
@@ -320,12 +288,36 @@
 			endDateField.selectedDate = null;
 			startDateField.selectedDate = null;
 		}
-		
-		
 		protected function updatePassword_clickHandler(event:MouseEvent):void
 		{
 			currentState = "updating_password";
 			validateNewPassword();
+		}
+		protected function logout_clickHandler(event:MouseEvent):void
+		{
+			mapDisplay.cleanUp();
+			username.text = "";
+			password.text = "";
+			currentState = "login";
+		}
+		protected function updateSet_clickHandler(event:MouseEvent):void
+		{
+			trace("updating settings pressed");
+			currentState = "updating_settings";
+			if (checkSetDates()){
+				updatePreferences();	
+			}
+		}
+		protected function login_clickHandler(event:MouseEvent):void
+		{
+			currentState = "loggingIn";
+			//model.login(username.text, password.text);
+			myModel.logMeIn(username.text, password.text);
+		}
+		protected function creationCompleteHandler(event:FlexEvent):void
+		{
+			trace("creation complete");	
+			myModel = new Model(this);
 		}
 		protected function application1_addedToStageHandler(event:Event):void
 		{
@@ -340,23 +332,17 @@
 		{
 			currentState = "account_settings";
 		}
-		
-		public function clearPasswords():void
+		public function logOut(a:*):void
 		{
-			currentPassword.text = "";
-			newPassword.text = "";
-			confirmPassword.text = "";
-		}
-		
-		private function updateEmailAddress(e:MouseEvent):void
-		{
-			currentState = "updating_email";
-			if (newEmail.text == confirmEmail.text){
-					myModel.setNewEmail(newEmail.text);			
-			}else{
-				showAlert("The email address does not match", "", true, showAccountSettings);
+			trace("logOut");
+			try{
+				mapDisplay.clearMarkers();
+			}catch(e:*){
+				
 			}
+			currentState = "login";
 		}
+		
 
 	]]>
 </fx:Script>

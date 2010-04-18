@@ -163,6 +163,7 @@ package model{
 		}
 		private function preferencesSet(e:CustomEvent):void
 		{
+			app.updateMainFilters();
 			app.showAlert("Preferences Successfully Updated","",true,app.showPortal); 
 		}
 		private function passwordUpdated(e:CustomEvent):void
