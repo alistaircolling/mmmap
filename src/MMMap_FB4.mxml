@@ -24,7 +24,7 @@
 					<fx:Object label="Go Sign" icon="@Embed('images/goSign.jpg')" data="48" />
 					<fx:Object label="Rocks falling" icon="@Embed('images/goSign.jpg')" data="48" />
 					<fx:Object label="Roadworks" icon="@Embed('images/goSign.jpg')" data="48" />
-					<fx:Object label="speed bumps" icon="@Embed('images/goSign.jpg')" data="48" />
+					<fx:Object label="Speed bumps" icon="@Embed('images/goSign.jpg')" data="48" />
 					<fx:Object label="Danger!" icon="@Embed('images/goSign.jpg')" data="48" />
 					<fx:Object label="Slow Down" icon="@Embed('images/goSign.jpg')" data="48" />
 				</fx:Array>

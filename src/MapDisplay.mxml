@@ -12,7 +12,7 @@
 		import com.afcomponents.umap.types.LatLng;
 		import com.afcomponents.umap.types.LatLngBounds;
 		
-		import markers.BasicMarker;
+		import markers.SignMarker;
 		
 		import model.Model;
 		
@@ -25,6 +25,9 @@
 		public var map:UMap;
 		private var apiKey:String = "eeb21660abf954a4ab61b8e5be7dd542";
 		
+		//used to display viewing stats
+		private var salesCount:int;
+		private var rentalsCount:int;
 		
 		public function init():void
 		{
@@ -60,15 +63,26 @@
 			for (var i:uint = 0; i<d.children().length(); i++){
 				
 				var l:XML = d..row[i] as XML;
+				var type:String = l..type;
+				if (type == "sale")
+				{
+					salesCount ++;
+				}
+				if (type == "rental")
+				{
+					rentalsCount ++;
+				}
 				trace("pos:"+l..position);
 				var posStr:String = l..position;
 				var a:Array = posStr.split(",");
 				var pos:LatLng = new LatLng(a[0], a[1]);
-				var marker:BasicMarker = new BasicMarker({position:pos});
+				var prodID:int = Number(l..product_id);
+				var marker:SignMarker = new SignMarker({position:pos}, null, l..product_id);
 				map.addOverlay(marker);	
 			}
 			
 			//TODO updated the rentals vs sales text field
+			
 					
 		}
 		
