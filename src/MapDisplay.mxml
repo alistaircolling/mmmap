@@ -122,7 +122,13 @@
 				var a:Array = posStr.split(",");
 				var pos:LatLng = new LatLng(a[0], a[1]);
 				var prodID:int = Number(l..product_id);
-				var marker:SignMarker = new SignMarker({position:pos}, null, l..product_id);
+				//add data to info object
+				var infoObj:Object = new Object();
+				infoObj.title = "Info window title";
+				infoObj.content = "Info window content...<br/>can be multiline<br/>and contain <b><u>HTML</u></b> tags.";
+				
+				var marker:SignMarker = new SignMarker({position:pos, infoParam:infoObj}, null, l..product_id);
+				
 				map.addOverlay(marker);	
 			}
 			//update rental/sales counts
