@@ -61,6 +61,8 @@
 		import mx.collections.ArrayCollection;
 		import mx.controls.Alert;
 		import mx.events.FlexEvent;
+		import mx.printing.FlexPrintJob;
+		import mx.printing.FlexPrintJobScaleType;
 		
 		[Bindable]
 		protected var startingDate:Date;
@@ -207,7 +209,12 @@
 
 		protected function print_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			var printJob:FlexPrintJob = new FlexPrintJob();
+			if (printJob.start())
+			{
+				printJob.addObject(this, FlexPrintJobScaleType.SHOW_ALL);
+				printJob.send();
+			}
 		}
 
 

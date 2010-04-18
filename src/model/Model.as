@@ -24,8 +24,6 @@ package model{
 	import mx.utils.ObjectProxy;
 	import mx.utils.StringUtil;
 	
-	import org.casalib.util.StringUtil;
-	
 	import utils.CustomEvent;
 	
 
