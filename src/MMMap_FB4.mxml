@@ -470,27 +470,27 @@
 					<s:HorizontalLayout/>
 				</s:layout>
 				<s:Label text="Current Password:"/>
-				<s:TextInput id="currentPassword"/>
+				<s:TextInput id="currentPassword" tabFocusEnabled="false"/>
 				<mx:Spacer width="20"/>
 				<s:Label text="New Password:"/>
-				<s:TextInput id="newPassword"/>
+				<s:TextInput id="newPassword" tabFocusEnabled="false"/>
 				<mx:Spacer width="20"/>
 				<s:Label text="Re-type new password:"/>
-				<s:TextInput id="confirmPassword"/>
+				<s:TextInput id="confirmPassword" tabFocusEnabled="false"/>
 			</s:Group>
-			<s:Button label="Update Password" id="updatePassword" click="updatePassword_clickHandler(event)"/>
+			<s:Button label="Update Password" id="updatePassword" click="updatePassword_clickHandler(event)" tabFocusEnabled="false"/>
 			<s:Group>
 				<s:layout>
 					<s:HorizontalLayout/>
 				</s:layout>
 				<s:Label text="Set new email address:"/>
-				<s:TextInput id="newEmail" width="200"/>
+				<s:TextInput id="newEmail" width="200" tabFocusEnabled="false"/>
 				<mx:Spacer width="20"/>
 				<s:Label text="Confirm email:"/>
-				<s:TextInput id="confirmEmail" width="200"/>
+				<s:TextInput id="confirmEmail" width="200" tabFocusEnabled="false"/>
 				<mx:Spacer width="20"/>
 			</s:Group>
-			<s:Button label="Update Email" id="updateEmail" click="updateEmailAddress(event)"/>
+			<s:Button label="Update Email" id="updateEmail" click="updateEmailAddress(event)" tabFocusEnabled="false"/>
 			<mx:Spacer height="10"/>
 			<s:Button label="Close" click="button1_clickHandler(event)"/>
 		</s:Group>
