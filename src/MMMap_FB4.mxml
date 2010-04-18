@@ -422,7 +422,8 @@
 		<local:MapDisplay id="mapDisplay"/>
 		
 	</s:VGroup>
-	<s:List id="productsLister" x="120" maxWidth="700" y="720"
+	<s:List 
+		id="productsLister" x="120" maxWidth="700" y="705"
 			itemRenderer="HListRenderer" includeIn="State1,portal">
 		<s:dataProvider>
 			<s:ArrayCollection>
