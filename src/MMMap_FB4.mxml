@@ -2,6 +2,7 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:local="*"
+			   xmlns:net="flash.net.*"
 			   creationComplete="creationCompleteHandler(event)"
 			   addedToStage="application1_addedToStageHandler(event)"
 			   currentState="login" minWidth.State1="955" minHeight.State1="600">
@@ -49,6 +50,7 @@
 				</fx:Array>
 			</s:source> -->
 		</s:ArrayCollection>
+		<net:FileReference id="fileReference" />
 	</fx:Declarations>
 <fx:Script>
 	<![CDATA[
@@ -64,6 +66,8 @@
 		protected var startingDate:Date;
 		[Bindable]
 		protected var endingDate:Date;
+		
+		private var csv:String;
 		
 		private var saleTypeStrings:Array = ["sale", "rental",  "all"];
 
@@ -93,6 +97,7 @@
 			if (o.saleType.length>0){
 				saleTypes.selectedIndex = getSaleType(o.saleType);
 			}
+			
 		}
 		private function getSaleType(s:String):Number
 		{
@@ -196,8 +201,8 @@
 
 		protected function exportExcel_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
-			
+			csv = myModel.getCSV();
+			fileReference.save(csv, "sales_map.csv"); 
 		}
 
 		protected function print_clickHandler(event:MouseEvent):void
@@ -206,9 +211,13 @@
 		}
 
 
-		protected function update_clickHandler(event:MouseEvent):void
+		protected function update_clickHandler(event:MouseEvent = null):void
 		{
-			mapDisplay.clearMarkers();
+			try{
+				mapDisplay.clearMarkers();
+			}catch(e:*){
+				//markers dont exisy on login
+			}
 			validateDates();
 		}
 

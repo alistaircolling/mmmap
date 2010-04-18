@@ -3,6 +3,7 @@ package model{
 	import com.adobe.utils.ArrayUtil;
 	
 	import flash.events.Event;
+	import flash.net.FileReference;
 	import flash.profiler.showRedrawRegions;
 	import flash.utils.setTimeout;
 	import flash.xml.XMLDocument;
@@ -66,7 +67,20 @@ package model{
 		private function init():void {
 			initProxies();
 		}
-
+		public function getCSV():String
+		{
+			var myS:String = "name, age, sex, \rrali, 31, male,\r mike, 24, male, \rdave, 31, male, \rlew, 3o, male, \rpaul, 32, male, \rsam, 40, female";
+			//set field headings
+			
+			
+			for (var i:uint = 0; i<results.children().length(); i++){
+				
+				
+			}
+			return myS;
+		}
+			
+			
 		private function initProxies():void {
 			userProxy = new UserProxy(phpURL);
 			userProxy.addEventListener(userProxy.LOGIN_SUCCESS, loginSuccess);
@@ -125,8 +139,6 @@ package model{
 		private function preferencesSet(e:CustomEvent):void
 		{
 			app.showAlert("Preferences Successfully Updated","",true,app.showPortal); 
-			
-			
 		}
 		private function passwordUpdated(e:CustomEvent):void
 		{
@@ -163,7 +175,6 @@ package model{
 			for (var i:uint = 0; i<array.length; i++){
 				array[i] = new ObjectProxy(array[i]);
 			}
-			
 			return new ArrayCollection( array );
 		}
 		
@@ -218,7 +229,7 @@ package model{
 			}
 		}
 
-		public function requestResults(customer:int = -1, product:int = -1,  sD:Date = null, eD:Date = null, sT:String = "all"):void 
+		public function requestResults(customer:int = 0, product:int = 0,  sD:Date = null, eD:Date = null, sT:String = "all"):void 
 		{
 			currentRequest = new ResultsRequest(customer, product, sD, eD, sT);
 			resultsProxy.requestResults(currentRequest);

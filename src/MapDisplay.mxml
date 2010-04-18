@@ -6,6 +6,7 @@
 <fx:Script>
 	<![CDATA[
 		import com.afcomponents.umap.core.UMap;
+		import com.afcomponents.umap.display.markermanager.MarkerManager;
 		import com.afcomponents.umap.events.MapEvent;
 		import com.afcomponents.umap.overlays.Marker;
 		import com.afcomponents.umap.providers.cloudmade.CloudMadeProvider;
@@ -21,6 +22,8 @@
 		
 		import spark.skins.spark.VSliderTrackSkin;
 		
+		
+		private var markerManager:MarkerManager;
 		private var provider:CloudMadeProvider;
 		public var map:UMap;
 		private var apiKey:String = "eeb21660abf954a4ab61b8e5be7dd542";
@@ -43,7 +46,7 @@
 			ref.focusManager.deactivate();
 			//listen for when the map is ready
 			map.addEventListener(MapEvent.READY, mapReady);
-			map.addEventListener(MapEvent.CLICK, mapClicked);
+		//	map.addEventListener(MapEvent.CLICK, mapClicked);
 			
 			
 		}
@@ -57,11 +60,20 @@
 		{
 			
 		}
+	
 		
 		public function showResults(d:XML):void
 		{
 			salesCount = 0;
 			rentalsCount = 0;
+			
+			markerManager = new MarkerManager();
+			markerManager.expandedGroupRadius = 30;
+			markerManager.groupRadius = 50;
+			markerManager.markerActualSize = 20;
+			markerManager.markerZoomScale = 1;
+			markerManager.openGroupAction = MarkerManager.OPEN_CLICK;
+			
 			
 			for (var i:uint = 0; i<d.children().length(); i++){
 				
@@ -83,6 +95,7 @@
 				var marker:SignMarker = new SignMarker({position:pos}, null, l..product_id);
 				map.addOverlay(marker);	
 			}
+			map.addManager(markerManager);
 			sales.text = salesCount.toString();
 			rentals.text = rentalsCount.toString();
 		}
