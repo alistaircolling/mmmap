@@ -433,7 +433,7 @@
 		<local:MapDisplay id="mapDisplay"/>
 		
 	</s:VGroup>
-	<s:List id="productsLister" x="200" width="300" y="700"
+	<s:List id="productsLister" horizontalCenter="50" maxWidth="700" y="700"
 			itemRenderer="HListRenderer" dataProvider="{productList}" includeIn="State1,portal">
 		<s:layout>
 			<s:HorizontalLayout/>
@@ -479,7 +479,6 @@
 			<s:layout>
 				<s:HorizontalLayout/>
 			</s:layout>
-			
 			<s:Label text="Sale type:"/>
 			<s:ComboBox id="saleTypesSet" dataProvider="{salesType}" x="99" y="-1"/>
 			<mx:Spacer width="20"/>
