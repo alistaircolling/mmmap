@@ -12,6 +12,7 @@ package model{
 	import model.proxies.ProductsProxy;
 	import model.proxies.ResultsProxy;
 	import model.proxies.UpdateEmailProxy;
+	import model.proxies.UpdatePasswordProxy;
 	import model.proxies.UserProxy;
 	import model.proxies.WritingPreferencesProxy;
 	
@@ -44,7 +45,8 @@ package model{
 		
 		private var prefsProxy:PreferencesProxy;
 		private var writePrefsProxy:WritingPreferencesProxy;//writes the users new prefs to the database
-		private var updatePaswordProxy:UpdateEmailProxy;//writes new password to the database
+		private var updatePasswordProxy:UpdatePasswordProxy;//writes new password to the database
+		private var updateEmailProxy:UpdateEmailProxy;//writes new email to db
 		
 		//object created from JSON string to hold preferences
 		private var preferences:Object;
@@ -78,10 +80,14 @@ package model{
 			
 			writePrefsProxy.addEventListener(writePrefsProxy.COMMS_ERROR, writeFailed);
 			
-			updatePaswordProxy = new UpdateEmailProxy(phpURL);
-			updatePaswordProxy.addEventListener(updatePaswordProxy.PASSWORD_UPDATED, passwordUpdated);
+			updatePasswordProxy = new UpdatePasswordProxy(phpURL);
+			updatePasswordProxy.addEventListener(updatePasswordProxy.PASSWORD_UPDATED, passwordUpdated);
+			updatePasswordProxy.addEventListener(updatePasswordProxy.COMMS_ERROR, passwordUpdateFailed);
 			
-			updatePaswordProxy.addEventListener(updatePaswordProxy.COMMS_ERROR, passwordUpdateFailed);
+			updateEmailProxy = new UpdateEmailProxy(phpURL);
+			updateEmailProxy.addEventListener(updateEmailProxy.EMAIL_UPDATED, emailUpdated);
+			updateEmailProxy.addEventListener(updateEmailProxy.COMMS_ERROR, writeFailed);
+			
 			
 			productsProxy = new ProductsProxy(phpURL);
 			productsProxy.addEventListener(productsProxy.PRODUCTS_RECEIVED, productsLoaded);
@@ -92,6 +98,10 @@ package model{
 			resultsProxy = new ResultsProxy(phpURL);
 			resultsProxy.addEventListener(resultsProxy.RESULTS_RECEIVED, resultsLoaded);
 			
+		}
+		private function emailUpdated(c:CustomEvent):void
+		{
+			app.showAlert("Email Updated", "Your new email address has been set", true, app.showAccountSettings);
 		}
 		//database write error handlers
 		private function passwordUpdateFailed(e:CustomEvent):void
@@ -175,7 +185,11 @@ package model{
 		//received md5 encoded pword and submits it
 		public function setNewPassword(s:String):void
 		{
-			updatePaswordProxy.updatePassword(s, userID);	
+			updatePasswordProxy.updatePassword(s, userID);	
+		}
+		public function setNewEmail(s:String):void
+		{
+			updateEmailProxy.updateEmail(s, userID);
 		}
 		private function mapLoaded():void {
 			

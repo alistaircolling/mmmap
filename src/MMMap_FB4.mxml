@@ -179,7 +179,11 @@
 		public function logOut(a:*):void
 		{
 			trace("logOut");
-			mapDisplay.clearMarkers();
+			try{
+				mapDisplay.clearMarkers();
+			}catch(e:*){
+				
+			}
 			currentState = "login";
 		}
 		
@@ -357,7 +361,9 @@
 		{
 			currentState = "updating_email";
 			if (newEmail.text == confirmEmail.text){
-								
+					myModel.setNewEmail(newEmail.text);			
+			}else{
+				showAlert("The email address does not match", "", true, showAccountSettings);
 			}
 		}
 
@@ -425,7 +431,7 @@
 		<s:Button x="88" y="126" label="Login" id="login" click="login_clickHandler(event)" includeIn="login" />
 		<s:Label includeIn="loggingIn,requesting_results,updating_email,updating_password,updating_settings" text="Logging in....." horizontalCenter="0" verticalCenter="0" text.updating_settings="Updating settings...." text.updating_password="Updating password...." text.requesting_results="Requesting results.....&#xd;" text.updating_email="Updating email...."/>
 	</s:Panel>
-	<s:Panel tabEnabled="false" includeIn="account_settings" x="10" y="10" width="872" height="291" title="Account Settings">
+	<s:Panel tabEnabled="false" includeIn="account_settings" x="10" y="10" width="872" height="330" title="Account Settings">
 		<s:layout>
 			<s:VerticalLayout/>
 		</s:layout>
