@@ -22,6 +22,7 @@ package model{
 	import mx.rpc.xml.SimpleXMLDecoder;
 	import mx.utils.ArrayUtil;
 	import mx.utils.ObjectProxy;
+	import mx.utils.StringUtil;
 	
 	import org.casalib.util.StringUtil;
 	
@@ -94,7 +95,10 @@ package model{
 						var val:String = transaction.children()[j].valueOf();
 						var nam:String = transaction.children()[j].name();
 						//remove commas so it doesnt break csv formatting
-						// 	StringUtil.remove(val, ",");
+						if (nam == "position"){
+							var a:Array = val.split(",");
+							val = a[0]+" "+a[1];
+						}
 							csv+= val+","	
 					}
 					csv+="\r";
