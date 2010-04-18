@@ -415,6 +415,7 @@
 			<mx:Spacer height="10"/>
 			<s:Button includeIn="portal" label="Account Settings" id="accountSettings" click="accountSettings_clickHandler(event)"/>
 		<local:MapDisplay id="mapDisplay"/>
+		
 	</s:VGroup>
 	<s:List id="productsLister" x="200" width="300" y="700"
 			itemRenderer="HListRenderer" dataProvider="{productList}" includeIn="State1,portal">
@@ -423,6 +424,7 @@
 		</s:layout>
 		
 	</s:List>
+	
 	<s:Panel tabEnabled="false" includeIn="loggingIn,login,requesting_results,updating_email,updating_password,updating_settings" width="250" height="200" horizontalCenter="-0" verticalCenter="0" title="Login" title.updating_settings="Updating Settings" title.updating_password="Updating Password" title.requesting_results="Requesting Results" title.updating_email="Updating Email">
 		<s:TextInput y="35" width="200" horizontalCenter="-1" id="username" includeIn="login" text="alidrongo"/>
 		<s:Label x="24" y="19" text="Username" includeIn="login"/>
