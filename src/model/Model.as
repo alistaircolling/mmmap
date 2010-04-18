@@ -35,7 +35,7 @@ package model{
 		private var csv:String;//
 		private var currentRequest:ResultsRequest;
 		//private const qProxyURL:String = "http://northe.northernstages.co.uk/Ingredient.php";
-		private const phpURL:String = "Ingredient.php";
+		private const phpURL:String = "gateway.php";
 		
 		//retrieves product list
 		private var productsProxy:ProductsProxy;

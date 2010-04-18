@@ -1,69 +1,449 @@
 <?php
-ini_set("display_errors", 1);
-$dir = dirname(__FILE__);
-$webroot = $_SERVER['DOCUMENT_ROOT'];
-$configfile = "$dir/amf_config.ini";
+require_once(dirname(__FILE__) . "/Initconn.php");
+require_once(dirname(__FILE__) . "/functions.inc.php");
+require_once(dirname(__FILE__) . "/XmlSerializer.class.php");
 
-//default zend install directory
-$zenddir = $webroot. '/ZendFramework/library';
 
-//Load ini file and locate zend directory
-if(file_exists($configfile)) {
-	$arr=parse_ini_file($configfile,true);
-	if(isset($arr['zend']['webroot'])){
-		$webroot = $arr['zend']['webroot'];
-		$zenddir = $webroot. '/ZendFramework/library';
+/**
+ * This is the main PHP file that process the HTTP parameters, 
+ * performs the basic db operations (FIND, INSERT, UPDATE, DELETE) 
+ * and then serialize the response in an XML format.
+ * 
+ * XmlSerializer uses a PEAR xml parser to generate an xml response. 
+ * this takes a php array and generates an xml according to the following rules:
+ * - the root tag name is called "response"
+ * - if the current value is a hash, generate a tagname with the key value, recurse inside
+ * - if the current value is an array, generated tags with the default value "row"
+ * for example, we have the following array: 
+ * 
+ * $arr = array(
+ * 	"data" => array(
+ * 		array("id_pol" => 1, "name_pol" => "name 1"), 
+ * 		array("id_pol" => 2, "name_pol" => "name 2") 
+ * 	), 
+ * 	"metadata" => array(
+ * 		"pageNum" => 1, 
+ * 		"totalRows" => 345
+ * 	)
+ * 	
+ * )
+ * 
+ * we will get an xml of the following form
+ * 
+ * <?xml version="1.0" encoding="ISO-8859-1"?>
+ * <response>
+ *   <data>
+ *     <row>
+ *       <id_pol>1</id_pol>
+ *       <name_pol>name 1</name_pol>
+ *     </row>
+ *     <row>
+ *       <id_pol>2</id_pol>
+ *       <name_pol>name 2</name_pol>
+ *     </row>
+ *   </data>
+ *   <metadata>
+ *     <totalRows>345</totalRows>
+ *     <pageNum>1</pageNum>
+ *   </metadata>
+ * </response>
+ *
+ * Please notice that the generated server side code does not have any 
+ * specific authentication mechanism in place.
+ */
+ 
+ 
+
+/**
+ * The filter field. This is the only field that we will do filtering after.
+ */
+$filter_field = "type1";
+
+/**
+ * we need to escape the value, so we need to know what it is
+ * possible values: text, long, int, double, date, defined
+ */
+$filter_type = "text";
+
+/**
+ * constructs and executes a sql select query against the selected database
+ * can take the following parameters:
+ * $_REQUEST["orderField"] - the field by which we do the ordering. MUST appear inside $fields. 
+ * $_REQUEST["orderValue"] - ASC or DESC. If neither, the default value is ASC
+ * $_REQUEST["filter"] - the filter value
+ * $_REQUEST["pageNum"] - the page index
+ * $_REQUEST["pageSize"] - the page size (number of rows to return)
+ * if neither pageNum and pageSize appear, we do a full select, no limit
+ * returns : an array of the form
+ * array (
+ * 		data => array(
+ * 			array('field1' => "value1", "field2" => "value2")
+ * 			...
+ * 		), 
+ * 		metadata => array(
+ * 			"pageNum" => page_index, 
+ * 			"totalRows" => number_of_rows
+ * 		)
+ * ) 
+ */
+
+// asQuery
+function AsQuery() {
+	global $conn, $filter_field, $filter_type;
+
+	$recordset = mysql_query(stripslashes($_REQUEST['query']), $conn);
+	if(mysql_errno()) {
+		return array('data' => array('error' => mysql_error()));
 	}
-	if(isset($arr['zend']['zend_path'])){
-		$zenddir = $arr['zend']['zend_path'];
+	
+	//if we have rows in the table, loop through them and fill the array
+	$toret = array();
+	while ($row_recordset = mysql_fetch_assoc($recordset)) {
+		array_push($toret, $row_recordset);
 	}
+	
+	// foreach($_REQUEST as $k => $r) { $toret[$k] = $r; }
+	
+	//create the standard response structure
+	$toret = array( 'data' => $toret );
+
+	return $toret;
 }
 
+function findAll() {
+	global $conn, $filter_field, $filter_type;
 
-// Setup include path
-	//add zend directory to include path
-set_include_path(get_include_path().PATH_SEPARATOR.$zenddir);
-// Initialize Zend Framework loader
-require_once 'Zend/Loader/Autoloader.php';
-Zend_Loader_Autoloader::getInstance();
-// Load configuration
-$default_config = new Zend_Config(array("production" => false), true);
-$default_config->merge(new Zend_Config_Ini($configfile, 'zendamf'));
-$default_config->setReadOnly();
-$amf = $default_config->amf;
+	/**
+	 * the list of fields in the table. We need this to check that the sent value for the ordering is indeed correct.
+	 */
+	$fields = array('id','type1','type2','type3','subingredients','count','rating','name','image','image2','comment','offer');
 
-// Store configuration in the registry
-Zend_Registry::set("amf-config", $amf);
-// Initialize AMF Server
-$server = new Zend_Amf_Server();
-$server->setProduction($amf->production);
-if(isset($amf->directories)) {
-	$dirs = $amf->directories->toArray();
-	foreach($dirs as $dir) {
-	    // get the first character of the path. 
-	    // If it does not start with slash then it implies that the path is relative to webroot. Else it will be treated as absolute path
-	    $length = strlen($dir);
-	    $firstChar = $dir;
-	    if($length >= 1)
-	    	$firstChar = $dir[0];
-	    
-	    if($firstChar != "/"){
-	    	// if the directory is ./ path then we add the webroot only.
-	    	if($dir == "./"){	    		
-	    		$server->addDirectory($webroot);
-	    	}else{
-	    		$tempPath = $webroot . "/" . $dir;
-				$server->addDirectory($tempPath);
-			}	    
-		}else{
-	   		$server->addDirectory($dir);	    	
+	$where = "";
+	if (@$_REQUEST['filter'] != "") {
+		$where = "WHERE " . $filter_field . " LIKE " . GetSQLValueStringForSelect(@$_REQUEST["filter"], $filter_type);	
+	}
+
+	$order = "";
+	if (@$_REQUEST["orderField"] != "" && in_array(@$_REQUEST["orderField"], $fields)) {
+		$order = "ORDER BY " . @$_REQUEST["orderField"] . " " . (in_array(@$_REQUEST["orderDirection"], array("ASC", "DESC")) ? @$_REQUEST["orderDirection"] : "ASC");
+	}
+	
+	//calculate the number of rows in this table
+	$rscount = mysql_query("SELECT count(*) AS cnt FROM `ingredient` $where"); 
+	$row_rscount = mysql_fetch_assoc($rscount);
+	$totalrows = (int) $row_rscount["cnt"];
+	
+	//get the page number, and the page size
+	$pageNum = (int)@$_REQUEST["pageNum"];
+	$pageSize = (int)@$_REQUEST["pageSize"];
+	
+	//calculate the start row for the limit clause
+	$start = $pageNum * $pageSize;
+
+	//construct the query, using the where and order condition
+	$query_recordset = "SELECT id,type1,type2,type3,subingredients,count,rating,name,image,image2,comment,offer FROM `ingredient` $where $order";
+	
+	//if we use pagination, add the limit clause
+	if ($pageNum >= 0 && $pageSize > 0) {	
+		$query_recordset = sprintf("%s LIMIT %d, %d", $query_recordset, $start, $pageSize);
+	}
+
+	$recordset = mysql_query($query_recordset, $conn);
+	
+	//if we have rows in the table, loop through them and fill the array
+	$toret = array();
+	while ($row_recordset = mysql_fetch_assoc($recordset)) {
+		array_push($toret, $row_recordset);
+	}
+	
+	//create the standard response structure
+	$toret = array(
+		"data" => $toret, 
+		"metadata" => array (
+			"totalRows" => $totalrows,
+			"pageNum" => $pageNum
+		)
+	);
+
+	return $toret;
+}
+
+/**
+ * constructs and executes a sql count query against the selected database
+ * can take the following parameters:
+ * $_REQUEST["filter"] - the filter value
+ * returns : an array of the form
+ * array (
+ * 		data => number_of_rows, 
+ * 		metadata => array()
+ * ) 
+ */
+function rowCount() {
+	global $conn, $filter_field, $filter_type;
+
+	$where = "";
+	if (@$_REQUEST['filter'] != "") {
+		$where = "WHERE " . $filter_field . " LIKE " . GetSQLValueStringForSelect(@$_REQUEST["filter"], $filter_type);	
+	}
+
+	//calculate the number of rows in this table
+	$rscount = mysql_query("SELECT count(*) AS cnt FROM `ingredient` $where"); 
+	$row_rscount = mysql_fetch_assoc($rscount);
+	$totalrows = (int) $row_rscount["cnt"];
+	
+	//create the standard response structure
+	$toret = array(
+		"data" => $totalrows, 
+		"metadata" => array()
+	);
+
+	return $toret;
+}
+
+/**
+ * constructs and executes a sql insert query against the selected database
+ * can take the following parameters:
+ * $_REQUEST["field_name"] - the list of fields which appear here will be used as values for insert. 
+ * If a field does not appear, null will be used.  
+ * returns : an array of the form
+ * array (
+ * 		data => array(
+ * 			"primary key" => primary_key_value, 
+ * 			"field1" => "value1"
+ * 			...
+ * 		), 
+ * 		metadata => array()
+ * ) 
+ */
+function insert() {
+	global $conn;
+
+	//build and execute the insert query
+	$query_insert = sprintf("INSERT INTO `ingredient` (type1,type2,type3,subingredients,count,rating,name,image,image2,comment,offer) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)" ,			GetSQLValueString($_REQUEST["type1"], "text"), # 
+			GetSQLValueString($_REQUEST["type2"], "text"), # 
+			GetSQLValueString($_REQUEST["type3"], "text"), # 
+			GetSQLValueString($_REQUEST["subingredients"], "text"), # 
+			GetSQLValueString($_REQUEST["count"], "int"), # 
+			GetSQLValueString($_REQUEST["rating"], "int"), # 
+			GetSQLValueString($_REQUEST["name"], "text"), # 
+			GetSQLValueString($_REQUEST["image"], "text"), # 
+			GetSQLValueString($_REQUEST["image2"], "text"), # 
+			GetSQLValueString($_REQUEST["comment"], "text"), # 
+			GetSQLValueString($_REQUEST["offer"], "int")# 
+	);
+	$ok = mysql_query($query_insert);
+	
+	if ($ok) {
+		// return the new entry, using the insert id
+		$toret = array(
+			"data" => array(
+				array(
+					"id" => mysql_insert_id(), 
+					"type1" => $_REQUEST["type1"], # 
+					"type2" => $_REQUEST["type2"], # 
+					"type3" => $_REQUEST["type3"], # 
+					"subingredients" => $_REQUEST["subingredients"], # 
+					"count" => $_REQUEST["count"], # 
+					"rating" => $_REQUEST["rating"], # 
+					"name" => $_REQUEST["name"], # 
+					"image" => $_REQUEST["image"], # 
+					"image2" => $_REQUEST["image2"], # 
+					"comment" => $_REQUEST["comment"], # 
+					"offer" => $_REQUEST["offer"]# 
+				)
+			), 
+			"metadata" => array()
+		);
+	} else {
+		// we had an error, return it
+		$toret = array(
+			"data" => array("error" => mysql_error()), 
+			"metadata" => array()
+		);
+	}
+	return $toret;
+}
+
+/**
+ * constructs and executes a sql update query against the selected database
+ * can take the following parameters:
+ * $_REQUEST[primary_key] - thethe value of the primary key
+ * $_REQUEST[field_name] - the list of fields which appear here will be used as values for update. 
+ * If a field does not appear, null will be used.  
+ * returns : an array of the form
+ * array (
+ * 		data => array(
+ * 			"primary key" => primary_key_value, 
+ * 			"field1" => "value1"
+ * 			...
+ * 		), 
+ * 		metadata => array()
+ * ) 
+ */
+function update() {
+	global $conn;
+
+	// check to see if the record actually exists in the database
+	$query_recordset = sprintf("SELECT * FROM `ingredient` WHERE id = %s",
+		GetSQLValueString($_REQUEST["id"], "int")
+	);
+	$recordset = mysql_query($query_recordset, $conn);
+	$num_rows = mysql_num_rows($recordset);
+	
+	if ($num_rows > 0) {
+
+		// build and execute the update query
+		$row_recordset = mysql_fetch_assoc($recordset);
+		$query_update = sprintf("UPDATE `ingredient` SET type1 = %s,type2 = %s,type3 = %s,subingredients = %s,count = %s,rating = %s,name = %s,image = %s,image2 = %s,comment = %s,offer = %s WHERE id = %s", 
+			GetSQLValueString($_REQUEST["type1"], "text"), 
+			GetSQLValueString($_REQUEST["type2"], "text"), 
+			GetSQLValueString($_REQUEST["type3"], "text"), 
+			GetSQLValueString($_REQUEST["subingredients"], "text"), 
+			GetSQLValueString($_REQUEST["count"], "int"), 
+			GetSQLValueString($_REQUEST["rating"], "int"), 
+			GetSQLValueString($_REQUEST["name"], "text"), 
+			GetSQLValueString($_REQUEST["image"], "text"), 
+			GetSQLValueString($_REQUEST["image2"], "text"), 
+			GetSQLValueString($_REQUEST["comment"], "text"), 
+			GetSQLValueString($_REQUEST["offer"], "int"), 
+			GetSQLValueString($row_recordset["id"], "int")
+		);
+		$ok = mysql_query($query_update);
+		if ($ok) {
+			// return the updated entry
+			$toret = array(
+				"data" => array(
+					array(
+						"id" => $row_recordset["id"], 
+						"type1" => $_REQUEST["type1"], #
+						"type2" => $_REQUEST["type2"], #
+						"type3" => $_REQUEST["type3"], #
+						"subingredients" => $_REQUEST["subingredients"], #
+						"count" => $_REQUEST["count"], #
+						"rating" => $_REQUEST["rating"], #
+						"name" => $_REQUEST["name"], #
+						"image" => $_REQUEST["image"], #
+						"image2" => $_REQUEST["image2"], #
+						"comment" => $_REQUEST["comment"], #
+						"offer" => $_REQUEST["offer"]#
+					)
+				), 
+				"metadata" => array()
+			);
+		} else {
+			// an update error, return it
+			$toret = array(
+				"data" => array("error" => mysql_error()), 
+				"metadata" => array()
+			);
 		}
+	} else {
+		$toret = array(
+			"data" => array("error" => "No row found"), 
+			"metadata" => array()
+		);
+	}
+	return $toret;
+}
+
+/**
+ * constructs and executes a sql update query against the selected database
+ * can take the following parameters:
+ * $_REQUEST[primary_key] - thethe value of the primary key
+ * returns : an array of the form
+ * array (
+ * 		data => deleted_row_primary_key_value, 
+ * 		metadata => array()
+ * ) 
+ */
+function delete() {
+	global $conn;
+
+	// check to see if the record actually exists in the database
+	$query_recordset = sprintf("SELECT * FROM `ingredient` WHERE id = %s",
+		GetSQLValueString($_REQUEST["id"], "int")
+	);
+	$recordset = mysql_query($query_recordset, $conn);
+	$num_rows = mysql_num_rows($recordset);
+
+	if ($num_rows > 0) {
+		$row_recordset = mysql_fetch_assoc($recordset);
+		$query_delete = sprintf("DELETE FROM `ingredient` WHERE id = %s", 
+			GetSQLValueString($row_recordset["id"], "int")
+		);
+		$ok = mysql_query($query_delete);
+		if ($ok) {
+			// delete went through ok, return OK
+			$toret = array(
+				"data" => $row_recordset["id"], 
+				"metadata" => array()
+			);
+		} else {
+			$toret = array(
+				"data" => array("error" => mysql_error()), 
+				"metadata" => array()
+			);
+		}
+
+	} else {
+		// no row found, return an error
+		$toret = array(
+			"data" => array("error" => "No row found"), 
+			"metadata" => array()
+		);
+	}
+	return $toret;
+}
+
+/**
+ * we use this as an error response, if we do not receive a correct method
+ * 
+ */
+$ret = array(
+	"data" => array("error" => "No operation"), 
+	"metadata" => array()
+);
+
+/**
+ * check for the database connection 
+ * 
+ * 
+ */
+if ($conn === false) {
+	$ret = array(
+		"data" => array("error" => "database connection error, please check your settings !"), 
+		"metadata" => array()
+	);
+} else {
+	mysql_select_db($database_conn, $conn);
+	/**
+	 * simple dispatcher. The $_REQUEST["method"] parameter selects the operation to execute. 
+	 * must be one of the values findAll, insert, update, delete, Count
+	 */
+	// execute the necessary function, according to the operation code in the post variables
+	switch (@$_REQUEST["method"]) {
+		case "FindAll":
+			$ret = findAll();
+		break;
+		case 'AsQuery':
+			$ret = asQuery();
+		break;
+		case "Insert": 
+			$ret = insert();
+		break;
+		case "Update": 
+			$ret = update();
+		break;
+		case "Delete": 
+			$ret = delete();
+		break;
+		case "Count":
+			$ret = rowCount();
+		break;
 	}
 }
-// Initialize introspector for non-production
-if(!$amf->production) {
-	$server->setClass('Zend_Amf_Adobe_Introspector', '', array("config" => $default_config, "server" => $server));
-	$server->setClass('Zend_Amf_Adobe_DbInspector', '', array("config" => $default_config, "server" => $server));
-}
-// Handle request
-echo $server->handle();
+
+$serializer = new XmlSerializer();
+echo $serializer->serialize($ret);
+die();
+?>
