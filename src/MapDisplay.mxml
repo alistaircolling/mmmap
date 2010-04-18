@@ -10,6 +10,9 @@
 		import com.afcomponents.umap.events.MapEvent;
 		import com.afcomponents.umap.overlays.Marker;
 		import com.afcomponents.umap.providers.cloudmade.CloudMadeProvider;
+		import com.afcomponents.umap.styles.BaloonStyle;
+		import com.afcomponents.umap.styles.GeometryStyle;
+		import com.afcomponents.umap.styles.MarkerStyle;
 		import com.afcomponents.umap.types.LatLng;
 		import com.afcomponents.umap.types.LatLngBounds;
 		
@@ -22,8 +25,11 @@
 		
 		import spark.skins.spark.VSliderTrackSkin;
 		
-		
+		//manages when more than 1 marker is in the same location		
 		private var markerManager:MarkerManager;
+		//colour of the multi marker flag
+		private var multiMarkerColor:Number = 0xffffff;
+		
 		private var provider:CloudMadeProvider;
 		public var map:UMap;
 		private var apiKey:String = "eeb21660abf954a4ab61b8e5be7dd542";
@@ -61,7 +67,14 @@
 			
 		}
 	
-		
+		protected function getMMStyle():Object
+		{
+			var gradStyle:MarkerStyle = new MarkerStyle();
+			gradStyle.fill = GeometryStyle.RGB;
+			gradStyle.fillRGB =  multiMarkerColor;
+			gradStyle.fillAlpha = 1;
+			return gradStyle;
+		}
 		public function showResults(d:XML):void
 		{
 			salesCount = 0;
@@ -69,11 +82,41 @@
 			
 			markerManager = new MarkerManager();
 			markerManager.expandedGroupRadius = 30;
-			markerManager.groupRadius = 50;
-			markerManager.markerActualSize = 20;
+			markerManager.groupRadius = 10;
+			markerManager.markerActualSize = 3;//100;//20;
 			markerManager.markerZoomScale = 1;
 			markerManager.openGroupAction = MarkerManager.OPEN_CLICK;
+			markerManager.autoClose = true;
 			
+			var markerManagerStyle:Object = new Object();
+			var baloonStyle:BaloonStyle = new BaloonStyle(); 
+			baloonStyle.fillGradient.colors = [0x330000, 0xEE0000]; 
+			baloonStyle.fill = GeometryStyle.RGB; 
+			baloonStyle.fillAlpha = 1; 
+			baloonStyle.fillRGB = 0xffffff; 
+			baloonStyle.strokeRGB = 0x0; 
+			baloonStyle.strokeAlpha = 1;
+			baloonStyle.strokeThickness = 1;
+//			
+//			baloonStyle.fill = GeometryStyle.RGB; 
+//			baloonStyle.fillAlpha = 0.35; 
+//			baloonStyle.fillRGB = 0xFF000000; 
+//			baloonStyle.strokeRGB = 0xffffff; 
+//			baloonStyle.strokeAlpha = 0; 
+//			
+//			baloonStyle.labelStyle.embedFonts = true; 
+//			baloonStyle.labelStyle.textFormat.bold = true; 
+//			baloonStyle.labelStyle.textFormat.color = 0x000000; 
+//			baloonStyle.labelStyle.textFormat.color = 0xffffff; 
+//			baloonStyle.labelStyle.textFormat.font = "MINITypeHeadline"; 
+			
+			markerManagerStyle.baloonStyle = baloonStyle; 
+			
+			// Show the baloon with the number 
+			markerManagerStyle.baloon = true; 
+			
+			markerManager.setStyle(markerManagerStyle); 
+			map.addManager(markerManager);
 			
 			for (var i:uint = 0; i<d.children().length(); i++){
 				
@@ -95,7 +138,7 @@
 				var marker:SignMarker = new SignMarker({position:pos}, null, l..product_id);
 				map.addOverlay(marker);	
 			}
-			map.addManager(markerManager);
+			
 			sales.text = salesCount.toString();
 			rentals.text = rentalsCount.toString();
 		}

@@ -2,6 +2,7 @@ package markers
 {
 	import com.afcomponents.umap.overlays.Marker;
 	import com.afcomponents.umap.styles.MarkerStyle;
+	import com.afcomponents.umap.types.Offset;
 	
 	public class SignMarker extends Marker
 	{
@@ -16,7 +17,6 @@ package markers
 		}
 		protected function getTheStyle(i:uint):Object
 		{
-			
 			var sS:StopSign = null;
 			var gS:GoSign = null;
 			var rF:RocksFalling = null;
@@ -29,7 +29,7 @@ package markers
 			var style:MarkerStyle = new MarkerStyle();
 			style.icon = symbolNames[i];
 			style.shadow = true;
-			//style.iconStyle.offset = new Offset(18,18);
+			style.iconStyle.offset = new Offset(20,20);
 			return style;
 		}
 	}
