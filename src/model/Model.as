@@ -90,11 +90,15 @@ package model{
 				
 				for (var i:uint = 0; i<results.children().length(); i++){
 					var transaction:XML = results.row[i];
+					for (var j:uint = 0; j<transaction.children().length(); j++){
+						var val:String = transaction.children()[j].valueOf();
+						csv+= val+","	
+					}
+					csv+="\r";
 					
 				}
-				return myS;
+				return csv;
 			}
-		
 		}
 			
 			
