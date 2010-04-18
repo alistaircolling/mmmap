@@ -124,8 +124,16 @@
 				var prodID:int = Number(l..product_id);
 				//add data to info object
 				var infoObj:Object = new Object();
-				infoObj.title = "Info window title";
-				infoObj.content = "Info window content...<br/>can be multiline<br/>and contain <b><u>HTML</u></b> tags.";
+				infoObj.title = l..customer_name;
+				var infoCopy:String = "";
+				for (var j:uint = 0 ; j<l.children().length(); j++){
+					var nam:String = l.children()[j].name();
+					var val:String = l.children()[j].valueOf().toString();
+					infoCopy += nam+": "+val+"\r";
+				}
+				infoObj.content = infoCopy;//"Info window content...<br/>can be multiline<br/>and contain <b><u>HTML</u></b> tags.";
+				
+				
 				
 				var marker:SignMarker = new SignMarker({position:pos, infoParam:infoObj}, null, l..product_id);
 				
