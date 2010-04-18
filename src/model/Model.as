@@ -254,7 +254,6 @@ package model{
 				app.mapDisplay.showResults(results);
 			}
 		}
-
 		public function requestResults(customer:int = 0, product:int = 0,  sD:Date = null, eD:Date = null, sT:String = "all"):void 
 		{
 			currentRequest = new ResultsRequest(customer, product, sD, eD, sT);
