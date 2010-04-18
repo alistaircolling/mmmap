@@ -147,10 +147,7 @@
 				return true;
 			}
 		}
-		public function showAccountSettings(a:*):void
-		{
-			currentState = "account_settings";
-		}
+		
 		public function showAlert(title:String, msg:String, okButton:Boolean = false, fn:Function = null):void
 		{
 			Alert.show(msg, title, Alert.OK, this, fn);
@@ -230,7 +227,6 @@
 			if (checkSetDates()){
 				updatePreferences();	
 			}
-			
 		}
 		private function updatePreferences():void
 		{
@@ -280,36 +276,7 @@
 			return retS;
 		}
 
-		protected function accountSettings_clickHandler(event:MouseEvent):void
-		{
-			// TODO Auto-generated method stub
-			currentState = "account_settings";
-		}
-
-
-		protected function button1_clickHandler(event:MouseEvent):void
-		{
-			currentState = "portal";
-		}
-
-
-		protected function clearDates_clickHandler(event:MouseEvent):void
-		{
-			endDateFieldSet.selectedDate = null;
-			startDateFieldSet.selectedDate = null;
-		}
-		protected function clearSelectedDatesHandler(event:MouseEvent):void
-		{
-			endDateField.selectedDate = null;
-			startDateField.selectedDate = null;
-		}
-	
-
-		protected function updatePassword_clickHandler(event:MouseEvent):void
-		{
-			currentState = "updating_password";
-			validateNewPassword();
-		}
+		
 		private function validateNewPassword():void
 		{
 			if (MD5.hash(currentPassword.text)==myModel.md5Pword){
@@ -329,15 +296,51 @@
 				showAlert("Incorrect Password", "Please enter your existing password", true, showAccountSettings);
 			}
 		}
-
+		//////// EVENT HANDLERS
+		protected function accountSettings_clickHandler(event:MouseEvent):void
+		{
+			// TODO Auto-generated method stub
+			currentState = "account_settings";
+		}
+		
+		
+		protected function button1_clickHandler(event:MouseEvent):void
+		{
+			currentState = "portal";
+		}
+		
+		
+		protected function clearDates_clickHandler(event:MouseEvent):void
+		{
+			endDateFieldSet.selectedDate = null;
+			startDateFieldSet.selectedDate = null;
+		}
+		protected function clearSelectedDatesHandler(event:MouseEvent):void
+		{
+			endDateField.selectedDate = null;
+			startDateField.selectedDate = null;
+		}
+		
+		
+		protected function updatePassword_clickHandler(event:MouseEvent):void
+		{
+			currentState = "updating_password";
+			validateNewPassword();
+		}
+		protected function application1_addedToStageHandler(event:Event):void
+		{
+			//UNUSED
+		}
+		///////////////////////// METHODS TO CHANGE APP CURRENT STATE
 		public function showPortal(e:Event):void
 		{
 			currentState = "portal";
 		}
-		protected function application1_addedToStageHandler(event:Event):void
+		public function showAccountSettings(a:*):void
 		{
-			
+			currentState = "account_settings";
 		}
+		
 		public function clearPasswords():void
 		{
 			currentPassword.text = "";
