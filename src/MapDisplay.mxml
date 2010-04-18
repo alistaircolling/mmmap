@@ -126,11 +126,27 @@
 				var infoObj:Object = new Object();
 				infoObj.title = l..customer_name;
 				var infoCopy:String = "";
-				for (var j:uint = 0 ; j<l.children().length(); j++){
-					var nam:String = l.children()[j].name();
-					var val:String = l.children()[j].valueOf().toString();
-					infoCopy += nam+": "+val+"\r";
+				//this loop would add all columns from DB
+//				for (var j:uint = 0 ; j<l.children().length(); j++){
+//					var nam:String = l.children()[j].name();
+//					var val:String = l.children()[j].valueOf().toString();
+//					infoCopy += nam+": "+val+"\r";
+//				}
+				infoCopy += "Product: "+l..product_name+"\r";
+				infoCopy += "Customer: "+l..customer_name+"\r";
+				infoCopy += "Sale type: "+l..type+"\r";
+				if (l..sale_date.length>0){
+					infoCopy +=	"Sale date: "+l..sale_date+"\r";
 				}
+				if (l..rental_start.length>0){
+					infoCopy += "Rental start: "+l..rental_start;
+				}
+				if (l..rental_end.length>0){
+					infoCopy += "Rental end: "+l..rental_end;
+				}
+				 
+				
+				
 				infoObj.content = infoCopy;//"Info window content...<br/>can be multiline<br/>and contain <b><u>HTML</u></b> tags.";
 				
 				
