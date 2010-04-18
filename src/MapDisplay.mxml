@@ -135,13 +135,14 @@
 				infoCopy += "Product: "+l..product_name+"\r";
 				infoCopy += "Customer: "+l..customer_name+"\r";
 				infoCopy += "Sale type: "+l..type+"\r";
-				if (l..sale_date.length>0){
+				var sD:String = l..sale_date;
+				if (l..sale_date.toString().length>0){
 					infoCopy +=	"Sale date: "+l..sale_date+"\r";
 				}
-				if (l..rental_start.length>0){
-					infoCopy += "Rental start: "+l..rental_start;
+				if (l..rental_start.toString().length>0){
+					infoCopy += "Rental start: "+l..rental_start+"\r";
 				}
-				if (l..rental_end.length>0){
+				if (l..rental_end.toString().length>0){
 					infoCopy += "Rental end: "+l..rental_end;
 				}
 				 
