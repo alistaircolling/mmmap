@@ -11,7 +11,7 @@ package model{
 	import model.proxies.PreferencesProxy;
 	import model.proxies.ProductsProxy;
 	import model.proxies.ResultsProxy;
-	import model.proxies.UpdatePasswordProxy;
+	import model.proxies.UpdateEmailProxy;
 	import model.proxies.UserProxy;
 	import model.proxies.WritingPreferencesProxy;
 	
@@ -44,7 +44,7 @@ package model{
 		
 		private var prefsProxy:PreferencesProxy;
 		private var writePrefsProxy:WritingPreferencesProxy;//writes the users new prefs to the database
-		private var updatePaswordProxy:UpdatePasswordProxy;//writes new password to the database
+		private var updatePaswordProxy:UpdateEmailProxy;//writes new password to the database
 		
 		//object created from JSON string to hold preferences
 		private var preferences:Object;
@@ -78,7 +78,7 @@ package model{
 			
 			writePrefsProxy.addEventListener(writePrefsProxy.COMMS_ERROR, writeFailed);
 			
-			updatePaswordProxy = new UpdatePasswordProxy(phpURL);
+			updatePaswordProxy = new UpdateEmailProxy(phpURL);
 			updatePaswordProxy.addEventListener(updatePaswordProxy.PASSWORD_UPDATED, passwordUpdated);
 			
 			updatePaswordProxy.addEventListener(updatePaswordProxy.COMMS_ERROR, passwordUpdateFailed);
