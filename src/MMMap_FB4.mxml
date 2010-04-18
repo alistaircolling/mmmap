@@ -3,6 +3,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:local="*"
 			   xmlns:net="flash.net.*"
+			   
 			   creationComplete="creationCompleteHandler(event)"
 			   addedToStage="application1_addedToStageHandler(event)"
 			   currentState="login" minWidth.State1="955" minHeight.State1="600">
@@ -19,19 +20,7 @@
 	</s:states>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
-		<s:ArrayCollection id="productList">
-			<!--		<s:source>
-				<fx:Array>
-				<fx:Object label="Stop sign" icon="@Embed('images/stopSign.jpg')" data="85" />
-					<fx:Object label="Go Sign" icon="@Embed('images/goSign.jpg')" data="48" />
-					<fx:Object label="Rocks falling" icon="@Embed('images/goSign.jpg')" data="48" />
-					<fx:Object label="Roadworks" icon="@Embed('images/goSign.jpg')" data="48" />
-					<fx:Object label="Speed bumps" icon="@Embed('images/goSign.jpg')" data="48" />
-					<fx:Object label="Danger!" icon="@Embed('images/goSign.jpg')" data="48" />
-					<fx:Object label="Slow Down" icon="@Embed('images/goSign.jpg')" data="48" />
-				</fx:Array>
-			</s:source>  -->
-		</s:ArrayCollection>
+		<s:ArrayCollection id="productList"/>
 		<s:ArrayCollection id="salesType">
 			<s:source>
 				<fx:Array>
@@ -364,7 +353,7 @@
 		}
 		protected function application1_addedToStageHandler(event:Event):void
 		{
-
+			
 		}
 		public function clearPasswords():void
 		{
@@ -433,8 +422,19 @@
 		<local:MapDisplay id="mapDisplay"/>
 		
 	</s:VGroup>
-	<s:List id="productsLister" horizontalCenter="50" maxWidth="700" y="700"
-			itemRenderer="HListRenderer" dataProvider="{productList}" includeIn="State1,portal">
+	<s:List id="productsLister" x="120" maxWidth="700" y="720"
+			itemRenderer="HListRenderer" includeIn="State1,portal">
+		<s:dataProvider>
+			<s:ArrayCollection>
+				<fx:Object name="Stop Sign" photo="images/stopSign.jpg" />
+				<fx:Object name="Go Sign" photo="images/goSign.jpg" />
+				<fx:Object name="Falling Rocks" photo="images/fallingRocks.jpg" />
+				<fx:Object name="Road Works" photo="images/roadWorks.jpg" />
+				<fx:Object name="Speed Bumps" photo="images/speedBumps.jpg" />
+				<fx:Object name="Danger!" photo="images/danger.jpg" />
+				<fx:Object name="Slow Down" photo="images/slowDown.jpg" />
+			</s:ArrayCollection>
+		</s:dataProvider>
 		<s:layout>
 			<s:HorizontalLayout/>
 		</s:layout>

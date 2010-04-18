@@ -29,7 +29,7 @@ package
 			//reqStr = "SELECT * FROM transactions customer.name ";//customer_id = CUSTOMERID AND product_id = PRODUCTID AND.."
 			
 			//reqStr = "SELECT transactions.*, customers.name AS customer_name FROM transactions JOIN customers ON customers.id = transactions.customer_id "
-			reqStr = "SELECT transactions.*, customers.name AS customer_name, products.name AS product_name FROM transactions JOIN customers ON customers.id = transactions.customer_id JOIN products ON products.id = transactions.product_id";
+			reqStr = "SELECT transactions.*, customers.name AS customer_name, products.name AS product_name FROM transactions JOIN customers ON customers.id = transactions.customer_id JOIN products ON products.id = transactions.product_id ";
 			
 			if (_customer>0){
 				if (conditions == 0) reqStr += "WHERE ";

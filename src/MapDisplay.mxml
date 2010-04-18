@@ -53,13 +53,16 @@
 			//listen for when the map is ready
 			map.addEventListener(MapEvent.READY, mapReady);
 		//	map.addEventListener(MapEvent.CLICK, mapClicked);
-			
-			
+			//hack to fix bug in umap component: http://bit.ly/cfuWxK
+			var maskSprite:Sprite = new Sprite(); 
+			maskSprite.graphics.beginFill(0xff0000, 0.3); 
+			maskSprite.graphics.drawRect(50,200,600,500); 
+			ref.mask = maskSprite;
 		}
+		
 		private function mapClicked(m:MapEvent):void
 		{
 			trace("lat:"+m.latlng.lat+"   lng:"+m.latlng.lng);
-			
 			//map.setBounds(new LatLngBounds(new LatLng(60.5, -17), new LatLng(48, 9)));
 		}
 		public function showProducts(d:*):void
@@ -106,7 +109,6 @@
 			
 			//add the markers
 			for (var i:uint = 0; i<d.children().length(); i++){
-				
 				var l:XML = d..row[i] as XML;
 				var type:String = l..type;
 				if (type == "sale")
@@ -145,15 +147,9 @@
 				if (l..rental_end.toString().length>0){
 					infoCopy += "Rental end: "+l..rental_end;
 				}
-				 
-				
 				
 				infoObj.content = infoCopy;//"Info window content...<br/>can be multiline<br/>and contain <b><u>HTML</u></b> tags.";
-				
-				
-				
 				var marker:SignMarker = new SignMarker({position:pos, infoParam:infoObj}, null, l..product_id);
-				
 				map.addOverlay(marker);	
 			}
 			//update rental/sales counts
@@ -166,6 +162,7 @@
 			trace("map ready");
 			map.setCenter(new LatLng(56, -3));
 			map.setZoom(5);
+			map.setFocus();
 			//map.setBounds(new LatLngBounds(new LatLng(60.5, -17), new LatLng(48, 9)));
 			//start working with the map, adding markers etc.
 		}
@@ -185,7 +182,6 @@
 			// TODO Auto-generated method stub
 			trace("slider changed:"+val);
 			map.setZoom(val, true);//(immediately)
-			
 		}
 		public function clearMarkers():void
 		{
@@ -194,6 +190,7 @@
 				var oL:* = ov_ar[i];
 				map.removeOverlay(oL);
 			}
+			map.removeManager(markerManager);
 		}
 
 	]]>
@@ -226,7 +223,6 @@
 						<s:Label id="rentals" text="--" />	
 					</s:Group>	
 				</s:Group>
-				
 			</s:Group>
 		</s:Group>
 		
