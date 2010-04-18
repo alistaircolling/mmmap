@@ -87,6 +87,7 @@
 			markerManager.markerZoomScale = 1;
 			markerManager.openGroupAction = MarkerManager.OPEN_CLICK;
 			markerManager.autoClose = true;
+			markerManager.fadingStrength = .8;
 			
 			var markerManagerStyle:Object = new Object();
 			var baloonStyle:BaloonStyle = new BaloonStyle(); 
