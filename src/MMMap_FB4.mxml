@@ -44,9 +44,7 @@
 <fx:Script>
 	<![CDATA[
 		import com.adobe.crypto.MD5;
-		
 		import model.Model;
-		
 		import mx.collections.ArrayCollection;
 		import mx.controls.Alert;
 		import mx.events.FlexEvent;
@@ -57,13 +55,11 @@
 		protected var startingDate:Date;
 		[Bindable]
 		protected var endingDate:Date;
-		
-		private var csv:String;
-		
-		private var saleTypeStrings:Array = ["sale", "rental",  "all"];
 
+		//used to create Excel csv file
+		private var csv:String;
+		private var saleTypeStrings:Array = ["sale", "rental",  "all"];
 		public var myModel:Model;
-		
 		private var newPreferences:Object;
 		
 		public function setPreferences(o:Object):void
@@ -140,15 +136,6 @@
 		{
 			var sD:Date = startDateFieldSet.selectedDate;
 			var eD:Date = endDateFieldSet.selectedDate;
-			//only need to check dates are in correct order
-//			if (eD==null && sD==null){
-//				return true;
-//			}
-//			if (eD==null || sD==null){
-//				//only start date is set
-//				showAlert("Please alter dates","The from and to dates must be in the correct order and you must define both or neither", true, showAccountSettings);
-//				return false;
-//			}
 			if (eD!=null || sD!=null){
 				if (eD.valueOf()<sD.valueOf()){
 					showAlert("Please alter dates","The from and to dates must be in the correct order", true, showAccountSettings);
@@ -166,10 +153,6 @@
 		}
 		public function showAlert(title:String, msg:String, okButton:Boolean = false, fn:Function = null):void
 		{
-//			var alertFn:Function = logOut;
-//			if (!logO){
-//				alertFn = null;
-//			}
 			Alert.show(msg, title, Alert.OK, this, fn);
 		}
 		public function logOut(a:*):void
@@ -450,74 +433,77 @@
 		<s:Button x="88" y="126" label="Login" id="login" click="login_clickHandler(event)" includeIn="login" />
 		<s:Label includeIn="loggingIn,requesting_results,updating_email,updating_password,updating_settings" text="Logging in....." horizontalCenter="0" verticalCenter="0" text.updating_settings="Updating settings...." text.updating_password="Updating password...." text.requesting_results="Requesting results.....&#xd;" text.updating_email="Updating email...."/>
 	</s:Panel>
-	<s:Panel tabEnabled="false" includeIn="account_settings" x="10" y="10" width="872" height="330" title="Account Settings">
-		<s:layout>
-			<s:VerticalLayout/>
-		</s:layout>
-		<mx:Spacer height="20"/>
-		<s:Group width="700">
+	<s:Panel tabEnabled="false" includeIn="account_settings" x="10" y="10" width="826" height="330" title="Account Settings">
+		<s:Group x="30">
 			<s:layout>
-				<s:HorizontalLayout/>
+				<s:VerticalLayout/>
 			</s:layout>
-			
-			<s:Label text="Start date:"/>
-			<mx:DateField id="startDateFieldSet"/>
-			<mx:Spacer width="20"/>
-			<s:Label text="End date:"/>
-			<mx:DateField id="endDateFieldSet" />
-			<s:Button label="Clear Dates" id="clearSelectedDatesBtn" click="clearSelectedDatesHandler(event)"/>
-			<mx:Spacer width="20"/>
+			<mx:Spacer height="20"/>
 			<s:Group width="700">
 				<s:layout>
 					<s:HorizontalLayout/>
 				</s:layout>
-				<s:Label text="Product:" />
-				<s:ComboBox id="productsSet" dataProvider="{productList}" labelField="name"/>
+				
+				<s:Label text="Start date:"/>
+				<mx:DateField id="startDateFieldSet"/>
+				<mx:Spacer width="20"/>
+				<s:Label text="End date:"/>
+				<mx:DateField id="endDateFieldSet" />
+				<s:Button label="Clear Dates" id="clearSelectedDatesBtn" click="clearSelectedDatesHandler(event)"/>
+				<mx:Spacer width="20"/>
+				<s:Group width="700">
+					<s:layout>
+						<s:HorizontalLayout/>
+					</s:layout>
+					<s:Label text="Product:" />
+					<s:ComboBox id="productsSet" dataProvider="{productList}" labelField="name"/>
+				</s:Group>
 			</s:Group>
-		</s:Group>
-		<mx:Spacer height="10"/>
-		<s:Group width="700">
-			<s:layout>
-				<s:HorizontalLayout/>
-			</s:layout>
-			<s:Label text="Sale type:"/>
-			<s:ComboBox id="saleTypesSet" dataProvider="{salesType}" x="99" y="-1"/>
-			<mx:Spacer width="20"/>
-			<s:Label text="Customer:" x="282" y="2"/>
-			<s:ComboBox id="customersSet" dataProvider="{customerList}" labelField="name" x="341" y="0"/>
-			<mx:Spacer width="20"/>
+			<mx:Spacer height="10"/>
+			<s:Group width="700">
+				<s:layout>
+					<s:HorizontalLayout/>
+				</s:layout>
+				<s:Label text="Sale type:"/>
+				<s:ComboBox id="saleTypesSet" dataProvider="{salesType}" x="99" y="-1"/>
+				<mx:Spacer width="20"/>
+				<s:Label text="Customer:" x="282" y="2"/>
+				<s:ComboBox id="customersSet" dataProvider="{customerList}" labelField="name" x="341" y="0"/>
+				<mx:Spacer width="20"/>
+			</s:Group>
+			
+			<s:Button id="updateSet" label="Update Settings" click="updateSet_clickHandler(event)"/>
+			<mx:Spacer height="10"/>
+			<s:Group>
+				<s:layout>
+					<s:HorizontalLayout/>
+				</s:layout>
+				<s:Label text="Current Password:"/>
+				<s:TextInput id="currentPassword"/>
+				<mx:Spacer width="20"/>
+				<s:Label text="New Password:"/>
+				<s:TextInput id="newPassword"/>
+				<mx:Spacer width="20"/>
+				<s:Label text="Re-type new password:"/>
+				<s:TextInput id="confirmPassword"/>
+			</s:Group>
+			<s:Button label="Update Password" id="updatePassword" click="updatePassword_clickHandler(event)"/>
+			<s:Group>
+				<s:layout>
+					<s:HorizontalLayout/>
+				</s:layout>
+				<s:Label text="Set new email address:"/>
+				<s:TextInput id="newEmail" width="200"/>
+				<mx:Spacer width="20"/>
+				<s:Label text="Confirm email:"/>
+				<s:TextInput id="confirmEmail" width="200"/>
+				<mx:Spacer width="20"/>
+			</s:Group>
+			<s:Button label="Update Email" id="updateEmail" click="updateEmailAddress(event)"/>
+			<mx:Spacer height="10"/>
+			<s:Button label="Close" click="button1_clickHandler(event)"/>
 		</s:Group>
 		
-		<s:Button id="updateSet" label="Update Settings" click="updateSet_clickHandler(event)"/>
-		<mx:Spacer height="10"/>
-		<s:Group>
-			<s:layout>
-				<s:HorizontalLayout/>
-			</s:layout>
-			<s:Label text="Current Password:"/>
-			<s:TextInput id="currentPassword"/>
-			<mx:Spacer width="20"/>
-			<s:Label text="New Password:"/>
-			<s:TextInput id="newPassword"/>
-			<mx:Spacer width="20"/>
-			<s:Label text="Re-type new password:"/>
-			<s:TextInput id="confirmPassword"/>
-		</s:Group>
-		<s:Button label="Update Password" id="updatePassword" click="updatePassword_clickHandler(event)"/>
-		<s:Group>
-			<s:layout>
-				<s:HorizontalLayout/>
-			</s:layout>
-			<s:Label text="Set new email address:"/>
-			<s:TextInput id="newEmail" width="200"/>
-			<mx:Spacer width="20"/>
-			<s:Label text="Confirm email:"/>
-			<s:TextInput id="confirmEmail" width="200"/>
-			<mx:Spacer width="20"/>
-		</s:Group>
-		<s:Button label="Update Email" id="updateEmail" click="updateEmailAddress(event)"/>
-		<mx:Spacer height="10"/>
-		<s:Button label="Close" click="button1_clickHandler(event)"/>
 	</s:Panel>
 	
 </s:Application>

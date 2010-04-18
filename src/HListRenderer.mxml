@@ -13,13 +13,9 @@
 		<s:VerticalLayout/>
 	</s:layout>
 	
-
-	
-	<s:VGroup horizontalAlign="center" paddingTop="0" paddingBottom="0" horizontalCenter="0">
-		
-		<mx:Image source="{data.photo}" width="50" height="50" alpha.hovered=".5" horizontalCenter="0"/>
-		<s:Label text="{data.name}" color.hovered="0x1313cd" color.selected="0x000000" horizontalCenter="0"/>
-		
+	<s:VGroup horizontalAlign="center" paddingTop="0" color.hovered="0xffffff" paddingBottom="0" horizontalCenter="0">
+		<mx:Image source="{data.photo}" width="50" height="50" alpha.hovered="1" horizontalCenter="0"/>
+		<s:Label text="{data.name}" color.hovered="0x000000" horizontalCenter="0"/>
 	</s:VGroup>
 	
 </s:ItemRenderer>

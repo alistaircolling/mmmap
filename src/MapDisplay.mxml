@@ -52,12 +52,6 @@
 			ref.focusManager.deactivate();
 			//listen for when the map is ready
 			map.addEventListener(MapEvent.READY, mapReady);
-		//	map.addEventListener(MapEvent.CLICK, mapClicked);
-			//hack to fix bug in umap component: http://bit.ly/cfuWxK
-			var maskSprite:Sprite = new Sprite(); 
-			maskSprite.graphics.beginFill(0xff0000, 0.3); 
-			maskSprite.graphics.drawRect(50,200,600,500); 
-			ref.mask = maskSprite;
 		}
 		
 		private function mapClicked(m:MapEvent):void
@@ -147,7 +141,6 @@
 				if (l..rental_end.toString().length>0){
 					infoCopy += "Rental end: "+l..rental_end;
 				}
-				
 				infoObj.content = infoCopy;//"Info window content...<br/>can be multiline<br/>and contain <b><u>HTML</u></b> tags.";
 				var marker:SignMarker = new SignMarker({position:pos, infoParam:infoObj}, null, l..product_id);
 				map.addOverlay(marker);	
@@ -225,7 +218,4 @@
 				</s:Group>
 			</s:Group>
 		</s:Group>
-		
-		
-	
 </s:Group>
