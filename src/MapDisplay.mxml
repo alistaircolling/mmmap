@@ -60,6 +60,9 @@
 		
 		public function showResults(d:XML):void
 		{
+			salesCount = 0;
+			rentalsCount = 0;
+			
 			for (var i:uint = 0; i<d.children().length(); i++){
 				
 				var l:XML = d..row[i] as XML;
@@ -80,10 +83,8 @@
 				var marker:SignMarker = new SignMarker({position:pos}, null, l..product_id);
 				map.addOverlay(marker);	
 			}
-			
-			//TODO updated the rentals vs sales text field
-			
-					
+			sales.text = salesCount.toString();
+			rentals.text = rentalsCount.toString();
 		}
 		
 		private function mapReady(e:MapEvent):void
@@ -93,6 +94,12 @@
 			map.setZoom(5);
 			//map.setBounds(new LatLngBounds(new LatLng(60.5, -17), new LatLng(48, 9)));
 			//start working with the map, adding markers etc.
+		}
+		public function cleanUp():void
+		{
+			sales.text = "--";
+			rentals.text = "--";
+			clearMarkers();
 		}
 		
 		

@@ -224,6 +224,7 @@
 
 		protected function logout_clickHandler(event:MouseEvent):void
 		{
+			mapDisplay.cleanUp();
 			username.text = "";
 			password.text = "";
 			currentState = "login";
