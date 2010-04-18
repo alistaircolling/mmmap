@@ -11,7 +11,7 @@ Here is a brief summary of the contents of this directory:
 
 deploy-  compiled SWF and supporting files (including PHP) to be placed on web directory
 
-docs- dataflow diagram, spefications document and miscellaneous notes
+docs- dataflow diagram, specifications document and miscellaneous notes
 
 libs- swcs used
 
