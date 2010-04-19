@@ -46,6 +46,7 @@
 		import com.adobe.crypto.MD5;
 		
 		import model.Model;
+		
 		import mx.collections.ArrayCollection;
 		import mx.controls.Alert;
 		import mx.events.FlexEvent;
@@ -213,6 +214,9 @@
 		}
 		public function setPreferences(o:Object):void
 		{
+			var now:Date = new Date();
+			var date:int = now.getDate();
+			
 			currentState = "portal";
 			if (o.customer>-1) {
 				customers.selectedIndex = Number(o.customer);	
@@ -223,6 +227,8 @@
 			if (o.fromDate.length>0){
 				startDateField.selectedDate = getDateFromString(o.fromDate);				
 			}else{
+				var LastDayOfMonth:Number = new Date(2010, 3, 0).getDate() as Number;
+				trace(LastDayOfMonth);
 				startDateField.selectedDate = null;
 			}
 			if (o.toDate.length>0){
