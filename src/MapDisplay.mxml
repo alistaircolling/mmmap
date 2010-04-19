@@ -32,6 +32,7 @@
 		
 		private var provider:CloudMadeProvider;
 		public var map:UMap;
+		//cloudmade api key
 		private var apiKey:String = "eeb21660abf954a4ab61b8e5be7dd542";
 		
 		//used to display viewing stats
@@ -59,11 +60,6 @@
 			trace("lat:"+m.latlng.lat+"   lng:"+m.latlng.lng);
 			//map.setBounds(new LatLngBounds(new LatLng(60.5, -17), new LatLng(48, 9)));
 		}
-		public function showProducts(d:*):void
-		{
-			
-		}
-	
 		protected function getMMStyle():Object
 		{
 			var gradStyle:MarkerStyle = new MarkerStyle();
