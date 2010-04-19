@@ -360,6 +360,7 @@
 				trace("state set to account_settings");
 				settingsPanel.tabEnabled = false;
 				settingsPanel.tabFocusEnabled = false;
+				
 				currentPassword.tabEnabled = false;
 				currentPassword.tabFocusEnabled = false;
 				confirmPassword.tabEnabled = false;
