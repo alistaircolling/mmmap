@@ -214,9 +214,11 @@
 		}
 		public function setPreferences(o:Object):void
 		{
+			//get the current date
 			var now:Date = new Date();
 			var date:int = now.getDate();
-			
+			var month:int = now.getMonth();
+			var year:Number = now.getFullYear();
 			currentState = "portal";
 			if (o.customer>-1) {
 				customers.selectedIndex = Number(o.customer);	
@@ -227,14 +229,15 @@
 			if (o.fromDate.length>0){
 				startDateField.selectedDate = getDateFromString(o.fromDate);				
 			}else{
-				var LastDayOfMonth:Number = new Date(2010, 3, 0).getDate() as Number;
-				trace(LastDayOfMonth);
-				startDateField.selectedDate = null;
+				var firstDayOfMonth:Date = new Date();
+				firstDayOfMonth.setDate(1);
+				startDateField.selectedDate = firstDayOfMonth;
 			}
 			if (o.toDate.length>0){
 				endDateField.selectedDate = getDateFromString(o.toDate);
 			}else{
-				endDateField.selectedDate = null;
+				var lastDayOfMonth:Number = new Date(year, month+1, 0).getDate() as Number;
+				endDateField.selectedDate = new Date(year, month, lastDayOfMonth);
 			}
 			if (o.saleType.length>0){
 				saleTypes.selectedIndex = getSaleType(o.saleType);
