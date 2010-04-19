@@ -3,7 +3,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:local="*"
 			   xmlns:net="flash.net.*"
-			   
+			   currentStateChange="application1_currentStateChangeHandler(event)"
 			   creationComplete="creationCompleteHandler(event)"
 			   addedToStage="application1_addedToStageHandler(event)"
 			   currentState="login" minWidth.State1="955" minHeight.State1="600">
@@ -50,6 +50,7 @@
 		import mx.collections.ArrayCollection;
 		import mx.controls.Alert;
 		import mx.events.FlexEvent;
+		import mx.events.StateChangeEvent;
 		import mx.printing.FlexPrintJob;
 		import mx.printing.FlexPrintJobScaleType;
 		
@@ -345,7 +346,22 @@
 			}
 			currentState = "login";
 		}
-		
+		//used to set tab enabled properties of components to false to avoid adobe component bug
+		protected function application1_currentStateChangeHandler(event:StateChangeEvent):void
+		{
+			if (currentState == "login"){
+				username.tabFocusEnabled = false;
+				password.tabFocusEnabled = false;
+				login.tabFocusEnabled = false;
+				loginPanel.tabEnabled = false;
+				loginPanel.tabFocusEnabled = false;
+			}
+			if (currentState == "account_settings"){
+				settingsPanel.tabEnabled = false;
+				settingsPanel.tabFocusEnabled = false;
+			}
+						
+		}
 
 	]]>
 </fx:Script>
@@ -424,7 +440,7 @@
 		<s:Button x="88" y="126" tabFocusEnabled="false" label="Login" id="login" click="login_clickHandler(event)" includeIn="login" />
 		<s:Label includeIn="loggingIn,requesting_results,updating_email,updating_password,updating_settings" text="Logging in....." horizontalCenter="0" verticalCenter="0" text.updating_settings="Updating settings...." text.updating_password="Updating password...." text.requesting_results="Requesting results.....&#xd;" text.updating_email="Updating email...."/>
 	</s:Panel>
-	<s:Panel tabFocusEnabled="false" includeIn="account_settings" x="10" y="10" width="826" height="330" title="Account Settings">
+	<s:Panel id="settingsPanel" tabFocusEnabled="false" includeIn="account_settings" x="10" y="10" width="826" height="330" title="Account Settings">
 		<s:Group x="30">
 			<s:layout>
 				<s:VerticalLayout/>
