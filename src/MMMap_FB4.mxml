@@ -81,12 +81,7 @@
 			retD = new Date(year, month, date);
 			return retD;
 		}
-		private function showProducts(d:*):void
-		{
-			//logic to parse data and sat arrayC
-			mapDisplay.showProducts(d);
-		}
-		
+	
 		private function showResults(d:*):void
 		{
 			mapDisplay.showResults(d);
